@@ -1,0 +1,45 @@
+body {
+  font-family: 'Work+Sans', sans-serif;
+
+  overflow-x: hidden;
+  background: var(--color-bg);
+  /* color: var(--color-text); */
+  margin: auto;
+  font-size: 16px;
+  --font-size-sm: clamp(12.8px, -0.17vw + 13.47px, 11.32px);
+  --font-size-base: clamp(16px, 0vw + 16px, 16px);
+  --font-size-md: clamp(20px, 0.3vw + 18.81px, 22.62px);
+  --font-size-lg: clamp(25px, 0.79vw + 21.82px, 31.99px);
+  --font-size-xl: clamp(31.25px, 1.59vw + 24.89px, 45.23px);
+  --font-size-xxl: clamp(39.06px, 2.83vw + 27.74px, 63.96px);
+  --font-size-xxxl: clamp(48.83px, 4.73vw + 29.91px, 90.44px);
+
+  --color-bg: #fff;
+
+  --color-card-bg: #ffffff;
+  --color-link-hover: #919191;
+
+  --card-size: 500px;
+  --color-text-primary: #383841;
+  --color-text-secondary: #484848;
+  --color-text-white: #ffffff;
+  --color-incomplete-gray: #ececec;
+
+  --color-text-link: #3413ff;
+}
+
+h1 {
+  font-size: var(--font-size-xxxl);
+  font-weight: 500;
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+}
+h3 {
+  font-size: var(--font-size-lg);
+}
+
+img {
+  max-width: 100%;
+}
