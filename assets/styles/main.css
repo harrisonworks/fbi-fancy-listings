@@ -2,12 +2,13 @@ body {
   font-family: 'Work Sans', sans-serif;
 
   overflow-x: hidden;
-  background: var(--color-bg);
+
   /* color: var(--color-text); */
   margin: auto;
-  font-size: 16px;
+  font-size: var(--font-size-base);
+
   --font-size-sm: clamp(12.8px, -0.17vw + 13.47px, 11.32px);
-  --font-size-base: clamp(16px, 0vw + 16px, 16px);
+  --font-size-base: clamp(14px, 0vw + 14px, 14px);
   --font-size-md: clamp(20px, 0.3vw + 18.81px, 22.62px);
   --font-size-lg: clamp(25px, 0.79vw + 21.82px, 31.99px);
   --font-size-xl: clamp(31.25px, 1.59vw + 24.89px, 45.23px);
@@ -26,6 +27,8 @@ body {
   --color-incomplete-gray: #ececec;
 
   --color-text-link: #3413ff;
+
+  background: var(--color-bg);
 }
 
 h1 {

@@ -1,29 +1,40 @@
 <template>
 	<div class="card my-5">
-		<div style="background: red; color: white">{{ data.warning_message }}</div>
-		<div class="d-flex">
-			<img class="m-3" :src="featuredImage" alt="" />
-			<div class="d-flex flex-column m-3">
-				<h3>{{ data.title }}</h3>
-				<h5>{{ niceDate }}</h5>
-				<h4>Details</h4>
-				<div class="d-flex flex-wrap">
-					<div
-						class="crime-chip"
-						v-for="(crime, index) in crimeList"
-						:key="index"
-					>
-						{{ crime }}
-					</div>
-				</div>
+		<div class="d-flex flex-column">
+			<div class="d-flex">
+				<img class="m-3" :src="featuredImage" alt="" />
+				<div class="d-flex flex-column m-3">
+					<h6>{{ niceDate }}</h6>
 
-				<h4>Catergories</h4>
-				<div class="d-flex flex-wrap">
-					<p class="crime-chip">{{ subjectsList }}</p>
+					<h3>{{ data.title }}</h3>
+
+					<div class="d-flex flex-wrap">
+						<div
+							class="crime-chip"
+							v-for="(crime, index) in crimeList"
+							:key="index"
+						>
+							{{ crime }}
+						</div>
+					</div>
+
+					<h4>Catergories</h4>
+					<div class="d-flex flex-wrap">
+						<p class="crime-chip">{{ subjectsList }}</p>
+					</div>
+					<a
+						href="javascript: void(0)"
+						style="margin-top: auto"
+						@click="pressed"
+						>Read More</a
+					>
 				</div>
-				<a href="javascript: void(0)" style="margin-top: auto" @click="pressed"
-					>Read More</a
-				>
+			</div>
+			<div class="status">
+				<div v-show="data.warning_message" class="warning">
+					{{ data.warning_message }}
+				</div>
+				<div v-show="reward" class="reward">{{ reward }}</div>
 			</div>
 		</div>
 	</div>
@@ -72,6 +83,17 @@ export default {
 				return temp
 			} else return descriptionList
 		},
+		reward() {
+			if (this.data.reward_text) {
+				const start = this.data.reward_text.indexOf('$')
+				const end = this.data.reward_text.indexOf('for')
+
+				const dollarAmount = this.data.reward_text.substring(start, end)
+				return `${dollarAmount.trim()} reward`
+			} else {
+				return false
+			}
+		},
 	},
 	methods: {
 		pressed() {
@@ -87,8 +109,8 @@ export default {
 
 <style scoped>
 .card {
-	border: solid black 2px;
-	padding: 1rem;
+	border: 2px solid black;
+	padding: 0rem;
 }
 
 .crime-chip {
@@ -99,8 +121,28 @@ export default {
 	margin: 0.5rem;
 }
 
+.status > * {
+	padding: 1rem;
+	text-align: center;
+	font-weight: 500;
+	/* border: 2px solid black; */
+	box-sizing: border-box;
+	color: white;
+}
+
+.warning {
+	background: red;
+}
+
+.reward {
+	background: blue;
+}
+
 img {
-	max-width: 20rem;
+	height: 15rem;
+	width: 10rem;
+
+	object-fit: cover;
 	border: solid black 2px;
 }
 </style>
