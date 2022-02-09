@@ -8,10 +8,10 @@
 				<h3>{{ data.title }}</h3>
 				<h5>{{ niceDate }}</h5>
 				<p>descriptions</p>
-				<p v-for="(subject, index) in data.subjects" :key="index">
-					{{ subject }}
-				</p>
-				<a href="#">Read More</a>
+				<!-- <p v-for="(subject, index) in data.subjects" :key="index"> -->
+				<p>{{ subjectsList }}</p>
+				<!-- </p> -->
+				<a @click="pressed">Read More</a>
 			</div>
 		</div>
 	</div>
@@ -33,6 +33,18 @@ export default {
 		niceDate() {
 			return formatDistanceToNow(new Date(this.data.publication), {
 				addSuffix: true,
+			})
+		},
+		subjectsList() {
+			// subjects are 'catergories' for law enforcement
+			return this.data.subjects.join(', ')
+		},
+	},
+	methods: {
+		pressed() {
+			this.$router.push({
+				name: 'file-uid',
+				params: { uid: this.data.uid },
 			})
 		},
 	},

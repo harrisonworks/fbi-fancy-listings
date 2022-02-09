@@ -13,9 +13,9 @@
 <script>
 export default {
 	name: 'IndexPage',
-	async asyncData({ store }) {
-		await store.dispatch('getListings')
-	},
+	// async asyncData({ store }) {
+	// 	await store.dispatch('getListings')
+	// },
 	computed: {
 		peopleList() {
 			return this.$store.state.listing.items
