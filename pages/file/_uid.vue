@@ -1,9 +1,12 @@
 <template>
-	<main>
+	<main class="container">
 		<h1>{{ data.title }}</h1>
 		<img :src="data.images[0].large" alt="" />
 		<h3>Wanted</h3>
 		<p>{{ subjectsList }}</p>
+
+		<h4>Caution Listing</h4>
+		<div v-html="data.caution"></div>
 	</main>
 </template>
 

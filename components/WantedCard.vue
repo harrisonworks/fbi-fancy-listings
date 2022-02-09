@@ -52,9 +52,10 @@ export default {
 			return this.data.subjects.join(', ')
 		},
 		crimeList() {
+			const arrayCutoff = 3
 			// this hack splits out the desciption into bullet points
 			// I dont like regex 🤮
-			return this.data.description
+			const descriptionList = this.data.description
 				.split(';')
 				.join(',')
 				.split('-')
@@ -62,6 +63,14 @@ export default {
 				.split(':')
 				.join(',')
 				.split(',')
+
+			const lastItem = `${descriptionList.length - arrayCutoff} more...`
+
+			if (descriptionList.length > arrayCutoff) {
+				const temp = descriptionList.slice(0, arrayCutoff)
+				temp.push(lastItem)
+				return temp
+			} else return descriptionList
 		},
 	},
 	methods: {

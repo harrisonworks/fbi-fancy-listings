@@ -15,20 +15,10 @@ export const actions = {
     if (state.listing.length) return
 
     try {
-      const listing = await fetch(`${siteURL}`).then((res) => res.json())
-      // console.log(posts)
-      // posts = posts
-      //   .filter((el) => el.status === 'publish')
-      //   .map(({ id, slug, title, excerpt, date, tags, content, acf }) => ({
-      //     id,
-      //     slug,
-      //     title,
-      //     excerpt,
-      //     date,
-      //     tags,
-      //     content,
-      //     acf,
-      //   }))
+      // filter the query to main offenders
+      const listing = await fetch(`${siteURL}?person_classification=main`).then(
+        (res) => res.json()
+      )
 
       commit('updateListings', listing)
     } catch (err) {
