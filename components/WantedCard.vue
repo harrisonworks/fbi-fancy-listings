@@ -1,17 +1,29 @@
 <template>
-	<div class="card">
+	<div class="card my-5">
 		<div style="background: red; color: white">{{ data.warning_message }}</div>
 		<div class="d-flex">
-			<img :src="featuredImage" alt="" />
-			<!-- <h4>he</h4> -->
-			<div class="d-flex flex-column">
+			<img class="m-3" :src="featuredImage" alt="" />
+			<div class="d-flex flex-column m-3">
 				<h3>{{ data.title }}</h3>
 				<h5>{{ niceDate }}</h5>
-				<p>descriptions</p>
-				<!-- <p v-for="(subject, index) in data.subjects" :key="index"> -->
-				<p>{{ subjectsList }}</p>
-				<!-- </p> -->
-				<a @click="pressed">Read More</a>
+				<h4>Details</h4>
+				<div class="d-flex flex-wrap">
+					<div
+						class="crime-chip"
+						v-for="(crime, index) in crimeList"
+						:key="index"
+					>
+						{{ crime }}
+					</div>
+				</div>
+
+				<h4>Catergories</h4>
+				<div class="d-flex flex-wrap">
+					<p class="crime-chip">{{ subjectsList }}</p>
+				</div>
+				<a href="javascript: void(0)" style="margin-top: auto" @click="pressed"
+					>Read More</a
+				>
 			</div>
 		</div>
 	</div>
@@ -39,6 +51,18 @@ export default {
 			// subjects are 'catergories' for law enforcement
 			return this.data.subjects.join(', ')
 		},
+		crimeList() {
+			// this hack splits out the desciption into bullet points
+			// I dont like regex 🤮
+			return this.data.description
+				.split(';')
+				.join(',')
+				.split('-')
+				.join(',')
+				.split(':')
+				.join(',')
+				.split(',')
+		},
 	},
 	methods: {
 		pressed() {
@@ -58,7 +82,16 @@ export default {
 	padding: 1rem;
 }
 
+.crime-chip {
+	background: red;
+	color: white;
+	font-weight: 500;
+	padding: 0.5rem 0.8rem;
+	margin: 0.5rem;
+}
+
 img {
 	max-width: 20rem;
+	border: solid black 2px;
 }
 </style>
