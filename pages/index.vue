@@ -1,7 +1,5 @@
 <template>
 	<main class="container">
-		<h1>most wanted</h1>
-
 		<wanted-card
 			v-for="(people, index) in peopleList"
 			:key="index"

@@ -4,37 +4,30 @@
 			<div class="d-flex">
 				<img class="m-3" :src="featuredImage" alt="" />
 				<div class="d-flex flex-column m-3">
-					<h6>{{ niceDate }}</h6>
+					<h6 class="listingDate">{{ niceDate }}</h6>
 
-					<h3>{{ data.title }}</h3>
-
-					<div class="d-flex flex-wrap">
-						<div
-							class="crime-chip"
-							v-for="(crime, index) in crimeList"
-							:key="index"
-						>
-							{{ crime }}
-						</div>
-					</div>
-
-					<h4>Catergories</h4>
-					<div class="d-flex flex-wrap">
-						<p class="crime-chip">{{ subjectsList }}</p>
-					</div>
-					<a
-						href="javascript: void(0)"
-						style="margin-top: auto"
-						@click="pressed"
-						>Read More</a
+					<a href="javascript: void(0)" @click="pressed"
+						><h3>{{ data.title }}</h3></a
 					>
+
+					<div class="d-flex flex-wrap">
+						<crime-chip v-for="(crime, index) in crimeList" :key="index">
+							{{ crime }}
+						</crime-chip>
+					</div>
+
+					<div class="d-flex flex-wrap">
+						<p>{{ subjectsList }}</p>
+					</div>
+
+					<button style="margin-top: auto" @click="pressed">Read More</button>
 				</div>
 			</div>
-			<div class="status">
-				<div v-show="data.warning_message" class="warning">
+			<div class="d-flex justify-content-evenly status">
+				<div v-show="data.warning_message" class="flex-grow-1 warning">
 					{{ data.warning_message }}
 				</div>
-				<div v-show="reward" class="reward">{{ reward }}</div>
+				<div v-show="reward" class="flex-grow-1 reward">{{ reward }}</div>
 			</div>
 		</div>
 	</div>
@@ -69,8 +62,6 @@ export default {
 			const descriptionList = this.data.description
 				.split(';')
 				.join(',')
-				.split('-')
-				.join(',')
 				.split(':')
 				.join(',')
 				.split(',')
@@ -87,6 +78,8 @@ export default {
 			if (this.data.reward_text) {
 				const start = this.data.reward_text.indexOf('$')
 				const end = this.data.reward_text.indexOf('for')
+
+				if (start === -1) return false
 
 				const dollarAmount = this.data.reward_text.substring(start, end)
 				return `${dollarAmount.trim()} reward`
@@ -113,16 +106,12 @@ export default {
 	padding: 0rem;
 }
 
-.crime-chip {
-	background: red;
-	color: white;
-	font-weight: 500;
-	padding: 0.5rem 0.8rem;
-	margin: 0.5rem;
+.listingDate {
+	color: grey;
 }
 
 .status > * {
-	padding: 1rem;
+	padding: 0.5rem 0.8rem;
 	text-align: center;
 	font-weight: 500;
 	/* border: 2px solid black; */
@@ -136,6 +125,10 @@ export default {
 
 .reward {
 	background: blue;
+}
+
+button {
+	width: 15rem;
 }
 
 img {
