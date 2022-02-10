@@ -2,11 +2,21 @@ const siteURL = 'https://api.fbi.gov/wanted/v1/list'
 
 export const state = () => ({
   listing: [],
+  headerInfo: {
+    title: null,
+    caution: null,
+    reward: null,
+  },
 })
 
 export const mutations = {
-  updateListings: (state, posts) => {
-    state.listing = posts
+  updateListings: (state, listings) => {
+    state.listing = listings
+  },
+  updateHeaderInfo: (state, payload) => {
+    state.headerInfo.title = payload.title
+    state.headerInfo.caution = payload.caution
+    state.headerInfo.reward = payload.reward
   },
 }
 

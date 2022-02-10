@@ -48,6 +48,7 @@ export default {
 	props: {
 		data: {
 			required: true,
+			type: Object,
 		},
 	},
 	computed: {
@@ -90,12 +91,13 @@ export default {
 				if (start === -1) return false
 
 				const dollarAmount = this.data.reward_text.substring(start, end)
-				return `${dollarAmount.trim()} reward`
+				return `${dollarAmount.trim()} REWARD`
 			} else {
 				return false
 			}
 		},
 	},
+	mounted() {},
 	methods: {
 		pressed() {
 			this.$router.push({
@@ -104,7 +106,6 @@ export default {
 			})
 		},
 	},
-	mounted() {},
 }
 </script>
 

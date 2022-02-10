@@ -44,7 +44,7 @@
 					<div class="box">
 						<p>Race: {{ data.race }}</p>
 					</div>
-					<div class="box">
+					<div v-show="data.scars_and_marks" class="box">
 						<p>Scars and Marks: {{ data.scars_and_marks }}</p>
 					</div>
 				</div>
@@ -75,7 +75,7 @@
 			</div>
 		</div>
 
-		<div class="box"><h5>Images</h5></div>
+		<div class="box"><h3>Images</h3></div>
 
 		<div class="d-flex flex-wrap">
 			<img
@@ -87,11 +87,11 @@
 			/>
 		</div>
 
-		<div class="d-flex flex-wrap">
+		<!-- <div class="d-flex flex-wrap">
 			<div v-for="(node, index) in AllNodes" :key="index" class="box">
 				{{ node }}
 			</div>
-		</div>
+		</div> -->
 	</main>
 </template>
 
@@ -163,8 +163,27 @@ export default {
 				return 'NA'
 			}
 		},
+		reward() {
+			if (this.data.reward_text) {
+				const start = this.data.reward_text.indexOf('$')
+				const end = this.data.reward_text.indexOf('for')
+
+				if (start === -1) return false
+
+				const dollarAmount = this.data.reward_text.substring(start, end)
+				return `${dollarAmount.trim()} REWARD`
+			} else {
+				return false
+			}
+		},
 	},
 	mounted() {
+		this.$store.commit('updateHeaderInfo', {
+			title: this.data.title,
+			caution: this.data.warning_message,
+			reward: this.reward,
+		})
+
 		this.isVictim = this.VictimCheck()
 		console.log(this.isVictim)
 	},
