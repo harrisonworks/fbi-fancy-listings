@@ -1,11 +1,13 @@
 <template>
 	<main class="fluid-container">
-		<div class="row g-0">
+		<section class="row g-0 align-items-center">
 			<div class="details col-lg-8 order-1 order-lg-0">
 				<div class="box">
 					<h1>{{ data.title }}</h1>
 
-					<h5>{{ formatedDate }}</h5>
+					<h5>
+						Published: {{ formatedDate }} | Modified: {{ formatedDateModified }}
+					</h5>
 					<crime-chip
 						v-for="(crime, index) in subjectList"
 						:key="index"
@@ -50,26 +52,30 @@
 			<div class="col-lg-4">
 				<img class="featuredImage" :src="data.images[0].original" alt="" />
 			</div>
-		</div>
+		</section>
 
-		<div class="box">
+		<div v-show="!isVictim" class="box">
 			<h3>Caution</h3>
 			<div v-html="data.caution"></div>
 			<div style="color: red" v-html="data.warning_message"></div>
 		</div>
 
 		<div class="d-flex flex-wrap">
-			<div class="box col">
+			<div v-show="data.details" class="box col">
 				<h3>Details</h3>
+				<div v-html="data.details"></div>
+			</div>
+			<div v-show="data.remarks" class="box col">
+				<h3>Remarks</h3>
 				<div v-html="data.remarks"></div>
 			</div>
-			<div class="box col">
+			<div v-show="data.reward_text" class="box col">
 				<h3>Reward</h3>
 				<div v-html="data.reward_text"></div>
 			</div>
 		</div>
 
-		<div class="box"><h5>Gallery</h5></div>
+		<div class="box"><h5>Images</h5></div>
 
 		<div class="d-flex flex-wrap">
 			<img
@@ -97,6 +103,11 @@ export default {
 	asyncData({ route, store }) {
 		return { uid: route.params.uid, listings: store.state.listing.items }
 	},
+	data() {
+		return {
+			isVictim: false,
+		}
+	},
 	head() {
 		return {
 			title: `FBI Most Wanted | ${this.data.title}`,
@@ -109,6 +120,9 @@ export default {
 		},
 		formatedDate() {
 			return format(new Date(this.data.publication), 'PPP')
+		},
+		formatedDateModified() {
+			return format(new Date(this.data.modified), 'PPP')
 		},
 		imageList() {
 			return this.data.images
@@ -150,15 +164,32 @@ export default {
 			}
 		},
 	},
-	methods: {
-		isVictim() {
-			// it appears like all missing people and victims have the details node
-			if (this.data.details) return true
-			else return false
-		},
-	},
 	mounted() {
-		console.log(this.imageList)
+		this.isVictim = this.VictimCheck()
+		console.log(this.isVictim)
+	},
+	methods: {
+		VictimCheck() {
+			const victimPhrases = ['Missing', 'ViCAP', 'Victims', 'Victim']
+
+			// compare subjects with keywords
+			const subjects = victimPhrases.filter((s) =>
+				this.data.subjects.some((str) => str.includes(s))
+			)
+
+			// compare description with keywords
+			const description = victimPhrases.filter((s) =>
+				this.crimeList.some((str) => str.includes(s))
+			)
+
+			console.log(subjects, description)
+			// if there are any partial matches these will have contents in them
+			if (subjects.length > 1 || description.length > 1) {
+				return true
+			} else {
+				return false
+			}
+		},
 	},
 }
 </script>
@@ -170,10 +201,15 @@ export default {
 	padding: 1rem;
 	border: 2px solid black;
 	min-width: 33%;
+	background: var(--color-bg);
 }
 
 .box p {
 	margin-bottom: 0;
+}
+
+section {
+	background: black;
 }
 
 .featuredImage {
