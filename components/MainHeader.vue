@@ -4,28 +4,58 @@
 			<div v-show="notHome" class="box">
 				<button @click="pressed">back</button>
 			</div>
-			<div class="box">
+			<div v-show="!notHome" class="box">
 				<h1 class="micro">FBI</h1>
 				<h1 class="micro">most wanted</h1>
 			</div>
 
-			<div v-show="notHome" class="box d-none d-sm-block">
+			<!-- <div v-show="notHome" class="box d-none d-sm-block">
 				<div class="status">
 					<h3>{{ status.title }}</h3>
-					{{ status.caution }}
-					{{ status.reward }}
+					<crime-chip style="display: inline-block">{{
+						status.caution
+					}}</crime-chip>
+					<crime-chip color="blue" style="display: inline-block">{{
+						status.reward
+					}}</crime-chip>
 				</div>
-			</div>
-			<!-- <div class="box col">
-			
 			</div> -->
+
+			<dynamic-marquee
+				class="box"
+				direction="row"
+				:reverse="true"
+				:repeat-margin="5"
+			>
+				<div class="d-flex mt-2">
+					<crime-chip
+						v-show="status.title"
+						color="black"
+						style="white-space: nowrap"
+						>{{ status.title }}</crime-chip
+					>
+					<crime-chip v-show="status.caution" style="white-space: nowrap">{{
+						status.caution
+					}}</crime-chip>
+
+					<crime-chip
+						v-show="status.reward"
+						style="white-space: nowrap"
+						color="blue"
+						>{{ status.reward }}</crime-chip
+					>
+				</div>
+			</dynamic-marquee>
 		</div>
 	</nav>
 </template>
 
 <script>
+import DynamicMarquee from 'vue-dynamic-marquee'
+
 export default {
 	name: 'MainHeader',
+	components: { DynamicMarquee },
 	computed: {
 		status() {
 			return this.$store.state.headerInfo
@@ -45,7 +75,7 @@ export default {
 
 <style scoped>
 nav .d-flex > .box {
-	height: 100px;
+	height: 100px !important;
 }
 h1:nth-child(1) {
 	font-size: var(--font-size-md);
@@ -55,6 +85,7 @@ h1:nth-child(2) {
 }
 
 .box {
+	height: auto;
 	flex-grow: 1;
 	padding: 1rem;
 	border: 2px solid black;
@@ -70,5 +101,11 @@ nav {
 	position: fixed;
 	top: 0;
 	width: 100%;
+}
+
+button {
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 </style>

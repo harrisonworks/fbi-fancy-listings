@@ -21,6 +21,7 @@ export default {
 	color: white;
 	font-weight: 500;
 	padding: 0.5rem 0.8rem;
+
 	margin: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 </style>
