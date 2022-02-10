@@ -37,7 +37,26 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/google-fonts'],
+  modules: [
+    '@nuxtjs/google-fonts',
+    'nuxt-rfg-icon',
+    '@nuxtjs/manifest',
+    [
+      'nuxt-social-meta',
+      {
+        url: 'https://fbi-fancy-listings.vercel.app',
+        title: 'FBI | Most Wanted',
+        site_name: 'FBI | Most Wanted',
+        description: 'FBI most wanted list redesigned',
+        img: '/meta.jpeg',
+        img_size: { width: '1200', height: '630' },
+        locale: 'en_US',
+        twitter: '@user',
+        twitter_card: '/meta.jpeg',
+        theme_color: '#d5d7ce',
+      },
+    ],
+  ],
 
   googleFonts: {
     families: {
