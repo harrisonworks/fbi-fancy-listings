@@ -1,26 +1,34 @@
 <template>
 	<div class="card my-5">
 		<div class="d-flex flex-column">
-			<div class="d-flex">
-				<img class="m-3" :src="featuredImage" alt="" />
-				<div class="d-flex flex-column m-3">
-					<h6 class="listingDate">{{ niceDate }}</h6>
+			<div class="row">
+				<div class="col-lg-2">
+					<img v-if="featuredImage" class="m-3" :src="featuredImage" />
+					<img
+						v-else
+						class="m-3"
+						src="https://source.unsplash.com/500x800/?crime"
+					/>
+				</div>
+				<div class="col">
+					<div class="d-flex flex-column m-3">
+						<h6 class="listingDate">{{ niceDate }}</h6>
 
-					<a href="javascript: void(0)" @click="pressed"
-						><h3>{{ data.title }}</h3></a
-					>
+						<a href="javascript: void(0)" @click="pressed"
+							><h3>{{ data.title }}</h3></a
+						>
 
-					<div class="d-flex flex-wrap">
-						<crime-chip v-for="(crime, index) in crimeList" :key="index">
-							{{ crime }}
-						</crime-chip>
+						<div class="d-flex flex-wrap">
+							<crime-chip v-for="(crime, index) in crimeList" :key="index">
+								{{ crime }}
+							</crime-chip>
+						</div>
+
+						<div class="d-flex flex-wrap">
+							<p>{{ subjectsList }}</p>
+						</div>
+						<button style="margin-top: auto" @click="pressed">Read More</button>
 					</div>
-
-					<div class="d-flex flex-wrap">
-						<p>{{ subjectsList }}</p>
-					</div>
-
-					<button style="margin-top: auto" @click="pressed">Read More</button>
 				</div>
 			</div>
 			<div class="d-flex justify-content-evenly status">
@@ -44,7 +52,7 @@ export default {
 	},
 	computed: {
 		featuredImage() {
-			return this.data.images[0].large
+			return this.data.images[0].original
 		},
 		niceDate() {
 			return formatDistanceToNow(new Date(this.data.publication), {
@@ -129,6 +137,7 @@ export default {
 
 button {
 	width: 15rem;
+	display: inline-block;
 }
 
 img {
