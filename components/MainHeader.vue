@@ -9,7 +9,7 @@
 				<h1 class="micro">most wanted</h1>
 			</div>
 
-			<div v-show="notHome" class="box">
+			<div v-show="notHome" class="box d-none d-sm-block">
 				<div class="status">
 					<h3>{{ status.title }}</h3>
 					{{ status.caution }}
