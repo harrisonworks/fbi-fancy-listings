@@ -9,10 +9,11 @@
 						Published: {{ formatedDate }} | Modified: {{ formatedDateModified }}
 					</h5>
 					<crime-chip
-						v-for="(crime, index) in subjectList"
+						v-for="(subject, index) in subjectList"
 						:key="index"
+						color="black"
 						class="d-inline-block"
-						>{{ crime }}</crime-chip
+						>{{ subject }}</crime-chip
 					>
 				</div>
 				<div class="box">
@@ -37,7 +38,6 @@
 					<div class="box">
 						<p>Sex: {{ data.sex }}</p>
 					</div>
-
 					<div class="box">
 						<p>Nationality: {{ data.nationality }}</p>
 					</div>
@@ -54,7 +54,7 @@
 			</div>
 		</section>
 
-		<div v-show="!isVictim" class="box">
+		<div v-show="data.caution" class="box">
 			<h3>Caution</h3>
 			<div v-html="data.caution"></div>
 			<div style="color: red" v-html="data.warning_message"></div>
@@ -183,10 +183,10 @@ export default {
 			title: this.data.title,
 			caution: this.data.warning_message,
 			reward: this.reward,
+			url: this.data.url,
 		})
 
 		this.isVictim = victimCheck([...this.data.subjects, ...this.crimeList])
-		console.log(this.isVictim)
 	},
 	methods: {},
 }

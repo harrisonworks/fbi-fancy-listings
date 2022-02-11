@@ -1,5 +1,5 @@
 <template>
-	<div class="card my-5">
+	<div class="card my-3">
 		<div class="d-flex flex-column">
 			<div class="row">
 				<div class="col-lg-2">
@@ -25,9 +25,16 @@
 						</div>
 
 						<div class="d-flex flex-wrap">
-							<p>{{ subjectsList }}</p>
+							<crime-chip
+								v-for="(subject, index) in data.subjects"
+								:key="index"
+								color="black"
+							>
+								{{ subject }}
+							</crime-chip>
+							<!-- <p>{{ subjectsList }}</p> -->
 						</div>
-						<button style="margin-top: auto" @click="pressed">Read More</button>
+						<button class="mt-3" @click="pressed">Read More</button>
 					</div>
 				</div>
 			</div>

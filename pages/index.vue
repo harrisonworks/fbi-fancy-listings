@@ -1,10 +1,18 @@
 <template>
-	<main class="container">
-		<wanted-card
-			v-for="(people, index) in peopleList"
-			:key="index"
-			:data="people"
-		/>
+	<main>
+		<section class="container my-5">
+			<search-queries />
+		</section>
+		<section class="container">
+			<wanted-card
+				v-for="(people, index) in peopleList"
+				:key="index"
+				:data="people"
+			/>
+		</section>
+		<section class="container my-5">
+			<page-queries />
+		</section>
 	</main>
 </template>
 
@@ -17,8 +25,12 @@ export default {
 		},
 	},
 	mounted() {
+		this.$router.push({
+			query: { page: this.$store.state.currentPage },
+		})
 		// clear all the text in the header
 		this.$store.commit('updateHeaderInfo', { ...null })
 	},
+	methods: {},
 }
 </script>

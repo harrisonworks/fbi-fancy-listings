@@ -22,12 +22,13 @@
 			</div> -->
 
 			<dynamic-marquee
-				class="box"
+				class="box p-0"
 				direction="row"
 				:reverse="true"
 				:repeat-margin="5"
+				:hover-pause="false"
 			>
-				<div class="d-flex mt-2">
+				<div class="d-flex mt-4">
 					<crime-chip
 						v-show="status.title"
 						color="black"
@@ -46,6 +47,9 @@
 					>
 				</div>
 			</dynamic-marquee>
+			<div v-show="notHome" class="box">
+				<button @click="goToFbi">FBI's Listing</button>
+			</div>
 		</div>
 	</nav>
 </template>
@@ -68,6 +72,9 @@ export default {
 	methods: {
 		pressed() {
 			this.$router.push('/')
+		},
+		goToFbi() {
+			window.open(this.$store.state.headerInfo.url, '_blank').focus()
 		},
 	},
 }

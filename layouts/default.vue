@@ -3,7 +3,7 @@
 <template>
 	<div>
 		<main-header />
-		<nuxt style="margin-top: 100px" />
+		<nuxt style="padding-top: 100px" />
 	</div>
 </template>
 
