@@ -14,9 +14,25 @@ function victimCheck(keywords) {
   }
 }
 
+function cyberCheck(keywords) {
+  const phrases = ['Cyber', 'Computer']
+
+  // compare subjects with keywords
+  const subjects = phrases.filter((s) =>
+    keywords.some((str) => str.includes(s))
+  )
+
+  // if there are any partial matches these will have contents in them
+  if (subjects.length !== 0) {
+    return true
+  } else {
+    return false
+  }
+}
+
 function crimeSorter(string) {
   // takes string of info and turns it into an array
   return string.split(';').join(',').split(':').join(',').split(',')
 }
 
-export { victimCheck, crimeSorter }
+export { victimCheck, cyberCheck, crimeSorter }

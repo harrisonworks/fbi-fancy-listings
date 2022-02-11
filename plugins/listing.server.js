@@ -1,3 +1,3 @@
 export default async ({ store }) => {
-  await store.dispatch('getListings')
+  await store.dispatch('fetchAllListings')
 }

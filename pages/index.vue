@@ -25,9 +25,11 @@ export default {
 		},
 	},
 	mounted() {
-		this.$router.push({
-			query: { page: this.$store.state.currentPage },
-		})
+		// this.$router.push({
+		// 	query: { page: this.$store.state.currentPage },
+		// })
+
+		// this.$store.dispatch('asyncCall')
 		// clear all the text in the header
 		this.$store.commit('updateHeaderInfo', { ...null })
 	},

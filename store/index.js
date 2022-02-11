@@ -1,4 +1,4 @@
-// import { victimCheck, crimeSorter } from '~/assets/js/utils.js'
+import { crimeSorter, cyberCheck } from '~/assets/js/utils.js'
 
 const siteURL = 'https://api.fbi.gov/wanted/v1/list'
 
@@ -26,7 +26,7 @@ export const mutations = {
     state.headerInfo.url = payload.url
   },
   updatePage: (state, payload) => {
-    state.currentPage = payload
+    state.currentPage += payload
   },
   setTotal: (state, payload) => {
     state.total = payload
@@ -34,7 +34,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async getListings({ state, commit, dispatch }) {
+  async getCurrentListings({ state, commit, dispatch }) {
     // if (state.listing.length) return
 
     try {
@@ -47,14 +47,51 @@ export const actions = {
       if (!state.total) commit('setTotal', listing.total)
 
       // filter out victims
-      // const result = await listing.items.filter((person) => {
-      //   const crimeList = crimeSorter(person.description)
-      //   return !victimCheck([...person.subjects, ...crimeList])
-      // })
 
       commit('updateListings', listing.items)
     } catch (err) {
       console.log(err)
     }
+  },
+
+  async fetchAllListings({ commit }) {
+    let arrResult = []
+
+    let filtered = null
+    let result = []
+    let page = 1
+    let started = false
+    let toContinue = true
+
+    while (toContinue) {
+      if (started === false || result.items.length === 20) {
+        result = await fetch(`${siteURL}?page=${page}`).then((res) =>
+          res.json()
+        )
+
+        started = true
+
+        page++
+
+        // no victims
+        filtered = await result.items.filter((person) => {
+          const crimeList = crimeSorter(person.description)
+          // const criminalList = !victimCheck([...person.subjects, ...crimeList])
+
+          return cyberCheck([...person.subjects, ...crimeList])
+        })
+
+        // console.log('loaded page', result.items.length)
+        commit('updatePage', 1)
+      } else if (result.items.length < 20) {
+        toContinue = false
+      }
+      arrResult = arrResult.concat(filtered)
+    }
+    return new Promise((resolve) => {
+      commit('updateListings', arrResult)
+      console.log('major query complete')
+      resolve(arrResult)
+    })
   },
 }

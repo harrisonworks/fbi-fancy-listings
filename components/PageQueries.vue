@@ -33,21 +33,21 @@ export default {
 			this.$router.push({
 				query: { page: this.$store.state.currentPage },
 			})
-			this.$store.dispatch('getListings')
+			this.$store.dispatch('getCurrentListings')
 		},
 		forward() {
 			this.$store.commit('updatePage', this.$store.state.currentPage + 1)
 			this.$router.push({
 				query: { page: this.$store.state.currentPage },
 			})
-			this.$store.dispatch('getListings')
+			this.$store.dispatch('getCurrentListings')
 		},
 		navigate(page) {
 			this.$store.commit('updatePage', page)
 			this.$router.push({
 				query: { page: this.$store.state.currentPage },
 			})
-			this.$store.dispatch('getListings')
+			this.$store.dispatch('getCurrentListings')
 		},
 	},
 }
