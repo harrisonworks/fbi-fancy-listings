@@ -1,3 +1,5 @@
+import { victimCheck, crimeSorter } from '~/assets/js/utils.js'
+
 const siteURL = 'https://api.fbi.gov/wanted/v1/list'
 
 export const state = () => ({
@@ -30,7 +32,14 @@ export const actions = {
         (res) => res.json()
       )
 
-      commit('updateListings', listing)
+      // filter out victims
+      const result = await listing.items.filter((person) => {
+        const crimeList = crimeSorter(person.description)
+
+        return !victimCheck([...person.subjects, ...crimeList])
+      })
+
+      commit('updateListings', result)
     } catch (err) {
       console.log(err)
     }

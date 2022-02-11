@@ -13,7 +13,7 @@ export default {
 	name: 'IndexPage',
 	computed: {
 		peopleList() {
-			return this.$store.state.listing.items
+			return this.$store.state.listing
 		},
 	},
 	mounted() {

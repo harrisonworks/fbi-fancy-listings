@@ -97,11 +97,12 @@
 
 <script>
 import { format } from 'date-fns'
+import { victimCheck } from '~/assets/js/utils.js'
 
 export default {
 	name: 'FilePage',
 	asyncData({ route, store }) {
-		return { uid: route.params.uid, listings: store.state.listing.items }
+		return { uid: route.params.uid, listings: store.state.listing }
 	},
 	data() {
 		return {
@@ -184,32 +185,10 @@ export default {
 			reward: this.reward,
 		})
 
-		this.isVictim = this.VictimCheck()
+		this.isVictim = victimCheck([...this.data.subjects, ...this.crimeList])
 		console.log(this.isVictim)
 	},
-	methods: {
-		VictimCheck() {
-			const victimPhrases = ['Missing', 'ViCAP', 'Victims', 'Victim']
-
-			// compare subjects with keywords
-			const subjects = victimPhrases.filter((s) =>
-				this.data.subjects.some((str) => str.includes(s))
-			)
-
-			// compare description with keywords
-			const description = victimPhrases.filter((s) =>
-				this.crimeList.some((str) => str.includes(s))
-			)
-
-			console.log(subjects, description)
-			// if there are any partial matches these will have contents in them
-			if (subjects.length > 1 || description.length > 1) {
-				return true
-			} else {
-				return false
-			}
-		},
-	},
+	methods: {},
 }
 </script>
 
