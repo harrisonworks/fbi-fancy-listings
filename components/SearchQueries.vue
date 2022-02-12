@@ -24,6 +24,10 @@
 						</option>
 					</select>
 				</div>
+				<div>
+					<input type="checkbox" id="reward" name="reward" />
+					<label for="reward">Reward</label>
+				</div>
 				<button class="p-2">Filter</button>
 			</form>
 		</div>

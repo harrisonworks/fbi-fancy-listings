@@ -21,10 +21,11 @@ export default {
 	name: 'IndexPage',
 	computed: {
 		peopleList() {
-			return this.$store.state.listing
+			return this.$store.state.listing.slice(80, 100)
 		},
 	},
 	mounted() {
+		console.log(this.peopleList)
 		// this.$router.push({
 		// 	query: { page: this.$store.state.currentPage },
 		// })

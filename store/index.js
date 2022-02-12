@@ -36,18 +36,16 @@ export const mutations = {
 export const actions = {
   async getCurrentListings({ state, commit, dispatch }) {
     // if (state.listing.length) return
-
     try {
       // filter the query to main offenders
       const listing = await fetch(`${siteURL}?page=${state.currentPage}`).then(
         (res) => res.json()
       )
-
       commit('updatePage', listing.page)
+
       if (!state.total) commit('setTotal', listing.total)
 
       // filter out victims
-
       commit('updateListings', listing.items)
     } catch (err) {
       console.log(err)
@@ -55,43 +53,54 @@ export const actions = {
   },
 
   async fetchAllListings({ commit }) {
-    let arrResult = []
+    if (process.env.NODE_ENV !== 'production') {
+      const result = await fetch(`http://localhost:3000/wanted.json`).then(
+        (res) => res.json()
+      )
 
-    let filtered = null
-    let result = []
-    let page = 1
-    let started = false
-    let toContinue = true
+      return new Promise((resolve) => {
+        commit('updateListings', result)
+        console.log('major query complete')
+        resolve(result)
+      })
+    } else {
+      let arrResult = []
 
-    while (toContinue) {
-      if (started === false || result.items.length === 20) {
-        result = await fetch(`${siteURL}?page=${page}`).then((res) =>
-          res.json()
-        )
+      let filtered = null
+      let result = []
+      let page = 1
+      let started = false
+      let toContinue = true
 
-        started = true
+      while (toContinue) {
+        if (started === false || result.items.length === 20) {
+          result = await fetch(`${siteURL}?page=${page}`).then((res) =>
+            res.json()
+          )
 
-        page++
+          started = true
+          page++
 
-        // no victims
-        filtered = await result.items.filter((person) => {
-          const crimeList = crimeSorter(person.description)
-          // const criminalList = !victimCheck([...person.subjects, ...crimeList])
+          // no victims
+          filtered = await result.items.filter((person) => {
+            const crimeList = crimeSorter(person.description)
+            // const criminalList = !victimCheck([...person.subjects, ...crimeList])
 
-          return cyberCheck([...person.subjects, ...crimeList])
-        })
+            return cyberCheck([...person.subjects, ...crimeList])
+          })
 
-        // console.log('loaded page', result.items.length)
-        commit('updatePage', 1)
-      } else if (result.items.length < 20) {
-        toContinue = false
+          console.log('loaded page', result.items.length)
+          commit('updatePage', 1)
+        } else if (result.items.length < 20) {
+          toContinue = false
+        }
+        arrResult = arrResult.concat(filtered)
       }
-      arrResult = arrResult.concat(filtered)
+      return new Promise((resolve) => {
+        commit('updateListings', arrResult)
+        console.log('major query complete')
+        resolve(arrResult)
+      })
     }
-    return new Promise((resolve) => {
-      commit('updateListings', arrResult)
-      console.log('major query complete')
-      resolve(arrResult)
-    })
   },
 }
