@@ -38,7 +38,7 @@ export default {
 	},
 
 	mounted() {
-		// console.log(this.peopleList)
+		console.log('Number of Listings:', this.peopleList.length)
 		// this.$router.push({
 		// 	query: { page: this.$store.state.currentPage },
 		// })
@@ -78,9 +78,14 @@ export default {
 			}
 		},
 		currentFilter(data) {
-			// if reward is greater than $100,000 and they are not a victim
+			// add the top ten most wanted
 			// big dogs only 🐕
+			if ([...data.subjects].includes('Ten Most Wanted Fugitives')) {
+				return true
+			}
+
 			const crimeList = crimeSorter(data.description)
+			// if reward is greater than $100,000 and they are not a victim
 			if (
 				this.rewardEvaluation(data) > 100000 &&
 				!victimCheck([...data.subjects, ...crimeList])
