@@ -6,7 +6,8 @@
 					<h1>{{ data.title }}</h1>
 
 					<h5>
-						Published: {{ formatedDate }} | Modified: {{ formatedDateModified }}
+						Published: {{ formatedDates.published }} | Modified:
+						{{ formatedDates.modified }}
 					</h5>
 					<crime-chip
 						v-for="(subject, index) in subjectList"
@@ -15,6 +16,9 @@
 						class="d-inline-block"
 						>{{ subject }}</crime-chip
 					>
+					<crime-chip color="blue" class="d-inline-block">{{
+						reward
+					}}</crime-chip>
 				</div>
 				<div class="box">
 					<h4 v-show="!isVictim">Charges Description</h4>
@@ -49,7 +53,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-4 d-flex justify-content-center">
 				<img class="featuredImage" :src="data.images[0].original" alt="" />
 			</div>
 		</section>
@@ -97,7 +101,7 @@
 
 <script>
 import { format } from 'date-fns'
-import { victimCheck } from '~/assets/js/utils.js'
+import { victimCheck, calculateReward, crimeSorter } from '~/assets/js/utils.js'
 
 export default {
 	name: 'FilePage',
@@ -119,11 +123,11 @@ export default {
 			const data = this.listings.find((el) => el.uid === this.uid)
 			return data
 		},
-		formatedDate() {
-			return format(new Date(this.data.publication), 'PPP')
-		},
-		formatedDateModified() {
-			return format(new Date(this.data.modified), 'PPP')
+		formatedDates() {
+			return {
+				published: format(new Date(this.data.publication), 'PPP'),
+				modified: format(new Date(this.data.modified), 'PPP'),
+			}
 		},
 		imageList() {
 			return this.data.images
@@ -149,13 +153,7 @@ export default {
 			return this.data.subjects
 		},
 		crimeList() {
-			const descriptionList = this.data.description
-				.split(';')
-				.join(',')
-				.split(':')
-				.join(',')
-				.split(',')
-			return descriptionList
+			return crimeSorter(this.data.description)
 		},
 		aliasList() {
 			if (this.data.aliases) {
@@ -165,17 +163,7 @@ export default {
 			}
 		},
 		reward() {
-			if (this.data.reward_text) {
-				const start = this.data.reward_text.indexOf('$')
-				const end = this.data.reward_text.indexOf('for')
-
-				if (start === -1) return false
-
-				const dollarAmount = this.data.reward_text.substring(start, end)
-				return `${dollarAmount.trim()} REWARD`
-			} else {
-				return false
-			}
+			return calculateReward(this.data)
 		},
 	},
 	mounted() {

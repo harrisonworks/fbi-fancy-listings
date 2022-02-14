@@ -32,7 +32,6 @@
 							>
 								{{ subject }}
 							</crime-chip>
-							<!-- <p>{{ subjectsList }}</p> -->
 						</div>
 						<button class="mt-3" @click="pressed">Read More</button>
 					</div>
@@ -50,6 +49,7 @@
 
 <script>
 import { formatDistanceToNow } from 'date-fns'
+import { calculateReward } from '~/assets/js/utils.js'
 
 export default {
 	props: {
@@ -67,10 +67,7 @@ export default {
 				addSuffix: true,
 			})
 		},
-		subjectsList() {
-			// subjects are 'catergories' for law enforcement
-			return this.data.subjects.join(', ')
-		},
+
 		crimeList() {
 			const arrayCutoff = 3
 			// this hack splits out the desciption into bullet points
@@ -91,33 +88,7 @@ export default {
 			} else return descriptionList
 		},
 		reward() {
-			if (this.data.reward_text) {
-				const regex =
-					/\$[\d,]*(\.\d{2})?(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?|([\d]+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?(\sdollar\w*|\scent\w*)(\sand\s[\d]*\scent\w*)?)|(one|two|three|four|five|six|seven|eight|nine|ten|twenty|thirty|fifty|sixty|seventy|eighty|ninety)+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)*(\sdollars)/g
-				const found = this.data.reward_text.match(regex)
-				if (!found) {
-					return 'reward not specified'
-				} else {
-					// correct that one record that is a sentence
-					// this is bad needs to be fixed
-					if (found[0].includes('one')) {
-						// console.log(found[0])
-						return '$1,000,000 REWARD'
-					}
-
-					if (found[0].includes('million')) {
-						const millionIndex = found[0].indexOf('million')
-						const editedFound = found[0]
-							.substring(0, millionIndex - 1)
-							.concat(',000,000')
-						return `${editedFound} REWARD`
-					}
-
-					return `${found[0]} REWARD`
-				}
-			} else {
-				return false
-			}
+			return calculateReward(this.data)
 		},
 	},
 	mounted() {},
