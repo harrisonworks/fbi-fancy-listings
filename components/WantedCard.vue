@@ -92,13 +92,29 @@ export default {
 		},
 		reward() {
 			if (this.data.reward_text) {
-				const start = this.data.reward_text.indexOf('$')
-				const end = this.data.reward_text.indexOf('for')
+				const regex =
+					/\$[\d,]*(\.\d{2})?(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?|([\d]+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?(\sdollar\w*|\scent\w*)(\sand\s[\d]*\scent\w*)?)|(one|two|three|four|five|six|seven|eight|nine|ten|twenty|thirty|fifty|sixty|seventy|eighty|ninety)+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)*(\sdollars)/g
+				const found = this.data.reward_text.match(regex)
+				if (!found) {
+					return 'reward not specified'
+				} else {
+					// correct that one record that is a sentence
+					// this is bad needs to be fixed
+					if (found[0].includes('one')) {
+						// console.log(found[0])
+						return '$1,000,000 REWARD'
+					}
 
-				if (start === -1) return false
+					if (found[0].includes('million')) {
+						const millionIndex = found[0].indexOf('million')
+						const editedFound = found[0]
+							.substring(0, millionIndex - 1)
+							.concat(',000,000')
+						return `${editedFound} REWARD`
+					}
 
-				const dollarAmount = this.data.reward_text.substring(start, end)
-				return `${dollarAmount.trim()} REWARD`
+					return `${found[0]} REWARD`
+				}
 			} else {
 				return false
 			}
