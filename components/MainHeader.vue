@@ -80,7 +80,10 @@ export default {
 		pressed() {
 			this.$store.commit('updateHeaderInfo', { ...null })
 
-			this.$router.push('/')
+			this.$router.push({
+				path: '/',
+				query: { page: this.$store.state.currentQuery.page },
+			})
 		},
 		goToFbi() {
 			window.open(this.$store.state.headerInfo.url, '_blank').focus()

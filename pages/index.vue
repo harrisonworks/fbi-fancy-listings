@@ -23,20 +23,27 @@ import { victimCheck, crimeSorter } from '~/assets/js/utils.js'
 
 export default {
 	name: 'IndexPage',
+	async asyncData({ route, store }) {
+		if (route.query.page) {
+			await store.commit('updatePage', route.query.page)
+		}
+	},
 	data() {
 		return {
 			pageSize: 10,
-			rewardList: [],
 		}
 	},
 	computed: {
 		peopleList() {
 			const fbiList = this.$store.state.listing
 			// return only those that have a reward
-			return fbiList.filter(this.currentFilter)
+			const result = fbiList.filter(this.currentFilter)
+
+			this.$store.commit('setQueryListing', result)
+			return result
 		},
 		indexStart() {
-			return (this.$store.state.currentPage - 1) * this.pageSize
+			return (this.$store.state.currentQuery.page - 1) * this.pageSize
 		},
 		indexEnd() {
 			return this.indexStart + this.pageSize
@@ -45,10 +52,9 @@ export default {
 			return this.peopleList.slice(this.indexStart, this.indexEnd)
 		},
 	},
-
 	mounted() {
+		// if landing on a page with a query update the store
 		console.log('Number of Listings:', this.peopleList.length)
-
 		// clear all the text in the header
 	},
 	methods: {
