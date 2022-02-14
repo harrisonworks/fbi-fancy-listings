@@ -4,9 +4,16 @@
 			<div v-show="notHome" class="box">
 				<button @click="pressed">back</button>
 			</div>
+
 			<div v-show="!notHome" class="box">
 				<h1 class="micro">FBI</h1>
 				<h1 class="micro">most wanted</h1>
+			</div>
+
+			<div v-show="!notHome" class="box">
+				<button style="white-space: nowrap" @click="pressed">
+					Ten Most Wanted Fugitives
+				</button>
 			</div>
 
 			<!-- <div v-show="notHome" class="box d-none d-sm-block">
@@ -71,6 +78,8 @@ export default {
 	},
 	methods: {
 		pressed() {
+			this.$store.commit('updateHeaderInfo', { ...null })
+
 			this.$router.push('/')
 		},
 		goToFbi() {

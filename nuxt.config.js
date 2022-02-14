@@ -1,3 +1,15 @@
+// import axios from 'axios'
+// const siteURL = 'https://api.fbi.gov/wanted/v1/list'
+
+import { fetchAllListings } from './assets/js/recursiveCall.js'
+
+const dynamicRoutes = () => {
+  const routes = fetchAllListings().then((res) => {
+    return res.data.items.map((pages) => `/file/${pages.uid}`)
+  })
+  return routes
+}
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -64,6 +76,9 @@ export default {
         wght: [400, 500, 600, 700],
       },
     },
+  },
+  generate: {
+    routes: dynamicRoutes,
   },
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',

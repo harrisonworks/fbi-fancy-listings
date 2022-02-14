@@ -5,7 +5,7 @@
 		</section>
 		<section class="container">
 			<wanted-card
-				v-for="(people, index) in peopleList"
+				v-for="(people, index) in paginated"
 				:key="index"
 				:data="people"
 			/>
@@ -25,27 +25,31 @@ export default {
 	name: 'IndexPage',
 	data() {
 		return {
+			pageSize: 10,
 			rewardList: [],
 		}
 	},
 	computed: {
 		peopleList() {
 			const fbiList = this.$store.state.listing
-
 			// return only those that have a reward
 			return fbiList.filter(this.currentFilter)
+		},
+		indexStart() {
+			return (this.$store.state.currentPage - 1) * this.pageSize
+		},
+		indexEnd() {
+			return this.indexStart + this.pageSize
+		},
+		paginated() {
+			return this.peopleList.slice(this.indexStart, this.indexEnd)
 		},
 	},
 
 	mounted() {
 		console.log('Number of Listings:', this.peopleList.length)
-		// this.$router.push({
-		// 	query: { page: this.$store.state.currentPage },
-		// })
 
-		// this.$store.dispatch('asyncCall')
 		// clear all the text in the header
-		this.$store.commit('updateHeaderInfo', { ...null })
 	},
 	methods: {
 		rewardEvaluation(data) {
