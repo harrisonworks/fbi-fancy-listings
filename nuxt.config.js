@@ -1,14 +1,4 @@
-// import axios from 'axios'
-// const siteURL = 'https://api.fbi.gov/wanted/v1/list'
-
 import { fetchAllListings } from './assets/js/recursiveCall.js'
-
-const dynamicRoutes = () => {
-  const routes = fetchAllListings().then((res) => {
-    return res.data.items.map((pages) => `/file/${pages.uid}`)
-  })
-  return routes
-}
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -78,10 +68,19 @@ export default {
     },
   },
   generate: {
-    routes: dynamicRoutes,
-  },
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    /// this is broken
+    // recursively keeps requesting the api
+    // routes() {
+    //   return fetchAllListings().then((res) => {
+    //     return res.map((listing) => {
+    //       console.log(listing.uid)
+    //       return {
+    //         route: `/file/${listing.uid}`,
+    //         payload: listing,
+    //       }
+    //     })
+    //   })
+    // },
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

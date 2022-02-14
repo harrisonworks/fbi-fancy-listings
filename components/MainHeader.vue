@@ -16,18 +16,6 @@
 				</button>
 			</div>
 
-			<!-- <div v-show="notHome" class="box d-none d-sm-block">
-				<div class="status">
-					<h3>{{ status.title }}</h3>
-					<crime-chip style="display: inline-block">{{
-						status.caution
-					}}</crime-chip>
-					<crime-chip color="blue" style="display: inline-block">{{
-						status.reward
-					}}</crime-chip>
-				</div>
-			</div> -->
-
 			<dynamic-marquee
 				class="box p-0"
 				direction="row"
@@ -54,8 +42,15 @@
 					>
 				</div>
 			</dynamic-marquee>
+
+			<div v-show="!notHome" class="box">
+				<button class="p-2">Filter</button>
+			</div>
+
 			<div v-show="notHome" class="box">
-				<button @click="goToFbi">FBI's Listing</button>
+				<button style="white-space: nowrap" @click="goToFbi">
+					Official FBI Listing
+				</button>
 			</div>
 		</div>
 	</nav>

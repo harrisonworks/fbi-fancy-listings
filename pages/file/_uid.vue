@@ -54,7 +54,24 @@
 				</div>
 			</div>
 			<div class="col-lg-4 d-flex justify-content-center">
-				<img class="featuredImage" :src="data.images[0].original" alt="" />
+				<img
+					v-if="data.images[0].large"
+					class="featuredImage"
+					:src="data.images[0].large"
+					:alt="data.images[0].caption"
+				/>
+				<img
+					v-else-if="data.images[0].original"
+					class="featuredImage"
+					:src="data.images[0].original"
+					:alt="data.images[0].caption"
+				/>
+				<img
+					v-else
+					src="https://source.unsplash.com/500x800/?crime"
+					class="featuredImage"
+					alt="image failed to load"
+				/>
 			</div>
 		</section>
 

@@ -1,3 +1,4 @@
+import axios from 'axios'
 const siteURL = 'https://api.fbi.gov/wanted/v1/list'
 
 async function fetchAllListings() {
@@ -16,20 +17,19 @@ async function fetchAllListings() {
     let toContinue = true
 
     while (toContinue) {
-      if (started === false || result.items.length === 20) {
-        result = await fetch(`${siteURL}?page=${page}`).then((res) =>
-          res.json()
-        )
-
+      if (started === false || result.data.items.length === 20) {
+        result = await axios.get(`${siteURL}?page=${page}`)
+        // console.log(result.data)
         started = true
         page++
-      } else if (result.items.length < 20) {
+        console.log('page complete: ', page)
+      } else if (result.data.items.length < 20) {
         toContinue = false
       }
-      arrResult = arrResult.concat(result.items)
+      arrResult = arrResult.concat(result.data.items)
     }
     return new Promise((resolve) => {
-      console.log('major query complete')
+      console.log('major query complete', arrResult.length)
       resolve(arrResult)
     })
   }
