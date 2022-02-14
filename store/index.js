@@ -10,7 +10,7 @@ export const state = () => ({
     url: null,
   },
   currentQuery: {
-    resultLimit: 10,
+    pageLimit: 10,
     filter: null,
     page: 1,
   },

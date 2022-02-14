@@ -34,19 +34,19 @@
 						<h5>Known Aliases: {{ aliasList }}</h5>
 					</div>
 					<div class="box">
-						<p>Hair: {{ data.hair }}</p>
+						<p>Hair: {{ identity.hair }}</p>
 					</div>
 					<div class="box">
-						<p>Eyes: {{ data.eyes }}</p>
+						<p>Eyes: {{ identity.eyes }}</p>
 					</div>
 					<div class="box">
-						<p>Sex: {{ data.sex }}</p>
+						<p>Sex: {{ identity.sex }}</p>
 					</div>
 					<div class="box">
-						<p>Nationality: {{ data.nationality }}</p>
+						<p>Nationality: {{ identity.nationality }}</p>
 					</div>
 					<div class="box">
-						<p>Race: {{ data.race }}</p>
+						<p>Race: {{ identity.race }}</p>
 					</div>
 					<div v-show="data.scars_and_marks" class="box">
 						<p>Scars and Marks: {{ data.scars_and_marks }}</p>
@@ -116,12 +116,43 @@ export default {
 	head() {
 		return {
 			title: `FBI Most Wanted | ${this.data.title}`,
+			meta: [
+				{
+					hid: 'og:title',
+					property: 'og:title',
+					content: `FBI Most Wanted | ${this.data.title}`,
+				},
+				{
+					hid: 'twitter:card',
+					property: 'twitter:card',
+					content: this.data.images[0].original,
+				},
+				{
+					hid: 'twitter:image',
+					property: 'twitter:image',
+					content: this.data.images[0].original,
+				},
+				{
+					hid: 'og:image',
+					property: 'og:image',
+					content: this.data.images[0].original,
+				},
+			],
 		}
 	},
 	computed: {
 		data() {
 			const data = this.listings.find((el) => el.uid === this.uid)
 			return data
+		},
+		identity() {
+			return {
+				hair: this.data.hair ? this.data.hair : 'Unlisted',
+				eyes: this.data.eyes ? this.data.eyes : 'Unlisted',
+				sex: this.data.sex ? this.data.sex : 'Unlisted',
+				nationality: this.data.nationality ? this.data.nationality : 'Unlisted',
+				race: this.data.race ? this.data.race : 'Unlisted',
+			}
 		},
 		formatedDates() {
 			return {
@@ -149,18 +180,13 @@ export default {
 		},
 		subjectList() {
 			// subjects are 'catergories' for law enforcement
-			// return this.data.subjects.join(', ')
 			return this.data.subjects
 		},
 		crimeList() {
 			return crimeSorter(this.data.description)
 		},
 		aliasList() {
-			if (this.data.aliases) {
-				return this.data.aliases.join(', ')
-			} else {
-				return 'NA'
-			}
+			return this.data.aliases ? this.data.aliases.join(', ') : 'NA'
 		},
 		reward() {
 			return calculateReward(this.data)
@@ -191,6 +217,7 @@ export default {
 }
 
 .box p {
+	text-transform: capitalize;
 	margin-bottom: 0;
 }
 

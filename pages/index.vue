@@ -34,6 +34,9 @@ export default {
 		}
 	},
 	computed: {
+		pageLimit() {
+			return this.$store.state.currentQuery.pageLimit
+		},
 		peopleList() {
 			const fbiList = this.$store.state.listing
 			// return only those that have a reward
@@ -43,10 +46,10 @@ export default {
 			return result
 		},
 		indexStart() {
-			return (this.$store.state.currentQuery.page - 1) * this.pageSize
+			return (this.$store.state.currentQuery.page - 1) * this.pageLimit
 		},
 		indexEnd() {
-			return this.indexStart + this.pageSize
+			return this.indexStart + this.pageLimit
 		},
 		paginated() {
 			return this.peopleList.slice(this.indexStart, this.indexEnd)
