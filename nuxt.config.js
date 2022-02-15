@@ -1,5 +1,15 @@
 import { fetchAllListings } from './assets/js/recursiveCall.js'
 
+const dynamicRoutes = async () => {
+  const data = await fetchAllListings()
+  const list = data.map((item) => {
+    return {
+      route: `/file/${item.uid}`,
+    }
+  })
+  return list
+}
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -67,20 +77,18 @@ export default {
       },
     },
   },
+  hooks: {
+    generate: {
+      async before() {
+        const routes = await dynamicRoutes
+        console.log(routes)
+      },
+    },
+  },
   generate: {
     /// this is broken
     // recursively keeps requesting the api
-    // routes() {
-    //   return fetchAllListings().then((res) => {
-    //     return res.map((listing) => {
-    //       console.log(listing.uid)
-    //       return {
-    //         route: `/file/${listing.uid}`,
-    //         payload: listing,
-    //       }
-    //     })
-    //   })
-    // },
+    routes: dynamicRoutes,
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

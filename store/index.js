@@ -40,6 +40,7 @@ export const mutations = {
 export const actions = {
   async fetchAllListings({ commit }) {
     const results = await fetchAllListings()
+    console.log(results.length)
     commit('updateListings', results)
   },
 }

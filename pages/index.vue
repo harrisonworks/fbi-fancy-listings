@@ -93,6 +93,8 @@ export default {
 		currentFilter(data) {
 			// add the top ten most wanted
 			// big dogs only 🐕
+
+			// console.log('checking filter', data.subjects)
 			if ([...data.subjects].includes('Ten Most Wanted Fugitives')) {
 				return true
 			}

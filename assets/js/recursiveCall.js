@@ -2,37 +2,31 @@ import axios from 'axios'
 const siteURL = 'https://api.fbi.gov/wanted/v1/list'
 
 async function fetchAllListings() {
-  if (process.env.NODE_ENV !== 'production') {
-    const result = await fetch(`http://localhost:3000/wanted.json`).then(
-      (res) => res.json()
-    )
-    return new Promise((resolve) => {
-      resolve(result)
-    })
-  } else {
-    let arrResult = []
-    let result = []
-    let page = 1
-    let started = false
-    let toContinue = true
+  // first get the total results
+  // query just to get total
+  const totalItems = await axios(`${siteURL}`).then((res) => {
+    return Math.ceil(res.data.total / 20)
+  })
 
-    while (toContinue) {
-      if (started === false || result.data.items.length === 20) {
-        result = await axios.get(`${siteURL}?page=${page}`)
-        // console.log(result.data)
-        started = true
-        page++
-        console.log('page complete: ', page)
-      } else if (result.data.items.length < 20) {
-        toContinue = false
-      }
-      arrResult = arrResult.concat(result.data.items)
-    }
-    return new Promise((resolve) => {
-      console.log('major query complete', arrResult.length)
-      resolve(arrResult)
+  const requestList = []
+  for (let page = 1; page <= totalItems; page++) {
+    await new Promise((resolve) => {
+      requestList.push(request(page))
+      resolve()
     })
   }
+
+  // console.log(requestList.length)
+  return Promise.all([...requestList]).then((results) => {
+    console.log('promises complete')
+    // flattens all results
+    return [].concat.apply([], results)
+  })
+}
+
+async function request(page) {
+  const response = await axios.get(`${siteURL}?page=${page}`)
+  return response.data.items
 }
 
 export { fetchAllListings }
