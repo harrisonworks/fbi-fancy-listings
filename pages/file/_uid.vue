@@ -131,6 +131,21 @@ export default {
 					content: `FBI Most Wanted | ${this.data.title}`,
 				},
 				{
+					hid: 'apple-mobile-web-app-title',
+					property: 'apple-mobile-web-app-title',
+					content: `FBI Most Wanted | ${this.data.title}`,
+				},
+				{
+					hid: 'og:image',
+					property: 'og:image',
+					content: `${this.data.images[0].original}`,
+				},
+				{
+					hid: 'og:url',
+					property: 'og:url',
+					content: `https://fbi-fancy-listings.vercel.app${this.$route.fullPath}`,
+				},
+				{
 					hid: 'twitter:card',
 					property: 'twitter:card',
 					content: `${this.data.images[0].original}`,
@@ -138,11 +153,6 @@ export default {
 				{
 					hid: 'twitter:image',
 					property: 'twitter:image',
-					content: `${this.data.images[0].original}`,
-				},
-				{
-					hid: 'og:image',
-					property: 'og:image',
 					content: `${this.data.images[0].original}`,
 				},
 			],

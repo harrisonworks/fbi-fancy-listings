@@ -48,7 +48,7 @@ export default {
         url: 'https://fbi-fancy-listings.vercel.app',
         title: 'FBI | Most Wanted',
         site_name: 'FBI | Most Wanted',
-        description: 'FBI most wanted list redesigned',
+        description: 'A redesign of the orginal FBI most wanted website',
         img: '/meta.jpg',
         img_size: { width: '1200', height: '630' },
         locale: 'en_US',
