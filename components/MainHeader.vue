@@ -73,6 +73,7 @@ export default {
 	},
 	methods: {
 		pressed() {
+			console.log(this.$store.state.headerInfo)
 			this.$store.commit('updateHeaderInfo', { ...null })
 
 			this.$router.push({

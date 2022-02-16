@@ -42,14 +42,8 @@ export const mutations = {
     state.total = payload
   },
   setcache(state, payload) {
-    // if (!payload.uid) {
     console.log('cacheSet')
     state.listing = payload
-    // } else {
-    //   const itemstore = payload.content.find((item) => item.uid === payload.uid)
-
-    //   state.listing = itemstore
-    // }
   },
 }
 
@@ -62,7 +56,10 @@ export const actions = {
   },
   nuxtServerInit({ commit }, context) {
     // only set cache if on homepage
-    // else this will run for every route and store the whole cache on all pages
+    // else this will run for ever
+    // y route and store the whole cache on all pages
+
+    // testing for context.req checks if page refreshed by client
     if (context.route.path === '/') {
       commit('setcache', context.ssrContext.$cache)
     }

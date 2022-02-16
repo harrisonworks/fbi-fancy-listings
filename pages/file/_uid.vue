@@ -117,6 +117,7 @@ export default {
 			return { uid: payload.uid, data: payload }
 		} else {
 			// for dev
+
 			const data = store.state.listing.find((el) => el.uid === route.params.uid)
 
 			store.commit('updateHeaderInfo', {
@@ -172,6 +173,7 @@ export default {
 			],
 		}
 	},
+
 	computed: {
 		identity() {
 			return {
@@ -234,6 +236,8 @@ export default {
 	},
 	mounted() {
 		this.isVictim = victimCheck([...this.data.subjects, ...this.crimeList])
+
+		// this.$store.dispatch('')
 	},
 	methods: {},
 }
