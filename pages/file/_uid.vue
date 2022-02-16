@@ -106,8 +106,9 @@ import { victimCheck, calculateReward, crimeSorter } from '~/assets/js/utils.js'
 export default {
 	name: 'FilePage',
 	asyncData({ route, store, payload }) {
-		if (payload) return { uid: payload.uid, data: payload }
-		else {
+		if (payload) {
+			return { uid: payload.uid, data: payload }
+		} else {
 			return {
 				uid: route.params.uid,
 				data: store.state.listing.find((el) => el.uid === route.params.uid),

@@ -44,8 +44,8 @@ export default {
 			console.log('queryList:', result.length)
 			console.log('rawList:', fbiList.length)
 
-			this.$store.commit('setQueryListing', fbiList)
-			return fbiList
+			this.$store.commit('setQueryListing', result)
+			return result
 		},
 		indexStart() {
 			return (this.$store.state.currentQuery.page - 1) * this.pageLimit

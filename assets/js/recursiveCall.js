@@ -4,12 +4,13 @@ import axios from 'axios'
 const siteURL = 'https://api.fbi.gov/wanted/v1/list'
 
 async function fetchAllListings() {
+  // MAKE SURE TO FIX THIS
   if (process.env.NODE_ENV !== 'production') {
     const wantedJson = require(path.resolve(__dirname, 'wanted.json'))
 
-    console.log(wantedJson.length)
-
     return new Promise((resolve) => {
+      console.log('local json results: ', wantedJson.length)
+
       resolve(wantedJson)
     })
   }
