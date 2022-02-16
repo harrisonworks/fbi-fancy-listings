@@ -3,12 +3,8 @@
 		<div class="d-flex flex-column">
 			<div class="row">
 				<div class="col-lg-2">
-					<img v-if="featuredImage" class="m-3" :src="featuredImage" />
-					<img
-						v-else
-						class="m-3"
-						src="https://source.unsplash.com/500x800/?crime"
-					/>
+					<img class="m-3" :src="featuredImage" />
+					<!-- <img class="m-3" src="https://source.unsplash.com/500x800/?crime" /> -->
 				</div>
 				<div class="col">
 					<div class="d-flex flex-column m-3">
@@ -60,7 +56,9 @@ export default {
 	},
 	computed: {
 		featuredImage() {
-			return this.data.images[0].original
+			return this.$nuxt.context.isDev
+				? `https://source.unsplash.com/500x800/?${this.data.subjects[0]}`
+				: this.data.images[0].original
 		},
 		niceDate() {
 			return formatDistanceToNow(new Date(this.data.publication), {

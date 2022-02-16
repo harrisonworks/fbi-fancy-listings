@@ -1,3 +1,4 @@
 export default async ({ store }) => {
-  await store.dispatch('fetchAllListings')
+  // only run if the store is not filled
+  await store.dispatch('fetchData')
 }

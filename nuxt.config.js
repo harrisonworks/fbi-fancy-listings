@@ -1,15 +1,3 @@
-import { fetchAllListings } from './assets/js/recursiveCall.js'
-
-const dynamicRoutes = async () => {
-  const data = await fetchAllListings()
-  const list = data.map((item) => {
-    return {
-      route: `/file/${item.uid}`,
-    }
-  })
-  return list
-}
-
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -37,9 +25,10 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~/plugins/listing.server.js', mode: 'server' }],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
+  // server plugins run every time vue instance is called
+  // this means it is triggered constantly
+  // plugins: [{ src: '~/plugins/listing.server.js', mode: 'server' }],
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -68,8 +57,9 @@ export default {
         theme_color: '#d5d7ce',
       },
     ],
+    '~/modules/cacheModule.js',
   ],
-
+  dev: process.env.NODE_ENV !== 'production',
   googleFonts: {
     families: {
       'Work+Sans': {
@@ -77,19 +67,7 @@ export default {
       },
     },
   },
-  hooks: {
-    generate: {
-      async before() {
-        const routes = await dynamicRoutes
-        console.log(routes)
-      },
-    },
-  },
-  generate: {
-    /// this is broken
-    // recursively keeps requesting the api
-    routes: dynamicRoutes,
-  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }

@@ -1,7 +1,7 @@
 <template>
 	<div class="d-flex justify-content-around align-items-center">
 		<button class="p-2" @click="prev">Previous</button>
-		<div class="d-flex">
+		<div class="d-flex flex-wrap">
 			<a
 				v-for="page in pages"
 				:key="page"

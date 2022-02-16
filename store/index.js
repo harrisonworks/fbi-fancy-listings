@@ -3,6 +3,7 @@ import { fetchAllListings } from '~/assets/js/recursiveCall.js'
 export const state = () => ({
   listing: [],
   queryList: [],
+  startQuery: false,
   headerInfo: {
     title: null,
     caution: null,
@@ -14,11 +15,16 @@ export const state = () => ({
     filter: null,
     page: 1,
   },
+  cache: {},
 })
 
 export const mutations = {
   updateListings: (state, listings) => {
     state.listing = listings
+  },
+  startQuery: (state) => {
+    state.startQuery = true
+    console.log(state.startQuery)
   },
   setQueryListing: (state, listings) => {
     state.queryList = listings
@@ -35,12 +41,19 @@ export const mutations = {
   setTotal: (state, payload) => {
     state.total = payload
   },
+  setcache(state, payload) {
+    state.listing = payload
+  },
 }
 
 export const actions = {
-  async fetchAllListings({ commit }) {
+  async fetchData({ commit, state }) {
+    // console.log(state.listing)
+    if (state.listing.length) return
     const results = await fetchAllListings()
-    console.log(results.length)
-    commit('updateListings', results)
+    await commit('updateListings', results)
+  },
+  nuxtServerInit({ commit }, context) {
+    commit('setcache', context.ssrContext.$cache)
   },
 }

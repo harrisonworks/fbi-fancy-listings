@@ -41,9 +41,11 @@ export default {
 			const fbiList = this.$store.state.listing
 			// return only those that have a reward
 			const result = fbiList.filter(this.currentFilter)
+			console.log('queryList:', result.length)
+			console.log('rawList:', fbiList.length)
 
-			this.$store.commit('setQueryListing', result)
-			return result
+			this.$store.commit('setQueryListing', fbiList)
+			return fbiList
 		},
 		indexStart() {
 			return (this.$store.state.currentQuery.page - 1) * this.pageLimit

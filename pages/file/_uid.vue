@@ -54,24 +54,7 @@
 				</div>
 			</div>
 			<div class="col-lg-4 d-flex justify-content-center">
-				<img
-					v-if="data.images[0].large"
-					class="featuredImage"
-					:src="data.images[0].large"
-					:alt="data.images[0].caption"
-				/>
-				<img
-					v-else-if="data.images[0].original"
-					class="featuredImage"
-					:src="data.images[0].original"
-					:alt="data.images[0].caption"
-				/>
-				<img
-					v-else
-					src="https://source.unsplash.com/500x800/?crime"
-					class="featuredImage"
-					alt="image failed to load"
-				/>
+				<img :src="featuredImage" class="featuredImage" alt="" />
 			</div>
 		</section>
 
@@ -103,7 +86,7 @@
 				v-for="(image, index) in imageList"
 				:key="index"
 				class="box extraImage"
-				:src="image.original"
+				:src="image"
 				alt=""
 			/>
 		</div>
@@ -122,8 +105,14 @@ import { victimCheck, calculateReward, crimeSorter } from '~/assets/js/utils.js'
 
 export default {
 	name: 'FilePage',
-	asyncData({ route, store }) {
-		return { uid: route.params.uid, listings: store.state.listing }
+	asyncData({ route, store, payload }) {
+		if (payload) return { uid: payload.uid, data: payload }
+		else {
+			return {
+				uid: route.params.uid,
+				data: store.state.listing.find((el) => el.uid === route.params.uid),
+			}
+		}
 	},
 	data() {
 		return {
@@ -158,10 +147,6 @@ export default {
 		}
 	},
 	computed: {
-		data() {
-			const data = this.listings.find((el) => el.uid === this.uid)
-			return data
-		},
 		identity() {
 			return {
 				hair: this.data.hair ? this.data.hair : 'Unlisted',
@@ -177,8 +162,17 @@ export default {
 				modified: format(new Date(this.data.modified), 'PPP'),
 			}
 		},
+		featuredImage() {
+			return this.$nuxt.context.isDev
+				? `https://source.unsplash.com/500x800/?${this.data.subjects[0]}`
+				: this.data.images[0].original
+		},
 		imageList() {
-			return this.data.images
+			return [
+				`https://source.unsplash.com/500x600/?${this.data.subjects[0]}`,
+				`https://source.unsplash.com/300x600/?${this.data.subjects[0]}`,
+			]
+			// return this.data.images
 		},
 		AllNodes() {
 			const data = this.data
