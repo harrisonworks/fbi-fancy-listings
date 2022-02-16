@@ -16,8 +16,8 @@ async function fetchAllListings() {
   // first get the total results
   // query just to get total
   const totalItems = await axios(`${siteURL}`).then((res) => {
-    // return Math.ceil(res.data.total / 20)
-    return 1
+    return Math.ceil(res.data.total / 20)
+    // return 1
   })
 
   const requestList = []
@@ -28,7 +28,7 @@ async function fetchAllListings() {
     })
   }
 
-  console.log(requestList.length)
+  console.log('number of requests:', requestList.length)
 
   // console.log(requestList.length)
   return await Promise.all(requestList).then((results) => {

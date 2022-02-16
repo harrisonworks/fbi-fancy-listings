@@ -168,11 +168,12 @@ export default {
 				: this.data.images[0].original
 		},
 		imageList() {
-			return [
-				`https://source.unsplash.com/500x600/?${this.data.subjects[0]}`,
-				`https://source.unsplash.com/300x600/?${this.data.subjects[0]}`,
-			]
-			// return this.data.images
+			return this.$nuxt.context.isDev
+				? [
+						`https://source.unsplash.com/500x600/?${this.data.subjects[0]}`,
+						`https://source.unsplash.com/300x600/?${this.data.subjects[0]}`,
+				  ]
+				: this.data.images
 		},
 		AllNodes() {
 			const data = this.data

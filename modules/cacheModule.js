@@ -7,7 +7,7 @@ export default async function (_moduleOptions) {
     '../assets/js/recursiveCall.js'
   ))
 
-  const data = await fetchAllListings()
+  const data = [].concat.apply(await fetchAllListings())
 
   // make the query results available on the vue store
   this.nuxt.hook('vue-renderer:ssr:prepareContext', (ssrContext) => {
@@ -17,7 +17,8 @@ export default async function (_moduleOptions) {
   // before generate is started populate the route array
   // with the listings call
   this.nuxt.hook('generate:before', (nuxtConfig) => {
-    const freshRoutes = data.map((el) => {
+    const list = data
+    const freshRoutes = list.map((el) => {
       return {
         route: `file/${el.uid}`,
         payload: el,
