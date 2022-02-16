@@ -106,13 +106,27 @@ import { victimCheck, calculateReward, crimeSorter } from '~/assets/js/utils.js'
 export default {
 	name: 'FilePage',
 	asyncData({ route, store, payload }) {
+		// for generation
 		if (payload) {
-			console.log('ispayload', payload.images[0].original)
+			store.commit('updateHeaderInfo', {
+				title: payload.title,
+				caution: payload.warning_message,
+				reward: calculateReward(payload),
+				url: payload.url,
+			})
 			return { uid: payload.uid, data: payload }
 		} else {
+			// for dev
+			const data = store.state.listing.find((el) => el.uid === route.params.uid)
+
+			store.commit('updateHeaderInfo', {
+				title: data.title,
+				caution: data.warning_message,
+				reward: calculateReward(data),
+				url: data.url,
+			})
 			return {
-				uid: route.params.uid,
-				data: store.state.listing.find((el) => el.uid === route.params.uid),
+				data,
 			}
 		}
 	},
@@ -219,13 +233,6 @@ export default {
 		},
 	},
 	mounted() {
-		this.$store.commit('updateHeaderInfo', {
-			title: this.data.title,
-			caution: this.data.warning_message,
-			reward: this.reward,
-			url: this.data.url,
-		})
-
 		this.isVictim = victimCheck([...this.data.subjects, ...this.crimeList])
 	},
 	methods: {},

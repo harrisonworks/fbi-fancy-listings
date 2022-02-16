@@ -28,11 +28,6 @@ export default {
 			await store.commit('updatePage', route.query.page)
 		}
 	},
-	data() {
-		return {
-			pageSize: 10,
-		}
-	},
 	computed: {
 		pageLimit() {
 			return this.$store.state.currentQuery.pageLimit
