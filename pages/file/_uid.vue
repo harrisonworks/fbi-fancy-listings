@@ -107,6 +107,7 @@ export default {
 	name: 'FilePage',
 	asyncData({ route, store, payload }) {
 		if (payload) {
+			console.log('ispayload', payload.images[0].original)
 			return { uid: payload.uid, data: payload }
 		} else {
 			return {
@@ -132,17 +133,17 @@ export default {
 				{
 					hid: 'twitter:card',
 					property: 'twitter:card',
-					content: this.data.images[0].original,
+					content: `${this.data.images[0].original}`,
 				},
 				{
 					hid: 'twitter:image',
 					property: 'twitter:image',
-					content: this.data.images[0].original,
+					content: `${this.data.images[0].original}`,
 				},
 				{
 					hid: 'og:image',
 					property: 'og:image',
-					content: this.data.images[0].original,
+					content: `${this.data.images[0].original}`,
 				},
 			],
 		}
@@ -173,8 +174,10 @@ export default {
 				? [
 						`https://source.unsplash.com/500x600/?${this.data.subjects[0]}`,
 						`https://source.unsplash.com/300x600/?${this.data.subjects[0]}`,
+						`https://source.unsplash.com/200x500/?${this.data.subjects[0]}`,
+						`https://source.unsplash.com/1000x400/?${this.data.subjects[0]}`,
 				  ]
-				: this.data.images
+				: this.data.images.map((image) => image.original)
 		},
 		AllNodes() {
 			const data = this.data
@@ -244,6 +247,7 @@ section {
 
 .extraImage {
 	/* max-width: 20%; */
+	min-width: none;
 	height: auto;
 }
 </style>
