@@ -167,7 +167,7 @@ export default {
 
 	computed: {
 		data() {
-			return this.$store.state.currentPage
+			return this.$store.state.currentFile
 		},
 		// data() {
 		// 	// console.log(this.uid, this.listings.length)

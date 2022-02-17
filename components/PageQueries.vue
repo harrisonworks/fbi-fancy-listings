@@ -32,21 +32,21 @@ export default {
 	},
 	methods: {
 		prev() {
-			this.$store.commit('updatePage', this.$store.state.currentQuery.page - 1)
+			this.$store.commit('updatePage', this.$store.state.filter.page - 1)
 			this.$router.push({
-				query: { page: this.$store.state.currentQuery.page },
+				query: { page: this.$store.state.filter.page },
 			})
 		},
 		next() {
-			this.$store.commit('updatePage', this.$store.state.currentQuery.page + 1)
+			this.$store.commit('updatePage', this.$store.state.filter.page + 1)
 			this.$router.push({
-				query: { page: this.$store.state.currentQuery.page },
+				query: { page: this.$store.state.filter.page },
 			})
 		},
 		navigate(page) {
 			this.$store.commit('updatePage', page)
 			this.$router.push({
-				query: { page: this.$store.state.currentQuery.page },
+				query: { page: this.$store.state.filter.page },
 			})
 		},
 	},

@@ -77,7 +77,7 @@ export default {
 
 			this.$router.push({
 				path: '/',
-				query: { page: this.$store.state.currentQuery.page },
+				query: { page: this.$store.state.filter.page },
 			})
 		},
 		goToFbi() {

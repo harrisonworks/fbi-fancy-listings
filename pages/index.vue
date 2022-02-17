@@ -32,9 +32,10 @@ export default {
 	},
 	computed: {
 		pageLimit() {
-			return this.$store.state.currentQuery.pageLimit
+			return this.$store.state.filter.pageLimit
 		},
 		peopleList() {
+			// all of this needs to be fixed up
 			const fbiList = this.list
 			console.log()
 			// return only those that have a reward
@@ -42,11 +43,11 @@ export default {
 			// console.log('queryList:', result.length)
 			// console.log('rawList:', fbiList.length)
 
-			this.$store.commit('setQueryListing', result)
+			// this.$store.commit('setQueryListing', result)
 			return result
 		},
 		indexStart() {
-			return (this.$store.state.currentQuery.page - 1) * this.pageLimit
+			return (this.$store.state.filter.page - 1) * this.pageLimit
 		},
 
 		indexEnd() {

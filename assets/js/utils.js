@@ -1,3 +1,15 @@
+function debounce(fn, delay) {
+  let timeoutID = null
+  return function () {
+    clearTimeout(timeoutID)
+    const args = arguments
+    const that = this
+    timeoutID = setTimeout(function () {
+      fn.apply(that, args)
+    }, delay)
+  }
+}
+
 function victimCheck(keywords) {
   const victimPhrases = ['Missing', 'ViCAP', 'Victims', 'Victim']
 
@@ -65,4 +77,4 @@ function calculateReward(data) {
   }
 }
 
-export { victimCheck, cyberCheck, crimeSorter, calculateReward }
+export { victimCheck, cyberCheck, crimeSorter, calculateReward, debounce }

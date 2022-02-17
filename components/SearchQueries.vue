@@ -1,41 +1,153 @@
 <template>
-	<div class="d-flex flex-wrap">
-		<div class="box">
-			<form class="d-flex justify-content-between" action="/action_page.php">
-				<div>
-					<label for="subject">Subject:</label>
-					<select class="p-2" type="text" id="select-categories">
-						<option value="">Categories</option>
-						<option value="Crimes Against Children">
-							Crimes Against Children
-						</option>
-						<option value="Cyber's Most Wanted">Cyber's Most Wanted</option>
-						<option value="White-Collar Crime">White-Collar Crime</option>
-						<option value="Counterintelligence">Counterintelligence</option>
-						<option value="Human Trafficking">Human Trafficking</option>
-						<option value="Criminal Enterprise Investigations">
-							Criminal Enterprise Investigations
-						</option>
-						<option value="Violent Crime - Murders">
-							Violent Crime - Murders
-						</option>
-						<option value="Additional Violent Crimes">
-							Additional Violent Crimes
-						</option>
-					</select>
-				</div>
-				<div>
-					<input type="checkbox" id="reward" name="reward" />
-					<label for="reward">Reward</label>
-				</div>
-				<button class="p-2">Filter</button>
-			</form>
+	<div>
+		<div class="mb-2 d-flex">
+			<input
+				class="flex-fill"
+				:value="search"
+				type="search"
+				placeholder="Search the most wanted"
+				aria-label="Search the most wanted"
+				@input="handleSearch"
+			/>
+		</div>
+		<div class="mb-4 w-full">
+			<div class="">
+				<button
+					:class="{ pressed: status === 'all' }"
+					@click="handleStatusFilter('all')"
+				>
+					All Leads
+				</button>
+				<button
+					:class="{
+						pressed: status === 'prospect',
+					}"
+					@click="handleStatusFilter('prospect')"
+				>
+					Prospects
+				</button>
+				<button
+					:class="{
+						pressed: status === 'application-sent',
+					}"
+					@click="handleStatusFilter('application-sent')"
+				>
+					Application Sent
+				</button>
+				<button
+					:class="{
+						pressed: status === 'interview-set',
+					}"
+					@click="handleStatusFilter('interview-set')"
+				>
+					Interview Set
+				</button>
+				<button
+					:class="{
+						pressed: status === 'rejected',
+					}"
+					@click="handleStatusFilter('rejected')"
+				>
+					Rejected
+				</button>
+			</div>
+		</div>
+		<div class="flex justify-start">
+			<div class="relative mb-3 pr-8">
+				<p
+					class="text-gray-700 cursor-pointer flex items-center"
+					@click="orderOpen = !orderOpen"
+				>
+					<span>&#8597;</span>
+					<span class="mr-1">Order By</span>
+					<span v-show="orderChanged" class="font-semibold">
+						{{ orderText }}</span
+					>
+				</p>
+				<ul v-show="orderOpen" class="px-3 py-2">
+					<li
+						:class="{ pressed: order === 'createdAt' }"
+						@click="handleFilterOrder('createdAt')"
+					>
+						Created Date
+					</li>
+					<li
+						:class="{
+							pressed: order === 'companyName',
+						}"
+						@click="handleFilterOrder('companyName')"
+					>
+						Company Name
+					</li>
+					<li
+						:class="{ pressed: order === 'jobTitle' }"
+						@click="handleFilterOrder('jobTitle')"
+					>
+						Job Title
+					</li>
+					<li
+						:class="{ pressed: order === 'status' }"
+						@click="handleFilterOrder('status')"
+					>
+						Status
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </template>
 
+
 <script>
-export default {}
+import { debounce } from '~/assets/js/utils.js'
+
+export default {
+	data() {
+		return {
+			orderOpen: false,
+			orderChanged: false,
+		}
+	},
+	computed: {
+		search() {
+			return this.$store.state.filter.search
+		},
+		status() {
+			return this.$store.state.filter.status
+		},
+		order() {
+			return this.$store.state.filter.order
+		},
+		orderText() {
+			switch (this.order) {
+				case 'companyName':
+					return 'Company Name'
+				case 'jobTitle':
+					return 'Job Title'
+				case 'status':
+					return 'Status'
+				default:
+					return 'Created Date'
+			}
+		},
+	},
+	methods: {
+		handleStatusFilter(status) {
+			this.$store.dispatch('filterStatus', status)
+		},
+		handleSearch: debounce(function (e) {
+			this.$store.dispatch('filterSearch', e.target.value)
+		}, 500),
+		handleFilterOrder(orderBy) {
+			this.orderOpen = false
+			this.orderChanged = true
+			this.$store.dispatch('filterOrder', orderBy)
+		},
+		closeOrderDropDown(e) {
+			this.orderOpen = false
+		},
+	},
+}
 </script>
 
 <style scoped>
@@ -49,5 +161,10 @@ label {
 	border: 2px solid black;
 	min-width: 33%;
 	background: var(--color-bg);
+}
+
+.pressed {
+	background: var(--bs-blue);
+	color: white;
 }
 </style>
