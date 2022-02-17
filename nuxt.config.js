@@ -28,7 +28,7 @@ export default {
 
   // server plugins run every time vue instance is called
   // this means it is triggered constantly
-  // plugins: [{ src: '~/plugins/listing.server.js', mode: 'server' }],
+  // plugins: [],
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules

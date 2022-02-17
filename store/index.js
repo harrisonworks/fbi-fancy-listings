@@ -3,7 +3,6 @@ import { fetchAllListings } from '~/assets/js/recursiveCall.js'
 export const state = () => ({
   listing: [],
   queryList: [],
-  startQuery: false,
   headerInfo: {
     title: null,
     caution: null,
@@ -15,17 +14,13 @@ export const state = () => ({
     filter: null,
     page: 1,
   },
-  cache: {},
 })
 
 export const mutations = {
   updateListings: (state, listings) => {
     state.listing = listings
   },
-  startQuery: (state) => {
-    state.startQuery = true
-    console.log(state.startQuery)
-  },
+
   setQueryListing: (state, listings) => {
     state.queryList = listings
   },
@@ -54,13 +49,17 @@ export const actions = {
     const results = await fetchAllListings()
     await commit('updateListings', results)
   },
+
   nuxtServerInit({ commit }, context) {
     // only set cache if on homepage
     // else this will run for ever
-    // y route and store the whole cache on all pages
 
-    // testing for context.req checks if page refreshed by client
     if (context.route.path === '/') {
+      // console.log(context.req.session.user)
+      commit('setcache', context.ssrContext.$cache)
+    }
+    // this only tiggers when site is deployed
+    if (context.req) {
       commit('setcache', context.ssrContext.$cache)
     }
   },

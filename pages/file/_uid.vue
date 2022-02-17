@@ -101,24 +101,29 @@
 
 <script>
 import { format } from 'date-fns'
-import { victimCheck, calculateReward, crimeSorter } from '~/assets/js/utils.js'
+import { calculateReward, crimeSorter } from '~/assets/js/utils.js'
 
 export default {
 	name: 'FilePage',
-	asyncData({ route, store, payload }) {
+	async asyncData({ route, store, payload }) {
 		// for generation
 		if (payload) {
-			store.commit('updateHeaderInfo', {
+			await store.commit('updateHeaderInfo', {
 				title: payload.title,
 				caution: payload.warning_message,
 				reward: calculateReward(payload),
 				url: payload.url,
 			})
-			return { uid: payload.uid, data: payload }
+			return { data: payload }
 		} else {
 			// for dev
+			// await store.dispatch('refreshData')
 
-			const data = store.state.listing.find((el) => el.uid === route.params.uid)
+			const list = store.state.listing
+			// console.log(list)
+
+			const data = list.find((el) => el.uid === route.params.uid)
+			// console.log(data)
 
 			store.commit('updateHeaderInfo', {
 				title: data.title,
@@ -136,45 +141,50 @@ export default {
 			isVictim: false,
 		}
 	},
-	head() {
-		return {
-			title: `FBI Most Wanted | ${this.data.title}`,
-			meta: [
-				{
-					hid: 'og:title',
-					property: 'og:title',
-					content: `FBI Most Wanted | ${this.data.title}`,
-				},
-				{
-					hid: 'apple-mobile-web-app-title',
-					property: 'apple-mobile-web-app-title',
-					content: `FBI Most Wanted | ${this.data.title}`,
-				},
-				{
-					hid: 'og:image',
-					property: 'og:image',
-					content: `${this.data.images[0].original}`,
-				},
-				{
-					hid: 'og:url',
-					property: 'og:url',
-					content: `https://fbi-fancy-listings.vercel.app${this.$route.fullPath}`,
-				},
-				{
-					hid: 'twitter:card',
-					property: 'twitter:card',
-					content: `${this.data.images[0].original}`,
-				},
-				{
-					hid: 'twitter:image',
-					property: 'twitter:image',
-					content: `${this.data.images[0].original}`,
-				},
-			],
-		}
-	},
+	// head() {
+	// 	return {
+	// 		title: `FBI Most Wanted | ${this.data.title}`,
+	// 		meta: [
+	// 			{
+	// 				hid: 'og:title',
+	// 				property: 'og:title',
+	// 				content: `FBI Most Wanted | ${this.data.title}`,
+	// 			},
+	// 			{
+	// 				hid: 'apple-mobile-web-app-title',
+	// 				property: 'apple-mobile-web-app-title',
+	// 				content: `FBI Most Wanted | ${this.data.title}`,
+	// 			},
+	// 			{
+	// 				hid: 'og:image',
+	// 				property: 'og:image',
+	// 				content: `${this.data.images[0].original}`,
+	// 			},
+	// 			{
+	// 				hid: 'og:url',
+	// 				property: 'og:url',
+	// 				content: `https://fbi-fancy-listings.vercel.app${this.$route.fullPath}`,
+	// 			},
+	// 			{
+	// 				hid: 'twitter:card',
+	// 				property: 'twitter:card',
+	// 				content: `${this.data.images[0].original}`,
+	// 			},
+	// 			{
+	// 				hid: 'twitter:image',
+	// 				property: 'twitter:image',
+	// 				content: `${this.data.images[0].original}`,
+	// 			},
+	// 		],
+	// 	}
+	// },
 
 	computed: {
+		// data() {
+		// 	const list = JSON.parse(localStorage.getItem('vuex')).listing
+		// 	const data = list.find((el) => el.uid === this.$route.params.uid)
+		// 	return data
+		// },
 		identity() {
 			return {
 				hair: this.data.hair ? this.data.hair : 'Unlisted',
@@ -235,8 +245,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.isVictim = victimCheck([...this.data.subjects, ...this.crimeList])
-
+		// this.isVictim = victimCheck([...this.subjectList, ...this.crimeList])
 		// this.$store.dispatch('')
 	},
 	methods: {},
