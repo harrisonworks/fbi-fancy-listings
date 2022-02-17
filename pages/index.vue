@@ -48,6 +48,7 @@ export default {
 		indexStart() {
 			return (this.$store.state.currentQuery.page - 1) * this.pageLimit
 		},
+
 		indexEnd() {
 			return this.indexStart + this.pageLimit
 		},

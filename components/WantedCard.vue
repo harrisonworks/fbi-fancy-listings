@@ -92,6 +92,14 @@ export default {
 	mounted() {},
 	methods: {
 		pressed() {
+			// header
+			this.$store.commit('updateHeaderInfo', {
+				title: this.data.title,
+				caution: this.data.warning_message,
+				reward: calculateReward(this.data),
+				url: this.data.url,
+			})
+			// page
 			this.$store.commit('setPage', this.data)
 
 			this.$router.push({
