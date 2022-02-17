@@ -9,6 +9,7 @@ export const state = () => ({
     reward: null,
     url: null,
   },
+  currentPage: {},
   currentQuery: {
     pageLimit: 10,
     filter: null,
@@ -20,7 +21,9 @@ export const mutations = {
   updateListings: (state, listings) => {
     state.listing = listings
   },
-
+  setPage: (state, payload) => {
+    state.currentPage = payload
+  },
   setQueryListing: (state, listings) => {
     state.queryList = listings
   },
@@ -58,9 +61,11 @@ export const actions = {
       // console.log(context.req.session.user)
       commit('setcache', context.ssrContext.$cache)
     }
+
     // this only tiggers when site is deployed
-    if (context.req) {
-      commit('setcache', context.ssrContext.$cache)
-    }
+    // if (context.req) {
+    //   //   console.log(context.req.session)
+    //   commit('setcache', context.ssrContext.$cache)
+    // }
   },
 }

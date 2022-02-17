@@ -92,6 +92,8 @@ export default {
 	mounted() {},
 	methods: {
 		pressed() {
+			this.$store.commit('setPage', this.data)
+
 			this.$router.push({
 				name: 'file-uid',
 				params: { uid: this.data.uid },

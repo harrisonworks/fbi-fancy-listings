@@ -27,17 +27,20 @@ export default {
 		if (route.query.page) {
 			await store.commit('updatePage', route.query.page)
 		}
+
+		return { list: store.state.listing }
 	},
 	computed: {
 		pageLimit() {
 			return this.$store.state.currentQuery.pageLimit
 		},
 		peopleList() {
-			const fbiList = this.$store.state.listing
+			const fbiList = this.list
+			console.log()
 			// return only those that have a reward
 			const result = fbiList.filter(this.currentFilter)
-			console.log('queryList:', result.length)
-			console.log('rawList:', fbiList.length)
+			// console.log('queryList:', result.length)
+			// console.log('rawList:', fbiList.length)
 
 			this.$store.commit('setQueryListing', result)
 			return result
