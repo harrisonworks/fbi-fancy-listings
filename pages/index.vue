@@ -23,28 +23,27 @@ import { victimCheck, crimeSorter } from '~/assets/js/utils.js'
 
 export default {
 	name: 'IndexPage',
-	async asyncData({ route, store }) {
-		if (route.query.page) {
-			await store.commit('updatePage', route.query.page)
+	async asyncData({ payload, store }) {
+		if (payload) {
+			await store.commit('updateListings', payload)
+			await store.commit('setQueryListing', payload)
+		} else {
+			// recommiting what the server knows to the front
+			await store.commit('updateListings', store.state.listing)
+			await store.commit('setQueryListing', store.state.queryList)
 		}
-
-		return { list: store.state.listing }
+		return { list: store.state.listing, query: store.state.queryList }
 	},
 	computed: {
 		pageLimit() {
 			return this.$store.state.filter.pageLimit
 		},
 		peopleList() {
-			// all of this needs to be fixed up
-			const fbiList = this.list
-			console.log()
-			// return only those that have a reward
-			const result = fbiList.filter(this.currentFilter)
-			// console.log('queryList:', result.length)
-			// console.log('rawList:', fbiList.length)
-
-			// this.$store.commit('setQueryListing', result)
-			return result
+			// if the store isnt available for whatever reason
+			// get the query data from server
+			// no idea why 🤷
+			// if (this.$store.state.queryList.length === 0) return this.query
+			return this.$store.state.queryList
 		},
 		indexStart() {
 			return (this.$store.state.filter.page - 1) * this.pageLimit

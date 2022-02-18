@@ -184,8 +184,12 @@ export default {
 		},
 		formatedDates() {
 			return {
-				published: format(new Date(this.data.publication), 'PPP'),
-				modified: format(new Date(this.data.modified), 'PPP'),
+				published: this.data.publication
+					? format(new Date(this.data.publication), 'PPP')
+					: 'Undefined',
+				modified: this.data.publication
+					? format(new Date(this.data.modified), 'PPP')
+					: 'Undefined',
 			}
 		},
 		featuredImage() {

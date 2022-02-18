@@ -4,31 +4,28 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'fbi-fancy-listings',
+    title: 'FBI | Most Wanted',
     htmlAttrs: {
       lang: 'en',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'A redesign of the orginal FBI most wanted website',
+      },
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-
-  // Global CSS: https://go.nuxtjs.dev/config-css
+  // only import the BS grid and reset
   css: [
     'bootstrap/dist/css/bootstrap-reboot.min.css',
     'bootstrap/dist/css/bootstrap-grid.min.css',
     '~/assets/styles/main.css',
   ],
-
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-
-  // server plugins run every time vue instance is called
-  // this means it is triggered constantly
-  // plugins: [],
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -57,7 +54,7 @@ export default {
         theme_color: '#d5d7ce',
       },
     ],
-    '~/modules/cacheModule.js',
+    '~/modules/apiDataModule.js',
   ],
   dev: process.env.NODE_ENV !== 'production',
   googleFonts: {

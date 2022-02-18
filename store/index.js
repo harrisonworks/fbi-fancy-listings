@@ -4,52 +4,46 @@ import * as Filters from '~/assets/js/filters.js'
 export const state = () => ({
   listing: [],
   queryList: [],
-  headerInfo: {
-    title: null,
-    caution: null,
-    reward: null,
-    url: null,
-  },
   filter: {
     pageLimit: 10,
-
     search: '',
     status: 'all',
     order: 'createdAt',
     page: 1,
   },
   currentFile: {},
-  currentQuery: {
-    filter: null,
-    page: 1,
+  headerInfo: {
+    title: null,
+    caution: null,
+    reward: null,
+    url: null,
   },
 })
 
 export const mutations = {
-  updateListings: (state, listings) => {
-    state.listing = listings
+  updateListings(state, payload) {
+    state.listing = payload
   },
-  setPage: (state, payload) => {
+  setPage(state, payload) {
     state.currentFile = payload
   },
-  setQueryListing: (state, listings) => {
+  setQueryListing(state, listings) {
     state.queryList = listings
   },
-  updateHeaderInfo: (state, payload) => {
+  updateHeaderInfo(state, payload) {
     state.headerInfo.title = payload.title
     state.headerInfo.caution = payload.caution
     state.headerInfo.reward = payload.reward
     state.headerInfo.url = payload.url
   },
-  updatePage: (state, payload) => {
+  updatePage(state, payload) {
     state.filter.page = Number(payload)
   },
-  setTotal: (state, payload) => {
-    state.total = payload
-  },
+
   setcache(state, payload) {
     console.log('cacheSet')
     state.listing = payload
+    state.queryList = payload
   },
   setFilteredLeads(state, leads) {
     state.filteredLeads = leads
@@ -78,8 +72,6 @@ export const mutations = {
 
 export const actions = {
   async fetchData({ commit, state }) {
-    // console.log(state.listing)
-    if (state.listing.length) return
     const results = await fetchAllListings()
     await commit('updateListings', results)
   },

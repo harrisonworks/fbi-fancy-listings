@@ -74,7 +74,6 @@ export default {
 	methods: {
 		pressed() {
 			this.$store.commit('updateHeaderInfo', { ...null })
-
 			this.$router.push({
 				path: '/',
 				query: { page: this.$store.state.filter.page },
