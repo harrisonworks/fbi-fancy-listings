@@ -3,11 +3,11 @@ import * as Filters from '~/assets/js/filters.js'
 
 export const state = () => ({
   listing: [],
-  queryList: [],
+  filterList: [],
   filter: {
     pageLimit: 10,
     search: '',
-    status: 'all',
+    status: ['all'],
     order: 'createdAt',
     page: 1,
   },
@@ -18,6 +18,7 @@ export const state = () => ({
     reward: null,
     url: null,
   },
+  rawSubjectList: {},
 })
 
 export const mutations = {
@@ -27,8 +28,8 @@ export const mutations = {
   setPage(state, payload) {
     state.currentFile = payload
   },
-  setQueryListing(state, listings) {
-    state.queryList = listings
+  setfilterListing(state, listings) {
+    state.filterList = listings
   },
   updateHeaderInfo(state, payload) {
     state.headerInfo.title = payload.title
@@ -37,16 +38,19 @@ export const mutations = {
     state.headerInfo.url = payload.url
   },
   updatePage(state, payload) {
-    state.filter.page = Number(payload)
+    const value = Number(payload)
+    const maxPage = Math.ceil(state.filterList / state.filter.pageLimit)
+    if (value > 0 || value <= maxPage) {
+      state.filter.page = value
+    }
   },
-
   setcache(state, payload) {
-    console.log('cacheSet')
     state.listing = payload
-    state.queryList = payload
-  },
-  setFilteredLeads(state, leads) {
-    state.filteredLeads = leads
+    state.filterList = payload
+
+    const subjects = payload.map((item) => item.subjects[0])
+    const subjectList = new Set([].concat.apply([], subjects))
+    state.rawSubjectList = subjectList
   },
 
   setFilterStatus(state, status) {
@@ -59,52 +63,46 @@ export const mutations = {
     state.filter.order = order
   },
 
-  filterLeads(state) {
-    const leads = [...state.listing]
-    state.queryList = leads
-    state.queryList = Filters.filterLeads(state.filter, leads)
+  filterList(state) {
+    const listing = [...state.listing]
+    state.filterList = listing
+    state.filterList = Filters.filterList(state.filter, listing)
   },
-  orderLeads(state) {
-    const leads = [...state.listing]
-    state.queryList = Filters.orderLeads(state.filter.order, leads)
+  orderList(state) {
+    // order those that have been filtered
+    const filteredList = [...state.filterList]
+    state.filterList = Filters.orderList(state.filter.order, filteredList)
   },
 }
 
 export const actions = {
-  async fetchData({ commit, state }) {
+  async fetchData({ commit }) {
     const results = await fetchAllListings()
     await commit('updateListings', results)
   },
   async filterOrder({ commit }, order) {
     await commit('setOrder', order)
-    await commit('orderLeads')
+    await commit('orderList')
   },
   async filterStatus({ commit, dispatch }, status) {
     await commit('setFilterStatus', status)
-    dispatch('filterLeads')
+    dispatch('filterList')
   },
   async filterSearch({ commit, dispatch }, search) {
     await commit('setFilterSearch', search)
-    dispatch('filterLeads')
+    dispatch('filterList')
   },
-  async filterLeads({ commit }) {
-    await commit('filterLeads')
-    await commit('orderLeads')
+  async filterList({ commit }) {
+    await commit('filterList')
+    // await commit('orderList')
   },
 
   nuxtServerInit({ commit }, context) {
     // only set cache if on homepage
-    // else this will run for ever
-
+    // else this will run for every page when generated
+    // 3.2GB static if this test isn't in place
     if (context.route.path === '/') {
-      // console.log(context.req.session.user)
       commit('setcache', context.ssrContext.$cache)
     }
-
-    // this only tiggers when site is deployed
-    // if (context.req) {
-    //   //   console.log(context.req.session)
-    //   commit('setcache', context.ssrContext.$cache)
-    // }
   },
 }

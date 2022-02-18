@@ -10,12 +10,6 @@
 				<h1 class="micro">most wanted</h1>
 			</div>
 
-			<div v-show="!notHome" class="box">
-				<button style="white-space: nowrap" @click="pressed">
-					Ten Most Wanted Fugitives
-				</button>
-			</div>
-
 			<dynamic-marquee
 				class="box p-0"
 				direction="row"
@@ -42,10 +36,6 @@
 					>
 				</div>
 			</dynamic-marquee>
-
-			<div v-show="!notHome" class="box">
-				<button class="p-2">Filter</button>
-			</div>
 
 			<div v-show="notHome" class="box">
 				<button style="white-space: nowrap" @click="goToFbi">

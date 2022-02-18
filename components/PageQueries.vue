@@ -1,6 +1,6 @@
 <template>
 	<div class="d-flex justify-content-around align-items-center">
-		<button class="p-2" @click="prev">Previous</button>
+		<button class="p-2" :disabled="!state.back" @click="prev">Previous</button>
 		<div class="d-flex flex-wrap">
 			<a
 				v-for="page in pages"
@@ -12,22 +12,35 @@
 			>
 		</div>
 
-		<button class="p-2" @click="next">Next</button>
+		<button class="p-2" :disabled="!state.forward" @click="next">Next</button>
 	</div>
 </template>
 
 <script>
 export default {
 	computed: {
+		maxPage() {
+			return Math.ceil(
+				this.$store.state.filterList.length / this.$store.state.filter.pageLimit
+			)
+		},
 		pages() {
-			const max = Math.ceil(this.$store.state.queryList.length / 10)
+			// const max = Math.ceil(
+			// 	this.$store.state.filterList.length / this.$store.state.filter.pageLimit
+			// )
 
 			const pages = []
-			for (let index = 1; index <= max; index++) {
+			for (let index = 1; index <= this.maxPage; index++) {
 				pages.push(index)
 			}
 
 			return pages
+		},
+		state() {
+			return {
+				back: this.$store.state.filter.page > 1,
+				forward: this.$store.state.filter.page <= this.maxPage - 1,
+			}
 		},
 	},
 	methods: {

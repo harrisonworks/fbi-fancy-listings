@@ -2,7 +2,7 @@
 	<div>
 		<div class="mb-2 d-flex">
 			<input
-				class="flex-fill"
+				class="p-2 flex-fill"
 				:value="search"
 				type="search"
 				placeholder="Search the most wanted"
@@ -13,47 +13,27 @@
 		<div class="mb-4 w-full">
 			<div class="">
 				<button
+					class="px-2 m-1"
 					:class="{ pressed: status === 'all' }"
-					@click="handleStatusFilter('all')"
+					@click="handleStatusFilter(['all'])"
 				>
-					All Leads
+					All
 				</button>
 				<button
+					v-for="(category, index) in categories"
+					:key="index"
+					class="px-2 m-1"
 					:class="{
-						pressed: status === 'prospect',
+						pressed: status === `${category.subjects[0]}`,
 					}"
-					@click="handleStatusFilter('prospect')"
+					@click="handleStatusFilter(category.subjects)"
 				>
-					Prospects
-				</button>
-				<button
-					:class="{
-						pressed: status === 'application-sent',
-					}"
-					@click="handleStatusFilter('application-sent')"
-				>
-					Application Sent
-				</button>
-				<button
-					:class="{
-						pressed: status === 'interview-set',
-					}"
-					@click="handleStatusFilter('interview-set')"
-				>
-					Interview Set
-				</button>
-				<button
-					:class="{
-						pressed: status === 'rejected',
-					}"
-					@click="handleStatusFilter('rejected')"
-				>
-					Rejected
+					{{ category.title }}
 				</button>
 			</div>
 		</div>
 		<div class="flex justify-start">
-			<div class="relative mb-3 pr-8">
+			<div class="relative mb-3">
 				<p
 					class="text-gray-700 cursor-pointer flex items-center"
 					@click="orderOpen = !orderOpen"
@@ -69,27 +49,15 @@
 						:class="{ pressed: order === 'createdAt' }"
 						@click="handleFilterOrder('createdAt')"
 					>
-						Created Date
+						Date Published
 					</li>
 					<li
 						:class="{
-							pressed: order === 'companyName',
+							pressed: order === 'rewardSize',
 						}"
-						@click="handleFilterOrder('companyName')"
+						@click="handleFilterOrder('rewardSize')"
 					>
-						Company Name
-					</li>
-					<li
-						:class="{ pressed: order === 'jobTitle' }"
-						@click="handleFilterOrder('jobTitle')"
-					>
-						Job Title
-					</li>
-					<li
-						:class="{ pressed: order === 'status' }"
-						@click="handleFilterOrder('status')"
-					>
-						Status
+						Reward Value
 					</li>
 				</ul>
 			</div>
@@ -106,6 +74,104 @@ export default {
 		return {
 			orderOpen: false,
 			orderChanged: false,
+			categories: [
+				{
+					title: 'Minors',
+					subjects: [
+						'Crimes Against Children',
+						'Kidnappings and Missing Persons',
+						'Parental Kidnapping',
+						'ECAP',
+						'Endangered Child Alert Program',
+						'Parental Kidnapping Victim',
+					],
+				},
+				{
+					title: 'ViCAP',
+					subjects: [
+						'ViCAP Missing Persons',
+						'ViCAP Unidentified Persons',
+						'ViCAP Homicides and Sexual Assaults',
+						'VICAP Missing Persons',
+					],
+				},
+				{
+					title: 'Criminal Enterprise Investigations',
+					subjects: [
+						'Criminal Enterprise Investigations',
+						'Criminal Enterprise Investiagtions',
+					],
+				},
+				{
+					title: 'Capitol',
+					subjects: ['Capitol'],
+				},
+				{
+					title: 'Ten Most Wanted Fugitives',
+					subjects: ['Ten Most Wanted Fugitives'],
+				},
+				{
+					title: 'Indian Country',
+					subjects: ['Indian Country'],
+				},
+				{
+					title: 'Terrorism',
+					subjects: [
+						// 'Seeking Information - Terrorism',
+						' - Terrorism',
+						'Domestic Terrorism',
+						'Most Wanted Terrorists',
+					],
+				},
+				{
+					title: 'Violent Crime',
+					subjects: [
+						'Violent Crime - Murders',
+						'Additional Violent Crimes',
+						'Operation Legend',
+					],
+				},
+				{
+					title: 'Cyber Crimes',
+					subjects: ["Cyber's Most Wanted"],
+				},
+				{
+					title: 'Counter Intelegence',
+					subjects: ['Counterintelligence'],
+				},
+				{
+					title: 'White Colar Crime',
+					subjects: ['White-Collar Crime'],
+				},
+				{
+					title: 'Seeking Information',
+					subjects: [
+						'law enforcement assistance',
+						'Law Enforcement Assistance',
+						'Seeking Information',
+					],
+				},
+				{
+					title: 'Known Bank Robbers',
+					subjects: ['Known Bank Robbers'],
+				},
+				{
+					title: 'Human Trafficking',
+					subjects: ['Human Trafficking'],
+				},
+				{
+					title: 'Misc',
+					subjects: [
+						'Chloe Combe-Rivas',
+						'Michael Reyes',
+						'Jesus Aguilar, Jr.',
+						'Karen Aguilar',
+						'William Martin Vosseler',
+						'Vosseler',
+						'Mendoza',
+					],
+				},
+			],
 		}
 	},
 	computed: {
@@ -113,7 +179,7 @@ export default {
 			return this.$store.state.filter.search
 		},
 		status() {
-			return this.$store.state.filter.status
+			return this.$store.state.filter.status[0]
 		},
 		order() {
 			return this.$store.state.filter.order
@@ -154,9 +220,9 @@ export default {
 label {
 	font-weight: 500;
 }
+
 .box {
 	flex-grow: 1;
-
 	padding: 1rem;
 	border: 2px solid black;
 	min-width: 33%;
@@ -164,7 +230,8 @@ label {
 }
 
 .pressed {
-	background: var(--bs-blue);
+	/* background: var(--bs-blue); */
+	background: blue;
 	color: white;
 }
 </style>

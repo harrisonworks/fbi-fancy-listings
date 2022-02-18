@@ -9,6 +9,14 @@
 				:key="index"
 				:data="people"
 			/>
+			<div v-show="paginated.length === 0">
+				<h4>No Results</h4>
+				<p>
+					Filtering with these tags:
+					<em> {{ resultsMessage.tags }}</em> <br />
+					Searching for: <em> {{ resultsMessage.search }}</em>
+				</p>
+			</div>
 		</section>
 		<section class="container my-5">
 			<page-queries />
@@ -26,13 +34,13 @@ export default {
 	async asyncData({ payload, store }) {
 		if (payload) {
 			await store.commit('updateListings', payload)
-			await store.commit('setQueryListing', payload)
+			await store.commit('setfilterListing', payload)
 		} else {
 			// recommiting what the server knows to the front
 			await store.commit('updateListings', store.state.listing)
-			await store.commit('setQueryListing', store.state.queryList)
+			await store.commit('setfilterListing', store.state.filterList)
 		}
-		return { list: store.state.listing, query: store.state.queryList }
+		return { list: store.state.listing, query: store.state.filterList }
 	},
 	computed: {
 		pageLimit() {
@@ -42,8 +50,7 @@ export default {
 			// if the store isnt available for whatever reason
 			// get the query data from server
 			// no idea why 🤷
-			// if (this.$store.state.queryList.length === 0) return this.query
-			return this.$store.state.queryList
+			return this.$store.state.filterList
 		},
 		indexStart() {
 			return (this.$store.state.filter.page - 1) * this.pageLimit
@@ -54,6 +61,12 @@ export default {
 		},
 		paginated() {
 			return this.peopleList.slice(this.indexStart, this.indexEnd)
+		},
+		resultsMessage() {
+			return {
+				tags: `${this.$store.state.filter.status.join(', ')} `,
+				search: `${this.$store.state.filter.search}`,
+			}
 		},
 	},
 	mounted() {

@@ -1,14 +1,16 @@
 import { getUnixTime } from 'date-fns'
 
-export function filterLeads(filter, leads) {
-  let filteredList = [...leads]
-
+export function filterList(filter, items) {
+  let filteredList = [...items]
   // Filter status
-  if (filter.status !== 'all') {
-    const filtered = filteredList.filter(
-      (lead) => lead.status === filter.status
-    )
-    filteredList = filtered
+  if (!filter.status.includes('all')) {
+    const matches = filteredList.filter((item) => {
+      return filter.status.some((str) => {
+        return item.subjects.includes(str)
+      })
+    })
+
+    filteredList = matches
   }
 
   // Search
@@ -16,11 +18,10 @@ export function filterLeads(filter, leads) {
     const searchList = []
     const searchTerm = filter.search.toLowerCase()
     for (let i = 0; i < filteredList.length; i++) {
+      // just add or operator and search another node as well
       if (
-        (filteredList[i].companyName !== null &&
-          filteredList[i].companyName.toLowerCase().includes(searchTerm)) ||
-        (filteredList[i].jobTitle !== null &&
-          filteredList[i].jobTitle.toLowerCase().includes(searchTerm))
+        filteredList[i].title !== null &&
+        filteredList[i].title.toLowerCase().includes(searchTerm)
       ) {
         searchList.push(filteredList[i])
       }
@@ -31,8 +32,8 @@ export function filterLeads(filter, leads) {
   return filteredList
 }
 
-export function orderLeads(order, leads) {
-  const orderedList = [...leads]
+export function orderList(order, items) {
+  const orderedList = [...items]
 
   if (order === 'createdAt') {
     orderedList.sort(function (a, b) {
