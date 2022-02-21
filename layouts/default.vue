@@ -4,7 +4,7 @@
 	<div>
 		<main-header />
 		<nuxt style="padding-top: 100px; padding-bottom: 100px" />
-		<main-footer v-if="!isMobile" />
+		<main-footer v-if="isMobile" />
 	</div>
 </template>
 
