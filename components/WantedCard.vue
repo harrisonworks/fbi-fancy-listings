@@ -10,7 +10,7 @@
 					<div class="d-flex flex-column m-3">
 						<h6 class="listingDate">{{ niceDate }}</h6>
 
-						<a @click="pressed"
+						<a class="cardHeader" @click="pressed"
 							><h3>{{ data.title }}</h3></a
 						>
 
@@ -115,6 +115,12 @@ export default {
 .card {
 	border: 2px solid black;
 	padding: 0rem;
+}
+
+.cardHeader {
+	text-decoration: underline;
+	color: blue;
+	cursor: pointer;
 }
 
 .listingDate {
