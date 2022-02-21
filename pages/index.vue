@@ -4,11 +4,13 @@
 			<search-queries />
 		</section>
 		<section class="container">
-			<wanted-card
-				v-for="(people, index) in paginated"
-				:key="index"
-				:data="people"
-			/>
+			<transition-group name="card" tag="div">
+				<wanted-card
+					v-for="people in paginated"
+					:key="people.uid"
+					:data="people"
+				/>
+			</transition-group>
 			<div v-show="paginated.length === 0">
 				<h4>No Results</h4>
 				<p>
@@ -127,3 +129,16 @@ export default {
 	},
 }
 </script>
+
+<style scoped>
+.card {
+	transition: all 0.4s;
+}
+.card-enter,
+.card-leave-to {
+	opacity: 0;
+}
+.card-enter-to {
+	opacity: 0;
+}
+</style>

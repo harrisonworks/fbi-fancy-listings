@@ -3,14 +3,14 @@
 		<div class="d-flex flex-column">
 			<div class="row">
 				<div class="col-lg-2">
-					<img class="m-3" :src="featuredImage" />
+					<img class="m-lg-3" :src="featuredImage" />
 					<!-- <img class="m-3" src="https://source.unsplash.com/500x800/?crime" /> -->
 				</div>
 				<div class="col">
 					<div class="d-flex flex-column m-3">
 						<h6 class="listingDate">{{ niceDate }}</h6>
 
-						<a href="javascript: void(0)" @click="pressed"
+						<a @click="pressed"
 							><h3>{{ data.title }}</h3></a
 						>
 
@@ -149,5 +149,16 @@ img {
 
 	object-fit: cover;
 	border: solid black 2px;
+}
+
+/* mobile  */
+@media only screen and (max-width: 768px) {
+	img {
+		height: 20rem;
+		width: 100%;
+
+		object-fit: cover;
+		border: solid black 2px;
+	}
 }
 </style>

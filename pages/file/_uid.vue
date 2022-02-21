@@ -9,16 +9,15 @@
 						Published: {{ formatedDates.published }} | Modified:
 						{{ formatedDates.modified }}
 					</h5>
-					<crime-chip
-						v-for="(subject, index) in subjectList"
-						:key="index"
-						color="black"
-						class="d-inline-block"
-						>{{ subject }}</crime-chip
-					>
-					<crime-chip color="blue" class="d-inline-block">{{
-						reward
-					}}</crime-chip>
+					<div class="d-flex flex-wrap">
+						<crime-chip
+							v-for="(subject, index) in subjectList"
+							:key="index"
+							color="black"
+							>{{ subject }}</crime-chip
+						>
+						<crime-chip v-show="reward" color="blue">{{ reward }}</crime-chip>
+					</div>
 				</div>
 				<div class="box">
 					<h4 v-show="!isVictim">Charges Description</h4>

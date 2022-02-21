@@ -46,3 +46,13 @@ h3 {
 img {
   max-width: 100%;
 }
+
+/* page transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}

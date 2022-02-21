@@ -1,17 +1,8 @@
 <template>
-	<nav class="fluid-container">
+	<footer v-show="notHome" class="fluid-container">
 		<div class="d-flex">
-			<div v-show="notHome" class="box">
-				<button @click="pressed">back</button>
-			</div>
-
-			<div v-show="!notHome" class="box">
-				<h1 class="micro">FBI</h1>
-				<h1 class="micro">most wanted</h1>
-			</div>
-
 			<dynamic-marquee
-				class="box p-0 d-none d-md-block"
+				class="box p-0"
 				direction="row"
 				:reverse="true"
 				:repeat-margin="5"
@@ -36,14 +27,8 @@
 					>
 				</div>
 			</dynamic-marquee>
-
-			<div v-show="notHome" class="box">
-				<button style="white-space: nowrap" @click="goToFbi">
-					Official FBI Listing
-				</button>
-			</div>
 		</div>
-	</nav>
+	</footer>
 </template>
 
 <script>
@@ -77,7 +62,7 @@ export default {
 </script>
 
 <style scoped>
-nav .d-flex > .box {
+footer .d-flex > .box {
 	height: 100px !important;
 }
 h1:nth-child(1) {
@@ -99,10 +84,10 @@ h1:nth-child(2) {
 	margin-bottom: 0;
 }
 
-nav {
+footer {
 	background: white;
 	position: fixed;
-	top: 0;
+	bottom: 0;
 	width: 100%;
 }
 
