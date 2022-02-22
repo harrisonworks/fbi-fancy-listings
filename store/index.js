@@ -18,6 +18,108 @@ export const state = () => ({
     reward: null,
     url: null,
   },
+  subjectList: [
+    {
+      title: 'All',
+      subjects: ['all'],
+    },
+    {
+      title: 'Minors',
+      subjects: [
+        'Crimes Against Children',
+        'Kidnappings and Missing Persons',
+        'Parental Kidnapping',
+        'ECAP',
+        'Endangered Child Alert Program',
+        'Parental Kidnapping Victim',
+      ],
+    },
+    {
+      title: 'ViCAP',
+      subjects: [
+        'ViCAP Missing Persons',
+        'ViCAP Unidentified Persons',
+        'ViCAP Homicides and Sexual Assaults',
+        'VICAP Missing Persons',
+      ],
+    },
+    {
+      title: 'Criminal Enterprise Investigations',
+      subjects: [
+        'Criminal Enterprise Investigations',
+        'Criminal Enterprise Investiagtions',
+      ],
+    },
+    {
+      title: 'Capitol',
+      subjects: ['Capitol'],
+    },
+    {
+      title: 'Ten Most Wanted Fugitives',
+      subjects: ['Ten Most Wanted Fugitives'],
+    },
+    {
+      title: 'Indian Country',
+      subjects: ['Indian Country'],
+    },
+    {
+      title: 'Terrorism',
+      subjects: [
+        // 'Seeking Information - Terrorism',
+        ' - Terrorism',
+        'Domestic Terrorism',
+        'Most Wanted Terrorists',
+      ],
+    },
+    {
+      title: 'Violent Crime',
+      subjects: [
+        'Violent Crime - Murders',
+        'Additional Violent Crimes',
+        'Operation Legend',
+      ],
+    },
+    {
+      title: 'Cyber Crimes',
+      subjects: ["Cyber's Most Wanted"],
+    },
+    {
+      title: 'Counter Intelegence',
+      subjects: ['Counterintelligence'],
+    },
+    {
+      title: 'White Collar Crime',
+      subjects: ['White-Collar Crime'],
+    },
+    {
+      title: 'Seeking Information',
+      subjects: [
+        'law enforcement assistance',
+        'Law Enforcement Assistance',
+        'Seeking Information',
+      ],
+    },
+    {
+      title: 'Known Bank Robbers',
+      subjects: ['Known Bank Robbers'],
+    },
+    {
+      title: 'Human Trafficking',
+      subjects: ['Human Trafficking'],
+    },
+    {
+      title: 'Misc',
+      subjects: [
+        'Chloe Combe-Rivas',
+        'Michael Reyes',
+        'Jesus Aguilar, Jr.',
+        'Karen Aguilar',
+        'William Martin Vosseler',
+        'Vosseler',
+        'Mendoza',
+      ],
+    },
+  ],
   rawSubjectList: {},
 })
 

@@ -34,6 +34,12 @@ export default {
 				pages.push(index)
 			}
 
+			// const start = pages.slice(0, 3)
+
+			// const end = pages.slice(pages.length - 3, pages.length - 1)
+
+			// const newResult = [...start, ...end]
+
 			return pages
 		},
 		state() {

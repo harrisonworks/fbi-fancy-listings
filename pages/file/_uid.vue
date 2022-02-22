@@ -106,7 +106,6 @@ export default {
 	name: 'FilePage',
 	async asyncData({ payload, route, store }) {
 		// for generation
-		// if (payload) {
 		if (payload) {
 			await store.commit('updateHeaderInfo', {
 				title: payload.title,

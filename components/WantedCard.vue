@@ -4,7 +4,6 @@
 			<div class="row">
 				<div class="col-lg-2">
 					<img class="m-lg-3" :src="featuredImage" />
-					<!-- <img class="m-3" src="https://source.unsplash.com/500x800/?crime" /> -->
 				</div>
 				<div class="col">
 					<div class="d-flex flex-column m-3">

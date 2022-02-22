@@ -13,14 +13,7 @@
 		<div class="mb-4 w-full">
 			<div class="">
 				<button
-					class="px-2 m-1"
-					:class="{ pressed: status === 'all' }"
-					@click="handleStatusFilter(['all'])"
-				>
-					All
-				</button>
-				<button
-					v-for="(category, index) in categories"
+					v-for="(category, index) in subjectList"
 					:key="index"
 					class="px-2 m-1"
 					:class="{
@@ -74,107 +67,12 @@ export default {
 		return {
 			orderOpen: false,
 			orderChanged: false,
-			categories: [
-				{
-					title: 'Minors',
-					subjects: [
-						'Crimes Against Children',
-						'Kidnappings and Missing Persons',
-						'Parental Kidnapping',
-						'ECAP',
-						'Endangered Child Alert Program',
-						'Parental Kidnapping Victim',
-					],
-				},
-				{
-					title: 'ViCAP',
-					subjects: [
-						'ViCAP Missing Persons',
-						'ViCAP Unidentified Persons',
-						'ViCAP Homicides and Sexual Assaults',
-						'VICAP Missing Persons',
-					],
-				},
-				{
-					title: 'Criminal Enterprise Investigations',
-					subjects: [
-						'Criminal Enterprise Investigations',
-						'Criminal Enterprise Investiagtions',
-					],
-				},
-				{
-					title: 'Capitol',
-					subjects: ['Capitol'],
-				},
-				{
-					title: 'Ten Most Wanted Fugitives',
-					subjects: ['Ten Most Wanted Fugitives'],
-				},
-				{
-					title: 'Indian Country',
-					subjects: ['Indian Country'],
-				},
-				{
-					title: 'Terrorism',
-					subjects: [
-						// 'Seeking Information - Terrorism',
-						' - Terrorism',
-						'Domestic Terrorism',
-						'Most Wanted Terrorists',
-					],
-				},
-				{
-					title: 'Violent Crime',
-					subjects: [
-						'Violent Crime - Murders',
-						'Additional Violent Crimes',
-						'Operation Legend',
-					],
-				},
-				{
-					title: 'Cyber Crimes',
-					subjects: ["Cyber's Most Wanted"],
-				},
-				{
-					title: 'Counter Intelegence',
-					subjects: ['Counterintelligence'],
-				},
-				{
-					title: 'White Colar Crime',
-					subjects: ['White-Collar Crime'],
-				},
-				{
-					title: 'Seeking Information',
-					subjects: [
-						'law enforcement assistance',
-						'Law Enforcement Assistance',
-						'Seeking Information',
-					],
-				},
-				{
-					title: 'Known Bank Robbers',
-					subjects: ['Known Bank Robbers'],
-				},
-				{
-					title: 'Human Trafficking',
-					subjects: ['Human Trafficking'],
-				},
-				{
-					title: 'Misc',
-					subjects: [
-						'Chloe Combe-Rivas',
-						'Michael Reyes',
-						'Jesus Aguilar, Jr.',
-						'Karen Aguilar',
-						'William Martin Vosseler',
-						'Vosseler',
-						'Mendoza',
-					],
-				},
-			],
 		}
 	},
 	computed: {
+		subjectList() {
+			return this.$store.state.subjectList
+		},
 		search() {
 			return this.$store.state.filter.search
 		},
@@ -186,8 +84,6 @@ export default {
 		},
 		orderText() {
 			switch (this.order) {
-				case 'companyName':
-					return 'Company Name'
 				case 'jobTitle':
 					return 'Job Title'
 				case 'status':
@@ -197,9 +93,37 @@ export default {
 			}
 		},
 	},
+	mounted() {
+		if (this.$route.query.filter !== 'All') {
+			const subjects = this.getStatusCategories(this.$route.query.filter)
+			this.handleStatusFilter(subjects)
+		}
+	},
 	methods: {
+		getStatusTitle(status) {
+			// compare against the first subject recieved
+			const search = this.subjectList.find((item) =>
+				item.subjects.includes(status[0])
+			).title
+
+			return search
+		},
+		getStatusCategories(title) {
+			return this.subjectList.find((item) => item.title.includes(title))
+				.subjects
+		},
 		handleStatusFilter(status) {
 			this.$store.dispatch('filterStatus', status)
+
+			// find the object which matches the filters in the store
+			const title = this.getStatusTitle(status)
+
+			this.$router.push({
+				query: {
+					page: this.$store.state.filter.page,
+					filter: title,
+				},
+			})
 		},
 		handleSearch: debounce(function (e) {
 			this.$store.dispatch('filterSearch', e.target.value)
