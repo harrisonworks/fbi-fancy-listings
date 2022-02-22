@@ -1,7 +1,8 @@
 <template>
 	<footer class="fluid-container">
-		<div class="d-sm-flex d-none">
+		<div class="d-flex">
 			<dynamic-marquee
+				:style="{ height: notHome && isNarrow ? '100px' : '0px' }"
 				class="box p-0"
 				direction="row"
 				:reverse="true"
@@ -45,26 +46,16 @@ export default {
 			if (this.$route.path !== '/') return true
 			return false
 		},
-	},
-	methods: {
-		isMobile() {
-			if (
-				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-					navigator.userAgent
-				)
-			) {
-				return true
-			} else {
-				return false
-			}
+		isNarrow() {
+			return window.innerWidth < 768
 		},
 	},
 }
 </script>
 
 <style scoped>
-footer .d-flex > .box {
-	height: 100px !important;
+#footerMarquee {
+	/* height: 0px !important; */
 }
 h1:nth-child(1) {
 	font-size: var(--font-size-md);
@@ -83,6 +74,9 @@ h1:nth-child(2) {
 @media only screen and (max-width: 768px) {
 	.box {
 		border: 2px solid black;
+	}
+	#footerMarquee {
+		/* height: 100px !important; */
 	}
 }
 

@@ -3,29 +3,29 @@
 <template>
 	<div>
 		<main-header />
-		<nuxt style="padding-top: 100px; padding-bottom: 100px" />
-		<main-footer v-if="isMobile" />
+		<nuxt class="homeStyle" style="" />
+		<main-footer />
 	</div>
 </template>
 
 <script>
 export default {
 	name: 'DefaultLayout',
-	methods: {
-		isMobile() {
-			if (
-				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-					navigator.userAgent
-				)
-			) {
-				return true
-			} else {
-				return false
-			}
-		},
-	},
+	computed: {},
 }
 </script>
 
 <style>
+.homeStyle {
+	padding-top: 100px;
+	border: solid 2px black;
+}
+
+@media only screen and (max-width: 768px) {
+	.homeStyle {
+		padding-top: 100px;
+		padding-bottom: 100px;
+		border: solid 2px black;
+	}
+}
 </style>
