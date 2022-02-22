@@ -27,10 +27,7 @@
 		</div>
 		<div class="flex justify-start">
 			<div class="relative mb-3">
-				<p
-					class="text-gray-700 cursor-pointer flex items-center"
-					@click="orderOpen = !orderOpen"
-				>
+				<p class="flex items-center" @click="orderOpen = !orderOpen">
 					<span>&#8597;</span>
 					<span class="mr-1">Order By</span>
 					<span v-show="orderChanged" class="font-semibold">

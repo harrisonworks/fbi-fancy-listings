@@ -17,14 +17,14 @@ export default {
 
 <style>
 .homeStyle {
-	padding-top: 100px;
+	padding-top: 98px;
 	border: solid 2px black;
 }
 
 @media only screen and (max-width: 768px) {
 	.homeStyle {
-		padding-top: 100px;
-		padding-bottom: 100px;
+		padding-top: 98px;
+		padding-bottom: 98px;
 		border: solid 2px black;
 	}
 }

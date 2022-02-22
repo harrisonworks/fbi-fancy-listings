@@ -42,6 +42,12 @@
 					Official FBI Listing
 				</button>
 			</div>
+
+			<div v-show="!notHome" class="box">
+				<button style="white-space: nowrap" @click="goToAbout">
+					What is this?
+				</button>
+			</div>
 		</div>
 	</nav>
 </template>
@@ -84,6 +90,18 @@ export default {
 		},
 		goToFbi() {
 			window.open(this.$store.state.headerInfo.url, '_blank').focus()
+		},
+		goToAbout() {
+			this.$store.commit('updateHeaderInfo', {
+				title: 'FBI Fancy Listing',
+				caution: 'FBI Fancy Listing',
+				reward: 'FBI Fancy Listing',
+				url: null,
+			})
+
+			this.$router.push({
+				path: '/what-is-this',
+			})
 		},
 	},
 }
