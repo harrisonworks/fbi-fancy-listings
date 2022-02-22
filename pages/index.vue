@@ -45,10 +45,11 @@ export default {
 			return this.$store.state.filter.pageLimit
 		},
 		peopleList() {
-			// if the store isnt available for whatever reason
-			// get the query data from server
-			// no idea why 🤷
-			return this.$store.state.filterList
+			const list = this.$store.state.filterList.reduce((p, c) => {
+				p[c.uid] = c
+				return p
+			}, {})
+			return Object.values(list).sort((a, b) => a.uid.localeCompare(b.uid))
 		},
 		indexStart() {
 			return (this.$store.state.filter.page - 1) * this.pageLimit
@@ -67,13 +68,6 @@ export default {
 		},
 	},
 	mounted() {
-		// this.$router.push({
-		// 	query: {
-		// 		page: this.$store.state.filter.page,
-		// 		filter: this.$store.state.filter.status.join(','),
-		// 	},
-		// })
-
 		// if landing on a page with a query update the store
 		console.log('Number of Listings:', this.peopleList.length)
 	},
@@ -83,7 +77,7 @@ export default {
 
 <style scoped>
 .card {
-	transition: all 0.4s;
+	transition: all 0.2s;
 }
 .card-enter,
 .card-leave-to {

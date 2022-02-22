@@ -48,7 +48,7 @@
 
 <script>
 import DynamicMarquee from 'vue-dynamic-marquee'
-
+import { getStatusTitle } from '~/assets/js/utils.js'
 export default {
 	name: 'MainHeader',
 	components: { DynamicMarquee },
@@ -64,9 +64,22 @@ export default {
 	methods: {
 		pressed() {
 			this.$store.commit('updateHeaderInfo', { ...null })
+
+			// const title = getStatusTitle(
+			// 	this.$store.state.subjectList,
+			// 	this.$store.state.filter.status
+			// )
+
 			this.$router.push({
 				path: '/',
-				query: { page: this.$store.state.filter.page },
+				query: {
+					page: this.$store.state.filter.page,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					search: this.$store.state.filter.search,
+				},
 			})
 		},
 		goToFbi() {

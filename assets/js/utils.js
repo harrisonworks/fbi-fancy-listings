@@ -1,3 +1,14 @@
+function getStatusTitle(subjectList, status) {
+  const search = subjectList.find((item) =>
+    item.subjects.includes(status[0])
+  ).title
+  return search
+}
+
+function getStatusCategories(subjectList, title) {
+  return subjectList.find((item) => item.title.includes(title)).subjects
+}
+
 function debounce(fn, delay) {
   let timeoutID = null
   return function () {
@@ -77,4 +88,12 @@ function calculateReward(data) {
   }
 }
 
-export { victimCheck, cyberCheck, crimeSorter, calculateReward, debounce }
+export {
+  victimCheck,
+  cyberCheck,
+  crimeSorter,
+  calculateReward,
+  debounce,
+  getStatusTitle,
+  getStatusCategories,
+}

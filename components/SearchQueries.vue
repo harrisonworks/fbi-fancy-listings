@@ -2,7 +2,7 @@
 	<div>
 		<div class="mb-2 d-flex">
 			<input
-				class="p-2 flex-fill"
+				class="p-2 flex-fill border-3"
 				:value="search"
 				type="search"
 				placeholder="Search the most wanted"
@@ -60,7 +60,11 @@
 
 
 <script>
-import { debounce } from '~/assets/js/utils.js'
+import {
+	debounce,
+	getStatusTitle,
+	getStatusCategories,
+} from '~/assets/js/utils.js'
 
 export default {
 	data() {
@@ -95,38 +99,45 @@ export default {
 	},
 	mounted() {
 		if (this.$route.query.filter !== 'All') {
-			const subjects = this.getStatusCategories(this.$route.query.filter)
+			const subjects = getStatusCategories(
+				this.subjectList,
+				this.$route.query.filter
+			)
 			this.handleStatusFilter(subjects)
 		}
 	},
 	methods: {
-		getStatusTitle(status) {
-			// compare against the first subject recieved
-			const search = this.subjectList.find((item) =>
-				item.subjects.includes(status[0])
-			).title
-
-			return search
-		},
-		getStatusCategories(title) {
-			return this.subjectList.find((item) => item.title.includes(title))
-				.subjects
-		},
 		handleStatusFilter(status) {
 			this.$store.dispatch('filterStatus', status)
 
 			// find the object which matches the filters in the store
-			const title = this.getStatusTitle(status)
-
 			this.$router.push({
+				path: '/',
 				query: {
 					page: this.$store.state.filter.page,
-					filter: title,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					search: this.$store.state.filter.search,
 				},
 			})
 		},
 		handleSearch: debounce(function (e) {
 			this.$store.dispatch('filterSearch', e.target.value)
+			this.$store.commit('updatePage', 1)
+
+			this.$router.push({
+				path: '/',
+				query: {
+					page: this.$store.state.filter.page,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					search: e.target.value,
+				},
+			})
 		}, 500),
 		handleFilterOrder(orderBy) {
 			this.orderOpen = false

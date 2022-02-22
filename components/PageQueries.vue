@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { getStatusTitle } from '~/assets/js/utils.js'
+
 export default {
 	computed: {
 		maxPage() {
@@ -25,20 +27,10 @@ export default {
 			)
 		},
 		pages() {
-			// const max = Math.ceil(
-			// 	this.$store.state.filterList.length / this.$store.state.filter.pageLimit
-			// )
-
 			const pages = []
 			for (let index = 1; index <= this.maxPage; index++) {
 				pages.push(index)
 			}
-
-			// const start = pages.slice(0, 3)
-
-			// const end = pages.slice(pages.length - 3, pages.length - 1)
-
-			// const newResult = [...start, ...end]
 
 			return pages
 		},
@@ -53,19 +45,43 @@ export default {
 		prev() {
 			this.$store.commit('updatePage', this.$store.state.filter.page - 1)
 			this.$router.push({
-				query: { page: this.$store.state.filter.page },
+				path: '/',
+				query: {
+					page: this.$store.state.filter.page,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					search: this.$store.state.filter.search,
+				},
 			})
 		},
 		next() {
 			this.$store.commit('updatePage', this.$store.state.filter.page + 1)
 			this.$router.push({
-				query: { page: this.$store.state.filter.page },
+				path: '/',
+				query: {
+					page: this.$store.state.filter.page,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					search: this.$store.state.filter.search,
+				},
 			})
 		},
 		navigate(page) {
 			this.$store.commit('updatePage', page)
 			this.$router.push({
-				query: { page: this.$store.state.filter.page },
+				path: '/',
+				query: {
+					page: this.$store.state.filter.page,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					search: this.$store.state.filter.search,
+				},
 			})
 		},
 	},

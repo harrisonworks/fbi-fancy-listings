@@ -1,6 +1,6 @@
 <template>
-	<footer v-show="notHome" class="fluid-container">
-		<div class="d-flex">
+	<footer class="fluid-container">
+		<div class="d-sm-flex d-none">
 			<dynamic-marquee
 				class="box p-0"
 				direction="row"
@@ -35,7 +35,7 @@
 import DynamicMarquee from 'vue-dynamic-marquee'
 
 export default {
-	name: 'MainHeader',
+	name: 'MainFooter',
 	components: { DynamicMarquee },
 	computed: {
 		status() {
@@ -47,15 +47,16 @@ export default {
 		},
 	},
 	methods: {
-		pressed() {
-			this.$store.commit('updateHeaderInfo', { ...null })
-			this.$router.push({
-				path: '/',
-				query: { page: this.$store.state.filter.page },
-			})
-		},
-		goToFbi() {
-			window.open(this.$store.state.headerInfo.url, '_blank').focus()
+		isMobile() {
+			if (
+				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+					navigator.userAgent
+				)
+			) {
+				return true
+			} else {
+				return false
+			}
 		},
 	},
 }
@@ -76,8 +77,13 @@ h1:nth-child(2) {
 	height: auto;
 	flex-grow: 1;
 	padding: 1rem;
-	border: 2px solid black;
 	background: var(--color-bg);
+}
+
+@media only screen and (max-width: 768px) {
+	.box {
+		border: 2px solid black;
+	}
 }
 
 .box p {

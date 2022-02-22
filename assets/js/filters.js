@@ -29,7 +29,13 @@ export function filterList(filter, items) {
     filteredList = searchList
   }
 
-  return filteredList
+  const list = filteredList.reduce((p, c) => {
+    p[c.uid] = c
+    return p
+  }, {})
+  return Object.values(list)
+
+  // return filteredList
 }
 
 export function orderList(order, items) {
