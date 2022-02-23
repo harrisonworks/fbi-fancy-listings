@@ -37,6 +37,7 @@
 					{{ data.warning_message }}
 				</div>
 				<div v-show="reward" class="flex-grow-1 reward">{{ reward }}</div>
+				<div v-show="captured" class="flex-grow-1 captured">{{ captured }}</div>
 			</div>
 		</div>
 	</div>
@@ -63,6 +64,12 @@ export default {
 			return formatDistanceToNow(new Date(this.data.publication), {
 				addSuffix: true,
 			})
+		},
+		captured() {
+			if (this.data.status !== 'na') {
+				return 'CAPTURED'
+			}
+			return false
 		},
 
 		crimeList() {
@@ -141,6 +148,10 @@ export default {
 
 .reward {
 	background: blue;
+}
+
+.captured {
+	background: green;
 }
 
 button {

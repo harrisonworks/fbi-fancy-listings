@@ -7,7 +7,7 @@
 		<div class="col-lg-11">
 			<div class="mb-2 d-flex">
 				<input
-					class="p-2 flex-fill"
+					class="mx-2 p-2 flex-fill"
 					:value="search"
 					type="search"
 					placeholder="Search the most wanted"

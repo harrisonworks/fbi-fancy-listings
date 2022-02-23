@@ -79,13 +79,19 @@ export default {
 
 <style scoped>
 .card {
-	transition: all 0.2s;
+	transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
-.card-enter,
-.card-leave-to {
-	opacity: 0;
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.card-enter-active {
+	transition: all 0.3s ease;
 }
-.card-enter-to {
+.card-leave-active {
+	transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.card-enter, .card-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+	/* transform: translateX(10px); */
 	opacity: 0;
 }
 </style>
