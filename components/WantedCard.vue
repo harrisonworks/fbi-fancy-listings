@@ -85,7 +85,7 @@ export default {
 			} else return descriptionList
 		},
 		reward() {
-			return calculateReward(this.data)
+			return calculateReward(this.data.reward_text)
 		},
 	},
 	mounted() {},
@@ -95,7 +95,7 @@ export default {
 			this.$store.commit('updateHeaderInfo', {
 				title: this.data.title,
 				caution: this.data.warning_message,
-				reward: calculateReward(this.data),
+				reward: calculateReward(this.data.reward_text),
 				url: this.data.url,
 			})
 			// page

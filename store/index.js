@@ -18,6 +18,7 @@ export const state = () => ({
     reward: null,
     url: null,
   },
+  orderList: ['createdAt', 'reward_text'],
   subjectList: [
     {
       title: 'All',
@@ -196,7 +197,7 @@ export const actions = {
   },
   async filterList({ commit }) {
     await commit('filterList')
-    // await commit('orderList')
+    await commit('orderList')
   },
 
   nuxtServerInit({ commit }, context) {

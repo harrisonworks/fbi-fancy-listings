@@ -45,11 +45,13 @@ export default {
 			return this.$store.state.filter.pageLimit
 		},
 		peopleList() {
-			const list = this.$store.state.filterList.reduce((p, c) => {
-				p[c.uid] = c
-				return p
-			}, {})
-			return Object.values(list).sort((a, b) => a.uid.localeCompare(b.uid))
+			// const list = this.$store.state.filterList.reduce((p, c) => {
+			// 	p[c.uid] = c
+			// 	return p
+			// }, {})
+			// return Object.values(list).sort((a, b) => a.uid.localeCompare(b.uid))
+
+			return this.$store.state.filterList
 		},
 		indexStart() {
 			return (this.$store.state.filter.page - 1) * this.pageLimit

@@ -53,11 +53,9 @@
 </template>
 
 <script>
-import DynamicMarquee from 'vue-dynamic-marquee'
 import { getStatusTitle } from '~/assets/js/utils.js'
 export default {
 	name: 'MainHeader',
-	components: { DynamicMarquee },
 	computed: {
 		status() {
 			return this.$store.state.headerInfo
@@ -84,6 +82,7 @@ export default {
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
 					),
+					orderBy: this.$store.state.filter.order,
 					search: this.$store.state.filter.search,
 				},
 			})
@@ -96,7 +95,7 @@ export default {
 				title: 'FBI Fancy Listing',
 				caution: 'FBI Fancy Listing',
 				reward: 'FBI Fancy Listing',
-				url: null,
+				url: 'https://www.fbi.gov/wanted',
 			})
 
 			this.$router.push({

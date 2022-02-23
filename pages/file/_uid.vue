@@ -110,7 +110,7 @@ export default {
 			await store.commit('updateHeaderInfo', {
 				title: payload.title,
 				caution: payload.warning_message,
-				reward: calculateReward(payload),
+				reward: calculateReward(payload.reward_text),
 				url: payload.url,
 			})
 
@@ -231,7 +231,7 @@ export default {
 			return this.data.aliases ? this.data.aliases.join(', ') : 'NA'
 		},
 		reward() {
-			return calculateReward(this.data)
+			return calculateReward(this.data.reward_text)
 		},
 	},
 	mounted() {

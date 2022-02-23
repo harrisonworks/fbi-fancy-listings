@@ -33,6 +33,7 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
   ],
+  plugins: ['~/plugins/directives.js', '~/plugins/dynamicMarquee.js'],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [

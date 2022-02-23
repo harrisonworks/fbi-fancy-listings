@@ -33,11 +33,8 @@
 </template>
 
 <script>
-import DynamicMarquee from 'vue-dynamic-marquee'
-
 export default {
 	name: 'MainFooter',
-	components: { DynamicMarquee },
 	computed: {
 		status() {
 			return this.$store.state.headerInfo

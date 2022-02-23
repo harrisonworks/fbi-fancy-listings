@@ -52,6 +52,8 @@ export default {
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
 					),
+					orderBy: this.$store.state.filter.order,
+
 					search: this.$store.state.filter.search,
 				},
 			})
@@ -66,6 +68,8 @@ export default {
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
 					),
+					orderBy: this.$store.state.filter.order,
+
 					search: this.$store.state.filter.search,
 				},
 			})
@@ -80,6 +84,8 @@ export default {
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
 					),
+					orderBy: this.$store.state.filter.order,
+
 					search: this.$store.state.filter.search,
 				},
 			})

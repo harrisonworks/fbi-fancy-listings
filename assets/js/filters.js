@@ -1,4 +1,6 @@
+import numeral from 'numeral'
 import { getUnixTime } from 'date-fns'
+import { calculateReward } from './utils.js'
 
 export function filterList(filter, items) {
   let filteredList = [...items]
@@ -40,18 +42,23 @@ export function filterList(filter, items) {
 
 export function orderList(order, items) {
   const orderedList = [...items]
-
   if (order === 'createdAt') {
     orderedList.sort(function (a, b) {
       const unixA = getUnixTime(new Date(a.publication))
       const unixB = getUnixTime(new Date(b.publication))
-      return unixA < unixB ? -1 : 1
+      return unixA < unixB ? 1 : -1
     })
-  } else {
+  } else if (order === 'reward_text') {
     orderedList.sort(function (a, b) {
-      const nameA = a[order] ? a[order].toLowerCase() : 'zzz'
-      const nameB = b[order] ? b[order].toLowerCase() : 'zzz'
-      return nameA < nameB ? -1 : 1
+      const nameA = a[order]
+        ? numeral(calculateReward(a[order]).split(' ')[0])._value
+        : 0
+      const nameB = b[order]
+        ? numeral(calculateReward(b[order]).split(' ')[0])._value
+        : 0
+
+      // largest numbers first
+      return nameA < nameB ? 1 : -1
     })
   }
 

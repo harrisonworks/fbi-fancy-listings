@@ -59,10 +59,10 @@ function crimeSorter(string) {
 }
 
 function calculateReward(data) {
-  if (data.reward_text) {
+  if (data) {
     const regex =
       /\$[\d,]*(\.\d{2})?(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?|([\d]+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?(\sdollar\w*|\scent\w*)(\sand\s[\d]*\scent\w*)?)|(one|two|three|four|five|six|seven|eight|nine|ten|twenty|thirty|fifty|sixty|seventy|eighty|ninety)+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)*(\sdollars)/g
-    const found = data.reward_text.match(regex)
+    const found = data.match(regex)
     if (!found) {
       return 'reward not specified'
     } else {

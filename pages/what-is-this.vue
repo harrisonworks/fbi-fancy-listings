@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<section class="container pt-5 pt-lg-2">
+		<section class="container pt-5 pt-lg-3">
 			<div class="row align-items-center">
 				<div class="col-md-6 mb-5">
 					<h1>What is this?</h1>
@@ -18,7 +18,7 @@
 					</p>
 					<button class="p-2" @click="toGithub">To Github</button>
 				</div>
-				<div class="col-md-6 mb-5">
+				<div class="col-md-6 mb-2">
 					<div class="d-flex flex-wrap justify-content-center">
 						<img
 							v-for="(image, index) in randomImages"
@@ -82,7 +82,6 @@ export default {
 			],
 		}
 	},
-
 	computed: {
 		randomImages() {
 			const imageList = []
