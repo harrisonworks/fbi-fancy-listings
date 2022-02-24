@@ -36,13 +36,7 @@
 
 <script>
 export default {
-	async asyncData({ payload, store }) {
-		if (payload) {
-			await store.commit('updateListings', payload)
-		} else {
-			// recommiting what the server knows to the front
-			await store.commit('updateListings', store.state.listing)
-		}
+	asyncData({ store }) {
 		return { list: store.state.listing }
 	},
 	head() {

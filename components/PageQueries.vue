@@ -1,6 +1,8 @@
 <template>
 	<div class="d-flex justify-content-around align-items-center">
-		<button class="p-2" :disabled="!state.back" @click="prev">Previous</button>
+		<button class="p-2" :disabled="!state.back" @click="navigate(-1)">
+			Previous
+		</button>
 		<div class="d-flex flex-wrap">
 			<a
 				v-for="page in pages"
@@ -12,7 +14,9 @@
 			>
 		</div>
 
-		<button class="p-2" :disabled="!state.forward" @click="next">Next</button>
+		<button class="p-2" :disabled="!state.forward" @click="navigate(1)">
+			Next
+		</button>
 	</div>
 </template>
 
@@ -40,54 +44,24 @@ export default {
 				forward: this.$store.state.filter.page <= this.maxPage - 1,
 			}
 		},
+		queryState() {
+			return {
+				page: this.$store.state.filter.page,
+				filter: getStatusTitle(
+					this.$store.state.subjectList,
+					this.$store.state.filter.status
+				),
+				orderBy: this.$store.state.filter.order,
+				search: this.$store.state.filter.search,
+			}
+		},
 	},
 	methods: {
-		prev() {
-			this.$store.commit('updatePage', this.$store.state.filter.page - 1)
-			this.$router.push({
-				path: '/',
-				query: {
-					page: this.$store.state.filter.page,
-					filter: getStatusTitle(
-						this.$store.state.subjectList,
-						this.$store.state.filter.status
-					),
-					orderBy: this.$store.state.filter.order,
-
-					search: this.$store.state.filter.search,
-				},
-			})
-		},
-		next() {
-			this.$store.commit('updatePage', this.$store.state.filter.page + 1)
-			this.$router.push({
-				path: '/',
-				query: {
-					page: this.$store.state.filter.page,
-					filter: getStatusTitle(
-						this.$store.state.subjectList,
-						this.$store.state.filter.status
-					),
-					orderBy: this.$store.state.filter.order,
-
-					search: this.$store.state.filter.search,
-				},
-			})
-		},
 		navigate(page) {
-			this.$store.commit('updatePage', page)
+			this.$store.commit('updatePage', this.$store.state.filter.page + page)
 			this.$router.push({
 				path: '/',
-				query: {
-					page: this.$store.state.filter.page,
-					filter: getStatusTitle(
-						this.$store.state.subjectList,
-						this.$store.state.filter.status
-					),
-					orderBy: this.$store.state.filter.order,
-
-					search: this.$store.state.filter.search,
-				},
+				query: this.queryState,
 			})
 		},
 	},

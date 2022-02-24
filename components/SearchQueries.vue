@@ -1,8 +1,10 @@
 <template>
 	<div class="row align-items-center">
-		<div class="col">
-			<h3>{{ resultNumber }}</h3>
-			<h5>Results</h5>
+		<div class="col-lg-1">
+			<div class="mx-2">
+				<h3>{{ resultNumber }}</h3>
+				<h5>Results</h5>
+			</div>
 		</div>
 		<div class="col-lg-11">
 			<div class="mb-2 d-flex">
@@ -130,6 +132,7 @@ export default {
 			this.$refs.dropdownOrder.classList.toggle('show')
 		},
 		closeOrder(e) {
+			// const value = 'dropdownOrder'
 			if (e.target !== this.$refs.dropdownOrder) {
 				this.$refs.dropdownOrder.classList.remove('show')
 			}
@@ -195,10 +198,6 @@ export default {
 </script>
 
 <style scoped>
-label {
-	font-weight: 500;
-}
-
 input[type='search'] {
 	border: solid 2px black;
 }
@@ -229,6 +228,12 @@ input[type='search'] {
 	min-width: 25rem;
 	overflow: auto;
 	z-index: 1;
+}
+
+@media only screen and (max-width: 768px) {
+	.dropdown-content {
+		min-width: 20rem;
+	}
 }
 
 .dropdown-content a {

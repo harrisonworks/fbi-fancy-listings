@@ -13,10 +13,10 @@ export const state = () => ({
   },
   currentFile: {},
   headerInfo: {
-    title: null,
-    caution: null,
-    reward: null,
-    url: null,
+    title: 'FBI Fancy Listing',
+    caution: 'FBI Fancy Listing',
+    reward: 'FBI Fancy Listing',
+    url: 'https://www.fbi.gov/wanted',
   },
   orderList: ['createdAt', 'reward_text'],
   subjectList: [
@@ -135,10 +135,12 @@ export const mutations = {
     state.filterList = listings
   },
   updateHeaderInfo(state, payload) {
-    state.headerInfo.title = payload.title
-    state.headerInfo.caution = payload.caution
-    state.headerInfo.reward = payload.reward
-    state.headerInfo.url = payload.url
+    state.headerInfo = {
+      title: payload.title,
+      caution: payload.caution,
+      reward: payload.reward,
+      url: payload.url,
+    }
   },
   updatePage(state, payload) {
     const value = Number(payload)
@@ -199,7 +201,14 @@ export const actions = {
     await commit('filterList')
     await commit('orderList')
   },
-
+  async defaultHeader({ commit }) {
+    await commit('updateHeaderInfo', {
+      title: 'FBI Fancy Listing',
+      caution: 'FBI Fancy Listing',
+      reward: 'FBI Fancy Listing',
+      url: 'https://www.fbi.gov/wanted',
+    })
+  },
   nuxtServerInit({ commit }, context) {
     // only set cache if on homepage
     // else this will run for every page when generated

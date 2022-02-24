@@ -64,11 +64,21 @@ export default {
 			if (this.$route.path !== '/') return true
 			return false
 		},
+		queryState() {
+			return {
+				page: this.$store.state.filter.page,
+				filter: getStatusTitle(
+					this.$store.state.subjectList,
+					this.$store.state.filter.status
+				),
+				orderBy: this.$store.state.filter.order,
+				search: this.$store.state.filter.search,
+			}
+		},
 	},
 	methods: {
 		pressed() {
-			this.$store.commit('updateHeaderInfo', { ...null })
-
+			this.$store.dispatch('defaultHeader')
 			// const title = getStatusTitle(
 			// 	this.$store.state.subjectList,
 			// 	this.$store.state.filter.status
@@ -76,30 +86,29 @@ export default {
 
 			this.$router.push({
 				path: '/',
-				query: {
-					page: this.$store.state.filter.page,
-					filter: getStatusTitle(
-						this.$store.state.subjectList,
-						this.$store.state.filter.status
-					),
-					orderBy: this.$store.state.filter.order,
-					search: this.$store.state.filter.search,
-				},
+				query: this.queryState,
 			})
 		},
 		goToFbi() {
 			window.open(this.$store.state.headerInfo.url, '_blank').focus()
 		},
 		goToAbout() {
-			this.$store.commit('updateHeaderInfo', {
-				title: 'FBI Fancy Listing',
-				caution: 'FBI Fancy Listing',
-				reward: 'FBI Fancy Listing',
-				url: 'https://www.fbi.gov/wanted',
-			})
-
+			// this.$store.commit('updateHeaderInfo', {
+			// 	title: 'FBI Fancy Listing',
+			// 	caution: 'FBI Fancy Listing',
+			// 	reward: 'FBI Fancy Listing',
+			// 	url: 'https://www.fbi.gov/wanted',
+			// })
+			// this.$store.dispatch('updateHeader', {
+			// 	title: 'FBI Fancy Listing',
+			// 	caution: 'FBI Fancy Listing',
+			// 	reward: 'FBI Fancy Listing',
+			// 	url: 'https://www.fbi.gov/wanted',
+			// })
+			console.log('worked')
 			this.$router.push({
 				path: '/what-is-this',
+				name: 'what-is-this',
 			})
 		},
 	},

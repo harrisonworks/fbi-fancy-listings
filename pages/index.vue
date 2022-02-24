@@ -1,7 +1,13 @@
 <template>
 	<main>
 		<section class="container my-5">
-			<search-queries />
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box">
+						<search-queries />
+					</div>
+				</div>
+			</div>
 		</section>
 		<section class="container">
 			<transition-group name="card" tag="div">
@@ -27,6 +33,7 @@
 </template>
 
 <script>
+import { getStatusTitle } from '~/assets/js/utils.js'
 export default {
 	name: 'IndexPage',
 	async asyncData({ payload, store }) {
@@ -70,6 +77,20 @@ export default {
 		},
 	},
 	mounted() {
+		this.$router.push({
+			path: '/',
+			query: {
+				page: this.$store.state.filter.page,
+				filter: getStatusTitle(
+					this.$store.state.subjectList,
+					this.$store.state.filter.status
+				),
+				orderBy: this.$store.state.filter.order,
+
+				search: this.$store.state.filter.search,
+			},
+		})
+
 		// if landing on a page with a query update the store
 		console.log('Number of Listings:', this.peopleList.length)
 	},
@@ -78,6 +99,14 @@ export default {
 </script>
 
 <style scoped>
+.box {
+	height: auto;
+	flex-grow: 1;
+	padding: 1rem;
+	border: 2px solid black;
+	background: var(--color-bg);
+}
+
 .card {
 	transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
