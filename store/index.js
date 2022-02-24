@@ -8,7 +8,7 @@ export const state = () => ({
     pageLimit: 10,
     search: '',
     status: ['all'],
-    order: 'createdAt',
+    order: 'recently_published',
     page: 1,
   },
   currentFile: {},
@@ -218,7 +218,7 @@ export const actions = {
     await commit('setPage', 1)
     await commit('setFilterStatus', ['all'])
     await commit('setFilterSearch', '')
-    await commit('setOrder', 'createdAt')
+    await commit('setOrder', 'recently_published')
     dispatch('filterList')
   },
   nuxtServerInit({ commit }, context) {

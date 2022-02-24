@@ -104,6 +104,7 @@ export default {
 			return this.$store.state.orderList
 		},
 		order() {
+			console.log(this.$store.state.filter.order)
 			return this.$store.state.filter.order
 		},
 		orderText() {
@@ -236,6 +237,7 @@ input[type='search'] {
 .dropdown {
 	position: relative;
 	display: inline-block;
+	z-index: 1;
 }
 
 .dropdown-content {

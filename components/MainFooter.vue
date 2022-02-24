@@ -51,9 +51,6 @@ export default {
 </script>
 
 <style scoped>
-#footerMarquee {
-	/* height: 0px !important; */
-}
 h1:nth-child(1) {
 	font-size: var(--font-size-md);
 }
@@ -71,9 +68,6 @@ h1:nth-child(2) {
 @media only screen and (max-width: 768px) {
 	.box {
 		border: 2px solid black;
-	}
-	#footerMarquee {
-		/* height: 100px !important; */
 	}
 }
 
