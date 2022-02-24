@@ -22,7 +22,7 @@ function debounce(fn, delay) {
 }
 
 function victimCheck(keywords) {
-  const victimPhrases = ['Missing', 'ViCAP', 'Victims', 'Victim']
+  const victimPhrases = ['Missing', 'ViCAP', 'Victims', 'Victim', 'Deceased']
 
   // compare subjects with keywords
   const subjects = victimPhrases.filter((s) =>

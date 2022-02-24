@@ -57,6 +57,9 @@
 						</button>
 					</div>
 				</div>
+				<div class="toggle">
+					<input ref="toggle" v-model="isChecked" type="checkbox" />
+				</div>
 				<div class="m-2 ms-auto">
 					<button id="resetFilter" class="px-2" @click="filterReset">
 						Clear Filters
@@ -78,6 +81,7 @@ import {
 export default {
 	data() {
 		return {
+			isChecked: false,
 			orderOpen: false,
 			orderChanged: false,
 		}
@@ -237,7 +241,7 @@ input[type='search'] {
 .dropdown {
 	position: relative;
 	display: inline-block;
-	z-index: 1;
+	/* z-index: 1; */
 }
 
 .dropdown-content {
@@ -268,5 +272,80 @@ input[type='search'] {
 
 .show {
 	display: block;
+}
+
+.toggle {
+	box-sizing: border-box;
+	position: relative;
+	padding-right: calc(57px + 0.5em);
+	display: block;
+}
+
+.toggle:focus-within {
+	/* outline: 1px dotted; */
+}
+
+.toggle input {
+	margin: 0; /* reset */
+	font-size: inherit; /* reset */
+	color: currentColor; /* so :before, :after color works */
+	position: absolute;
+	width: 57px;
+	height: 57px;
+	right: 0;
+
+	/* optional vertical centering */
+	top: 50%;
+	transform: translateY(-50%);
+
+	outline: 0; /* add the outline 1 level up instead */
+	appearance: none; /* hide default checkbox */
+
+	/* hide the checkbox in iOS (and others?) */
+	background: transparent;
+	border-radius: 0;
+	border: 0;
+}
+
+.toggle input:before {
+	box-sizing: border-box;
+	content: 'All';
+	padding: 1rem;
+	text-align: center;
+	width: 57px;
+	height: 57px;
+	background-color: rgb(239, 239, 239);
+	border: 2px solid rgb(118, 118, 118);
+
+	border-bottom-style: outset;
+	border-image-outset: 0;
+	border-image-repeat: stretch;
+
+	position: absolute;
+	border-radius: 0em;
+	transition-duration: 200ms;
+	transition-property: background;
+}
+
+.toggle input:after {
+	box-sizing: border-box;
+	content: '';
+	width: calc(57px - 20px);
+	height: calc(57px - 20px);
+	top: 10px;
+	left: 10px;
+	transform: scale(0);
+	background: currentColor;
+	position: absolute;
+	border-radius: 0em;
+	transition: all 0.2s ease;
+}
+
+.toggle input:checked:before {
+	background-color: rgb(189, 189, 189);
+}
+
+.toggle input:checked:after {
+	transform: scale(1);
 }
 </style>

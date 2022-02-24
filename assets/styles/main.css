@@ -28,6 +28,8 @@ body {
 
   --color-text-link: #3413ff;
 
+  --toggle-width: 5rem;
+
   background: var(--color-bg);
 }
 

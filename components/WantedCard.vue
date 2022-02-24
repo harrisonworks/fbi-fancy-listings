@@ -37,6 +37,14 @@
 					{{ data.warning_message }}
 				</div>
 				<div v-show="reward" class="flex-grow-1 reward">{{ reward }}</div>
+				<div
+					v-show="victim"
+					class="flex-grow-1"
+					style="background-color: yellow; color: black"
+				>
+					VICTIM
+				</div>
+
 				<div v-show="captured" class="flex-grow-1 captured">{{ captured }}</div>
 			</div>
 		</div>
@@ -45,7 +53,7 @@
 
 <script>
 import { formatDistanceToNow } from 'date-fns'
-import { calculateReward } from '~/assets/js/utils.js'
+import { calculateReward, victimCheck } from '~/assets/js/utils.js'
 
 export default {
 	props: {
@@ -108,6 +116,20 @@ export default {
 		},
 		reward() {
 			return calculateReward(this.data.reward_text)
+		},
+		victim() {
+			const descriptionList = this.data.description
+				.split(';')
+				.join(',')
+				.split(':')
+				.join(',')
+				.split(',')
+
+			// console.log(descriptionList)
+			if (victimCheck(this.data.subjects) || victimCheck(descriptionList)) {
+				return true
+			}
+			return false
 		},
 	},
 	mounted() {},
