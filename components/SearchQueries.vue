@@ -57,6 +57,11 @@
 						</button>
 					</div>
 				</div>
+				<div class="m-2 ms-auto">
+					<button id="resetFilter" class="px-2" @click="filterReset">
+						Clear Filters
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -103,10 +108,16 @@ export default {
 		},
 		orderText() {
 			switch (this.order) {
-				case 'reward_text':
+				case 'largest_reward':
 					return 'Reward Size'
+				case 'recently_published':
+					return 'Recently Published'
+				case 'recently_updated':
+					return 'Recently Updated'
+				case 'oldest_published':
+					return 'Oldest Published'
 				default:
-					return 'Created Date'
+					return 'Recently Published'
 			}
 		},
 	},
@@ -139,7 +150,7 @@ export default {
 		},
 		handleStatusFilter(status) {
 			this.$store.dispatch('filterStatus', status)
-			this.$store.commit('updatePage', 1)
+			this.$store.commit('setPage', 1)
 			// find the object which matches the filters in the store
 			this.$router.push({
 				query: {
@@ -156,7 +167,7 @@ export default {
 		},
 		handleSearch: debounce(function (e) {
 			this.$store.dispatch('filterSearch', e.target.value)
-			this.$store.commit('updatePage', 1)
+			this.$store.commit('setPage', 1)
 
 			this.$router.push({
 				path: '/',
@@ -190,8 +201,8 @@ export default {
 				},
 			})
 		},
-		closeOrderDropDown(e) {
-			this.orderOpen = false
+		filterReset() {
+			this.$store.dispatch('resetFilter')
 		},
 	},
 }
@@ -200,6 +211,12 @@ export default {
 <style scoped>
 input[type='search'] {
 	border: solid 2px black;
+}
+
+#resetFilter {
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .box {

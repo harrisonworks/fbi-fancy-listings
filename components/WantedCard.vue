@@ -60,10 +60,25 @@ export default {
 				? `https://source.unsplash.com/500x800/?${this.data.subjects[0]}`
 				: this.data.images[0].original
 		},
+		order() {
+			return this.$store.state.filter.order
+		},
 		niceDate() {
-			return formatDistanceToNow(new Date(this.data.publication), {
-				addSuffix: true,
-			})
+			if (this.order === 'recently_updated') {
+				return (
+					'updated ' +
+					formatDistanceToNow(new Date(this.data.modified), {
+						addSuffix: true,
+					})
+				)
+			}
+
+			return (
+				'published ' +
+				formatDistanceToNow(new Date(this.data.publication), {
+					addSuffix: true,
+				})
+			)
 		},
 		captured() {
 			if (this.data.status !== 'na') {
@@ -106,7 +121,7 @@ export default {
 				url: this.data.url,
 			})
 			// page
-			this.$store.commit('setPage', this.data)
+			this.$store.commit('setCurrentFile', this.data)
 
 			this.$router.push({
 				name: 'file-uid',

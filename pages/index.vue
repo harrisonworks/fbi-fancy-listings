@@ -33,16 +33,15 @@
 </template>
 
 <script>
-import { getStatusTitle } from '~/assets/js/utils.js'
 export default {
 	name: 'IndexPage',
 	async asyncData({ payload, store }) {
 		if (payload) {
-			await store.commit('updateListings', payload)
+			await store.commit('setListings', payload)
 			await store.commit('setfilterListing', payload)
 		} else {
 			// recommiting what the server knows to the front
-			await store.commit('updateListings', store.state.listing)
+			await store.commit('setListings', store.state.listing)
 			await store.commit('setfilterListing', store.state.filterList)
 		}
 		return { list: store.state.listing, query: store.state.filterList }
@@ -52,12 +51,6 @@ export default {
 			return this.$store.state.filter.pageLimit
 		},
 		peopleList() {
-			// const list = this.$store.state.filterList.reduce((p, c) => {
-			// 	p[c.uid] = c
-			// 	return p
-			// }, {})
-			// return Object.values(list).sort((a, b) => a.uid.localeCompare(b.uid))
-
 			return this.$store.state.filterList
 		},
 		indexStart() {
@@ -77,20 +70,6 @@ export default {
 		},
 	},
 	mounted() {
-		this.$router.push({
-			path: '/',
-			query: {
-				page: this.$store.state.filter.page,
-				filter: getStatusTitle(
-					this.$store.state.subjectList,
-					this.$store.state.filter.status
-				),
-				orderBy: this.$store.state.filter.order,
-
-				search: this.$store.state.filter.search,
-			},
-		})
-
 		// if landing on a page with a query update the store
 		console.log('Number of Listings:', this.peopleList.length)
 	},
@@ -108,15 +87,15 @@ export default {
 }
 
 .card {
-	transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+	transition: opacity 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .card-enter-active {
-	transition: all 0.3s ease;
+	transition: opacity 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .card-leave-active {
-	transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+	transition: opacity 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .card-enter, .card-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {

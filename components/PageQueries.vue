@@ -58,7 +58,7 @@ export default {
 	},
 	methods: {
 		navigate(page) {
-			this.$store.commit('updatePage', this.$store.state.filter.page + page)
+			this.$store.commit('setPage', this.$store.state.filter.page + page)
 			this.$router.push({
 				path: '/',
 				query: this.queryState,

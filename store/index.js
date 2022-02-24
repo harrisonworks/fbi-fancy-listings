@@ -18,7 +18,12 @@ export const state = () => ({
     reward: 'FBI Fancy Listing',
     url: 'https://www.fbi.gov/wanted',
   },
-  orderList: ['createdAt', 'reward_text'],
+  orderList: [
+    'recently_published',
+    'recently_updated',
+    'oldest_published',
+    'largest_reward',
+  ],
   subjectList: [
     {
       title: 'All',
@@ -125,14 +130,14 @@ export const state = () => ({
 })
 
 export const mutations = {
-  updateListings(state, payload) {
+  setListings(state, payload) {
     state.listing = payload
-  },
-  setPage(state, payload) {
-    state.currentFile = payload
   },
   setfilterListing(state, listings) {
     state.filterList = listings
+  },
+  setCurrentFile(state, payload) {
+    state.currentFile = payload
   },
   updateHeaderInfo(state, payload) {
     state.headerInfo = {
@@ -140,13 +145,6 @@ export const mutations = {
       caution: payload.caution,
       reward: payload.reward,
       url: payload.url,
-    }
-  },
-  updatePage(state, payload) {
-    const value = Number(payload)
-    const maxPage = Math.ceil(state.filterList / state.filter.pageLimit)
-    if (value > 0 || value <= maxPage) {
-      state.filter.page = value
     }
   },
   setcache(state, payload) {
@@ -157,7 +155,13 @@ export const mutations = {
     const subjectList = new Set([].concat.apply([], subjects))
     state.rawSubjectList = subjectList
   },
-
+  setPage(state, payload) {
+    const value = Number(payload)
+    const maxPage = Math.ceil(state.filterList / state.filter.pageLimit)
+    if (value > 0 || value <= maxPage) {
+      state.filter.page = value
+    }
+  },
   setFilterStatus(state, status) {
     state.filter.status = status
   },
@@ -183,7 +187,7 @@ export const mutations = {
 export const actions = {
   async fetchData({ commit }) {
     const results = await fetchAllListings()
-    await commit('updateListings', results)
+    await commit('setListings', results)
   },
   async filterOrder({ commit }, order) {
     await commit('setOrder', order)
@@ -208,6 +212,14 @@ export const actions = {
       reward: 'FBI Fancy Listing',
       url: 'https://www.fbi.gov/wanted',
     })
+  },
+  async resetFilter({ commit, dispatch }) {
+    // return all to defaults
+    await commit('setPage', 1)
+    await commit('setFilterStatus', ['all'])
+    await commit('setFilterSearch', '')
+    await commit('setOrder', 'createdAt')
+    dispatch('filterList')
   },
   nuxtServerInit({ commit }, context) {
     // only set cache if on homepage

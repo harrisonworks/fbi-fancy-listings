@@ -114,9 +114,7 @@ export default {
 				url: payload.url,
 			})
 
-			// await store.commit('setPage', payload)
-
-			await store.commit('setPage', payload)
+			await store.commit('setCurrentFile', payload)
 			return { data: payload, uid: payload.uid }
 		}
 	},

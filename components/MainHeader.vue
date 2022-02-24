@@ -79,11 +79,6 @@ export default {
 	methods: {
 		pressed() {
 			this.$store.dispatch('defaultHeader')
-			// const title = getStatusTitle(
-			// 	this.$store.state.subjectList,
-			// 	this.$store.state.filter.status
-			// )
-
 			this.$router.push({
 				path: '/',
 				query: this.queryState,
@@ -93,19 +88,6 @@ export default {
 			window.open(this.$store.state.headerInfo.url, '_blank').focus()
 		},
 		goToAbout() {
-			// this.$store.commit('updateHeaderInfo', {
-			// 	title: 'FBI Fancy Listing',
-			// 	caution: 'FBI Fancy Listing',
-			// 	reward: 'FBI Fancy Listing',
-			// 	url: 'https://www.fbi.gov/wanted',
-			// })
-			// this.$store.dispatch('updateHeader', {
-			// 	title: 'FBI Fancy Listing',
-			// 	caution: 'FBI Fancy Listing',
-			// 	reward: 'FBI Fancy Listing',
-			// 	url: 'https://www.fbi.gov/wanted',
-			// })
-			console.log('worked')
 			this.$router.push({
 				path: '/what-is-this',
 				name: 'what-is-this',

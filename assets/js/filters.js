@@ -42,19 +42,31 @@ export function filterList(filter, items) {
 
 export function orderList(order, items) {
   const orderedList = [...items]
-  if (order === 'createdAt') {
+  if (order === 'recently_published') {
     orderedList.sort(function (a, b) {
       const unixA = getUnixTime(new Date(a.publication))
       const unixB = getUnixTime(new Date(b.publication))
       return unixA < unixB ? 1 : -1
     })
-  } else if (order === 'reward_text') {
+  } else if (order === 'oldest_published') {
     orderedList.sort(function (a, b) {
-      const nameA = a[order]
-        ? numeral(calculateReward(a[order]).split(' ')[0])._value
+      const unixA = getUnixTime(new Date(a.publication))
+      const unixB = getUnixTime(new Date(b.publication))
+      return unixA < unixB ? -1 : 1
+    })
+  } else if (order === 'recently_updated') {
+    orderedList.sort(function (a, b) {
+      const unixA = getUnixTime(new Date(a.modified))
+      const unixB = getUnixTime(new Date(b.modified))
+      return unixA < unixB ? 1 : -1
+    })
+  } else if (order === 'largest_reward') {
+    orderedList.sort(function (a, b) {
+      const nameA = a.reward_text
+        ? numeral(calculateReward(a.reward_text).split(' ')[0])._value
         : 0
-      const nameB = b[order]
-        ? numeral(calculateReward(b[order]).split(' ')[0])._value
+      const nameB = b.reward_text
+        ? numeral(calculateReward(b.reward_text).split(' ')[0])._value
         : 0
 
       // largest numbers first
