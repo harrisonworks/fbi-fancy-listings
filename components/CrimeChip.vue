@@ -1,5 +1,5 @@
 <template>
-	<div :style="{ backgroundColor: color }" class="crime-chip">
+	<div :style="{ backgroundColor: color, color: text }" class="crime-chip">
 		<slot></slot>
 	</div>
 </template>
@@ -11,6 +11,10 @@ export default {
 			type: String,
 			default: 'red',
 		},
+		text: {
+			type: String,
+			default: 'white',
+		},
 	},
 }
 </script>
@@ -18,7 +22,7 @@ export default {
 <style scoped>
 .crime-chip {
 	/* background: red; */
-	color: white;
+	/* color: white; */
 	font-weight: 500;
 	padding: 0.5rem 0.8rem;
 	white-space: nowrap;
@@ -28,7 +32,7 @@ export default {
 @media only screen and (max-width: 768px) {
 	.crime-chip {
 		/* background: red; */
-		color: white;
+		/* color: white; */
 		font-weight: 500;
 		padding: 0.5rem 0.8rem;
 		white-space: normal;

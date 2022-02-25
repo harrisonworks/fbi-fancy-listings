@@ -17,6 +17,10 @@
 							>{{ subject }}</crime-chip
 						>
 						<crime-chip v-show="reward" color="blue">{{ reward }}</crime-chip>
+
+						<crime-chip v-show="isVictim" color="yellow" text="black"
+							>VICTIM</crime-chip
+						>
 					</div>
 				</div>
 				<div class="box">
@@ -100,7 +104,7 @@
 
 <script>
 import { format } from 'date-fns'
-import { calculateReward, crimeSorter } from '~/assets/js/utils.js'
+import { calculateReward, crimeSorter, victimCheck } from '~/assets/js/utils.js'
 
 export default {
 	name: 'FilePage',
@@ -116,11 +120,6 @@ export default {
 
 			await store.commit('setCurrentFile', payload)
 			return { data: payload, uid: payload.uid }
-		}
-	},
-	data() {
-		return {
-			isVictim: false,
 		}
 	},
 	head() {
@@ -230,6 +229,9 @@ export default {
 		},
 		reward() {
 			return calculateReward(this.data.reward_text)
+		},
+		isVictim() {
+			return victimCheck([...this.crimeList, ...this.subjectList])
 		},
 	},
 	mounted() {
