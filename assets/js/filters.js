@@ -1,9 +1,19 @@
 import numeral from 'numeral'
 import { getUnixTime } from 'date-fns'
-import { calculateReward } from './utils.js'
+import { calculateReward, victimCheck, crimeSorter } from './utils.js'
 
 export function filterList(filter, items) {
   let filteredList = [...items]
+
+  if (!filter.showVictim) {
+    const matches = filteredList.filter((item) => {
+      const description = crimeSorter(item.description)
+      return !victimCheck([...item.subjects, ...description])
+    })
+
+    filteredList = matches
+  }
+
   // Filter status
   if (!filter.status.includes('all')) {
     const matches = filteredList.filter((item) => {

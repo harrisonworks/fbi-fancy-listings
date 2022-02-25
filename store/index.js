@@ -10,6 +10,7 @@ export const state = () => ({
     status: ['all'],
     order: 'recently_published',
     page: 1,
+    showVictim: false,
   },
   currentFile: {},
   headerInfo: {
@@ -171,6 +172,9 @@ export const mutations = {
   setOrder(state, order) {
     state.filter.order = order
   },
+  setVictimFilter(state, payload) {
+    state.filter.showVictim = payload
+  },
 
   filterList(state) {
     const listing = [...state.listing]
@@ -201,6 +205,10 @@ export const actions = {
     await commit('setFilterSearch', search)
     dispatch('filterList')
   },
+  async filterVictim({ commit, dispatch }, value) {
+    await commit('setVictimFilter', value)
+    dispatch('filterList')
+  },
   async filterList({ commit }) {
     await commit('filterList')
     await commit('orderList')
@@ -219,6 +227,8 @@ export const actions = {
     await commit('setFilterStatus', ['all'])
     await commit('setFilterSearch', '')
     await commit('setOrder', 'recently_published')
+    await commit('setVictimFilter', true)
+
     dispatch('filterList')
   },
   nuxtServerInit({ commit }, context) {

@@ -9,7 +9,7 @@
 		<div class="col-lg-11">
 			<div class="mb-2 d-flex">
 				<input
-					class="mx-2 p-2 flex-fill"
+					class="mx-2 p-3 flex-fill"
 					:value="search"
 					type="search"
 					placeholder="Search the most wanted"
@@ -57,11 +57,16 @@
 						</button>
 					</div>
 				</div>
-				<div class="toggle">
-					<input ref="toggle" v-model="isChecked" type="checkbox" />
+				<div class="m-2 toggle">
+					<input
+						ref="toggle"
+						type="checkbox"
+						:checked="victim"
+						@change="checked"
+					/>
 				</div>
 				<div class="m-2 ms-auto">
-					<button id="resetFilter" class="px-2" @click="filterReset">
+					<button id="resetFilter" class="p-3" @click="filterReset">
 						Clear Filters
 					</button>
 				</div>
@@ -79,14 +84,11 @@ import {
 } from '~/assets/js/utils.js'
 
 export default {
-	data() {
-		return {
-			isChecked: false,
-			orderOpen: false,
-			orderChanged: false,
-		}
-	},
 	computed: {
+		victim() {
+			console.log(this.$store.state.filter.showVictim)
+			return this.$store.state.filter.showVictim
+		},
 		subjectList() {
 			return this.$store.state.subjectList
 		},
@@ -135,6 +137,9 @@ export default {
 		}
 	},
 	methods: {
+		checked(e) {
+			this.$store.dispatch('filterVictim', e.target.checked)
+		},
 		openCat() {
 			this.$refs.dropdownCat.classList.toggle('show')
 		},
@@ -188,8 +193,6 @@ export default {
 			})
 		}, 500),
 		handleFilterOrder(orderBy) {
-			this.orderOpen = false
-			this.orderChanged = true
 			this.$store.dispatch('filterOrder', orderBy)
 
 			this.$router.push({
@@ -213,16 +216,6 @@ export default {
 </script>
 
 <style scoped>
-input[type='search'] {
-	border: solid 2px black;
-}
-
-#resetFilter {
-	display: block;
-	width: 100%;
-	height: 100%;
-}
-
 .box {
 	flex-grow: 1;
 	padding: 1rem;
@@ -254,7 +247,7 @@ input[type='search'] {
 
 @media only screen and (max-width: 768px) {
 	.dropdown-content {
-		min-width: 20rem;
+		min-width: 23rem;
 	}
 }
 
@@ -276,8 +269,8 @@ input[type='search'] {
 .toggle {
 	box-sizing: border-box;
 	position: relative;
-	padding-right: calc(57px + 0.5em);
 	display: block;
+	min-width: 8rem;
 }
 
 .toggle:focus-within {
@@ -285,17 +278,16 @@ input[type='search'] {
 }
 
 .toggle input {
-	margin: 0; /* reset */
-	font-size: inherit; /* reset */
-	color: currentColor; /* so :before, :after color works */
+	color: currentColor;
 	position: absolute;
-	width: 57px;
-	height: 57px;
-	right: 0;
+	width: auto;
+	height: 100%;
+
+	cursor: pointer;
 
 	/* optional vertical centering */
-	top: 50%;
-	transform: translateY(-50%);
+	/* top: 50%; */
+	/* transform: translateY(10%); */
 
 	outline: 0; /* add the outline 1 level up instead */
 	appearance: none; /* hide default checkbox */
@@ -308,43 +300,50 @@ input[type='search'] {
 
 .toggle input:before {
 	box-sizing: border-box;
-	content: 'All';
+	content: 'No Victims';
 	padding: 1rem;
+	white-space: nowrap;
 	text-align: center;
-	width: 57px;
-	height: 57px;
+	width: auto;
+	height: auto;
 	background-color: rgb(239, 239, 239);
 	border: 2px solid rgb(118, 118, 118);
-
 	border-bottom-style: outset;
 	border-image-outset: 0;
 	border-image-repeat: stretch;
-
-	position: absolute;
 	border-radius: 0em;
-	transition-duration: 200ms;
+	position: absolute;
+
 	transition-property: background;
 }
 
 .toggle input:after {
 	box-sizing: border-box;
-	content: '';
-	width: calc(57px - 20px);
-	height: calc(57px - 20px);
-	top: 10px;
-	left: 10px;
-	transform: scale(0);
-	background: currentColor;
-	position: absolute;
+	content: 'All';
+	width: auto;
+	height: auto;
+	padding: 1rem;
+	white-space: nowrap;
+
+	opacity: 0;
+
+	background-color: rgb(239, 239, 239);
+	border: 2px solid rgb(118, 118, 118);
+	border-bottom-style: outset;
+	border-image-outset: 0;
+	border-image-repeat: stretch;
 	border-radius: 0em;
-	transition: all 0.2s ease;
+	position: absolute;
+
+	/* transition: all 0.2s ease; */
 }
 
 .toggle input:checked:before {
-	background-color: rgb(189, 189, 189);
+	/* background-color: rgb(189, 189, 189); */
+	opacity: 0;
 }
 
 .toggle input:checked:after {
-	transform: scale(1);
+	opacity: 1;
 }
 </style>

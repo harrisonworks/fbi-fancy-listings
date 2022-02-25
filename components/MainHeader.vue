@@ -2,7 +2,7 @@
 	<nav class="fluid-container">
 		<div class="d-flex">
 			<div v-show="notHome" class="box">
-				<button @click="pressed">back</button>
+				<button class="" @click="pressed">back</button>
 			</div>
 
 			<div v-show="!notHome" class="box">
@@ -18,33 +18,25 @@
 				:hover-pause="false"
 			>
 				<div class="d-flex mt-4">
-					<crime-chip
-						v-show="status.title"
-						color="black"
-						style="white-space: nowrap"
-						>{{ status.title }}</crime-chip
-					>
-					<crime-chip v-show="status.caution" style="white-space: nowrap">{{
-						status.caution
+					<crime-chip v-show="status.title" color="black">{{
+						status.title
 					}}</crime-chip>
+					<crime-chip v-show="status.caution">{{ status.caution }}</crime-chip>
 
-					<crime-chip
-						v-show="status.reward"
-						style="white-space: nowrap"
-						color="blue"
-						>{{ status.reward }}</crime-chip
-					>
+					<crime-chip v-show="status.reward" color="blue">{{
+						status.reward
+					}}</crime-chip>
 				</div>
 			</dynamic-marquee>
 
 			<div v-show="notHome" class="box">
-				<button style="white-space: nowrap" @click="goToFbi">
+				<button class="" style="white-space: nowrap" @click="goToFbi">
 					Official FBI Listing
 				</button>
 			</div>
 
 			<div v-show="!notHome" class="box">
-				<button style="white-space: nowrap" @click="goToAbout">
+				<button class="" style="white-space: nowrap" @click="goToAbout">
 					What is this?
 				</button>
 			</div>
