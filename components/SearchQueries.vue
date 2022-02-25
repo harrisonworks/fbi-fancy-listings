@@ -86,7 +86,6 @@ import {
 export default {
 	computed: {
 		victim() {
-			console.log(this.$store.state.filter.showVictim)
 			return this.$store.state.filter.showVictim
 		},
 		subjectList() {
@@ -129,6 +128,8 @@ export default {
 	},
 	mounted() {
 		if (this.$route.query.filter) {
+			this.$store.dispatch('filterVictim', this.victim)
+
 			if (this.$route.query.filter !== 'All') {
 				this.handleStatusFilter(
 					getStatusCategories(this.subjectList, this.$route.query.filter)
