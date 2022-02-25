@@ -44,7 +44,10 @@ export default {
 			return false
 		},
 		isNarrow() {
-			return window.innerWidth < 768
+			if (process.browser) {
+				return window.innerWidth < 768
+			}
+			return false
 		},
 	},
 }

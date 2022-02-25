@@ -36,8 +36,9 @@
 
 <script>
 export default {
+	name: 'AboutPage',
 	asyncData({ store }) {
-		return { list: store.state.listing }
+		return { list: store.state.listing, query: store.state.filterList }
 	},
 	head() {
 		return {
@@ -77,14 +78,20 @@ export default {
 		}
 	},
 	computed: {
+		list() {
+			return this.$store.state.listing
+		},
 		randomImages() {
-			const imageList = []
-			for (let index = 0; index < 9; index++) {
-				const randomIndex = Math.floor(Math.random() * this.list.length)
+			if (process.browser) {
+				const imageList = []
+				for (let index = 0; index < 9; index++) {
+					const randomIndex = Math.floor(Math.random() * this.list.length)
 
-				imageList.push(this.list[randomIndex].images[0].original)
+					imageList.push(this.list[randomIndex].images[0].original)
+				}
+				return imageList
 			}
-			return imageList
+			return false
 		},
 	},
 	methods: {
