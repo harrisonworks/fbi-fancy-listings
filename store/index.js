@@ -1,5 +1,6 @@
 import { fetchAllListings } from '~/assets/js/recursiveCall.js'
 import * as Filters from '~/assets/js/filters.js'
+import { getStatusCategories } from '~/assets/js/utils'
 
 export const state = () => ({
   listing: [],
@@ -228,6 +229,19 @@ export const actions = {
     await commit('setFilterSearch', '')
     await commit('setOrder', 'recently_published')
     await commit('setVictimFilter', true)
+
+    dispatch('filterList')
+  },
+  async queryFilter({ commit, dispatch, state }, query) {
+    // return all to defaults
+    await commit('setPage', 1)
+
+    const statusFilter = getStatusCategories(state.subjectList, query.status)
+
+    await commit('setFilterStatus', statusFilter)
+    await commit('setFilterSearch', query.search)
+    await commit('setOrder', query.order)
+    await commit('setVictimFilter', query.victim)
 
     dispatch('filterList')
   },

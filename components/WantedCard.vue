@@ -13,7 +13,7 @@
 							><h3>{{ data.title }}</h3></a
 						>
 
-						<div class="d-flex flex-wrap">
+						<div v-show="crimeList" class="d-flex flex-wrap">
 							<crime-chip v-for="(crime, index) in crimeList" :key="index">
 								{{ crime }}
 							</crime-chip>
@@ -96,23 +96,28 @@ export default {
 		},
 
 		crimeList() {
-			const arrayCutoff = 3
-			// this hack splits out the desciption into bullet points
-			// I dont like regex 🤮
-			const descriptionList = this.data.description
-				.split(';')
-				.join(',')
-				.split(':')
-				.join(',')
-				.split(',')
+			if (this.data.description) {
+				const arrayCutoff = 3
+				// this hack splits out the desciption into bullet points
+				// I dont like regex 🤮
+				const descriptionList = this.data.description
+					.split(';')
+					.join(',')
+					.split(':')
+					.join(',')
+					.split(',')
 
-			const lastItem = `${descriptionList.length - arrayCutoff} more...`
+				const lastItem = `${descriptionList.length - arrayCutoff} more...`
 
-			if (descriptionList.length > arrayCutoff) {
-				const temp = descriptionList.slice(0, arrayCutoff)
-				temp.push(lastItem)
-				return temp
-			} else return descriptionList
+				if (descriptionList.length > arrayCutoff) {
+					const temp = descriptionList.slice(0, arrayCutoff)
+					temp.push(lastItem)
+
+					return temp
+				} else return descriptionList
+			}
+
+			return false
 		},
 		reward() {
 			return calculateReward(this.data.reward_text)

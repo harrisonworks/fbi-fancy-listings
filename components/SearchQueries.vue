@@ -9,6 +9,7 @@
 		<div class="col-lg-11">
 			<div class="mb-2 d-flex">
 				<input
+					ref="searchField"
 					class="mx-2 p-3 flex-fill"
 					:value="search"
 					type="search"
@@ -80,7 +81,7 @@
 import {
 	debounce,
 	getStatusTitle,
-	getStatusCategories,
+	// getStatusCategories,
 } from '~/assets/js/utils.js'
 
 export default {
@@ -128,13 +129,14 @@ export default {
 	},
 	mounted() {
 		if (this.$route.query.filter) {
-			this.$store.dispatch('filterVictim', this.victim)
-
-			if (this.$route.query.filter !== 'All') {
-				this.handleStatusFilter(
-					getStatusCategories(this.subjectList, this.$route.query.filter)
-				)
+			const payload = {
+				status: this.$route.query.filter,
+				search: this.$route.query.search,
+				order: this.$route.query.orderBy,
+				victim: this.victim,
 			}
+			// console.log('payload', payload)
+			this.$store.dispatch('queryFilter', payload)
 		}
 	},
 	methods: {
@@ -176,7 +178,7 @@ export default {
 			})
 		},
 		handleSearch: debounce(function (e) {
-			this.$store.dispatch('filterSearch', e.target.value)
+			this.$store.dispatch('filterSearch', this.$refs.searchField.value)
 			this.$store.commit('setPage', 1)
 
 			this.$router.push({
@@ -189,7 +191,7 @@ export default {
 					),
 					orderBy: this.$store.state.filter.order,
 
-					search: e.target.value,
+					search: this.$refs.searchField.value,
 				},
 			})
 		}, 500),
@@ -211,6 +213,15 @@ export default {
 		},
 		filterReset() {
 			this.$store.dispatch('resetFilter')
+
+			this.$router.push({
+				query: {
+					page: 1,
+					filter: 'All',
+					orderBy: 'recently_published',
+					search: '',
+				},
+			})
 		},
 	},
 }

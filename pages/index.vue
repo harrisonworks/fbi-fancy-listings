@@ -38,12 +38,15 @@ export default {
 	async asyncData({ payload, store }) {
 		if (payload) {
 			await store.commit('setListings', payload)
+			await store.dispatch('filterList')
 			await store.commit('setfilterListing', payload)
 		} else {
 			// recommiting what the server knows to the front
 			await store.commit('setListings', store.state.listing)
+			await store.dispatch('filterList')
 			await store.commit('setfilterListing', store.state.filterList)
 		}
+
 		return { list: store.state.listing, query: store.state.filterList }
 	},
 	computed: {
@@ -71,7 +74,7 @@ export default {
 	},
 	mounted() {
 		// if landing on a page with a query update the store
-		console.log('Number of Listings:', this.peopleList.length)
+		// console.log('Number of Listings:', this.peopleList.length)
 	},
 	methods: {},
 }

@@ -72,6 +72,13 @@ button {
   border-radius: 0em;
 }
 
+button:disabled,
+button[disabled] {
+  border: 2px solid rgb(118, 118, 118);
+  background-color: rgb(150, 150, 150);
+  color: black;
+}
+
 input[type='search'] {
   background-color: rgb(252, 252, 252);
   border: 2px solid rgb(118, 118, 118);

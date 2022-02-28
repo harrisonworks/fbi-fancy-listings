@@ -26,7 +26,7 @@ export function filterList(filter, items) {
   }
 
   // Search
-  if (filter.search !== '') {
+  if (filter.search !== '' && filter.search !== null) {
     const searchList = []
     const searchTerm = filter.search.toLowerCase()
     for (let i = 0; i < filteredList.length; i++) {

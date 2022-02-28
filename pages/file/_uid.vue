@@ -23,7 +23,7 @@
 						>
 					</div>
 				</div>
-				<div class="box">
+				<div v-show="crimeList" class="box">
 					<h4 v-show="!isVictim">Charges Description</h4>
 					<h4 v-show="isVictim">Description</h4>
 					<div class="d-flex flex-wrap">
@@ -63,22 +63,22 @@
 
 		<div v-show="data.caution" class="box">
 			<h3>Caution</h3>
-			<div v-html="data.caution"></div>
-			<div style="color: red" v-html="data.warning_message"></div>
+			<div v-sanitize="data.caution"></div>
+			<div v-sanitize="data.warning_message" style="color: red"></div>
 		</div>
 
 		<div class="d-flex flex-wrap">
-			<div v-show="data.details" class="box col">
+			<div v-show="data.details" class="box col-lg col-sm-12">
 				<h3>Details</h3>
-				<div v-html="data.details"></div>
+				<div v-sanitize="data.details"></div>
 			</div>
-			<div v-show="data.remarks" class="box col">
+			<div v-show="data.remarks" class="box col-lg col-sm-12">
 				<h3>Remarks</h3>
-				<div v-html="data.remarks"></div>
+				<div v-sanitize="data.remarks"></div>
 			</div>
-			<div v-show="data.reward_text" class="box col">
+			<div v-show="data.reward_text" class="box col-lg col-sm-12">
 				<h3>Reward</h3>
-				<div v-html="data.reward_text"></div>
+				<div v-sanitize="data.reward_text"></div>
 			</div>
 		</div>
 
@@ -121,6 +121,8 @@ export default {
 			await store.commit('setCurrentFile', payload)
 			return { data: payload, uid: payload.uid }
 		}
+
+		return { data: store.state.currentFile, uid: store.state.currentFile.uid }
 	},
 	head() {
 		return {
@@ -161,13 +163,6 @@ export default {
 	},
 
 	computed: {
-		data() {
-			return this.$store.state.currentFile
-		},
-		// data() {
-		// 	// console.log(this.uid, this.listings.length)
-		// 	return this.listings.find((el) => el.uid === this.uid)
-		// },
 		identity() {
 			return {
 				hair: this.data.hair ? this.data.hair : 'Unlisted',
@@ -222,23 +217,23 @@ export default {
 			return this.data.subjects
 		},
 		crimeList() {
-			return crimeSorter(this.data.description)
+			return this.data.description ? crimeSorter(this.data.description) : null
 		},
 		aliasList() {
 			return this.data.aliases ? this.data.aliases.join(', ') : 'NA'
 		},
 		reward() {
-			return calculateReward(this.data.reward_text)
+			return this.data.reward_text
+				? calculateReward(this.data.reward_text)
+				: null
 		},
 		isVictim() {
-			return victimCheck([...this.crimeList, ...this.subjectList])
+			return this.data.description
+				? victimCheck([...this.crimeList, ...this.subjectList])
+				: null
 		},
 	},
-	mounted() {
-		// console.log(this.data.length, this.uid)
-		// this.isVictim = victimCheck([...this.subjectList, ...this.crimeList])
-		// this.$store.dispatch('')
-	},
+	mounted() {},
 	methods: {},
 }
 </script>

@@ -78,9 +78,6 @@ export default {
 		}
 	},
 	computed: {
-		list() {
-			return this.$store.state.listing
-		},
 		randomImages() {
 			if (process.browser) {
 				const imageList = []
