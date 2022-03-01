@@ -95,8 +95,8 @@ export default {
 			await store.dispatch('filterList')
 			await store.commit('setfilterListing', payload)
 		} else {
-			// recommiting what the server knows to the front
-			if (query) {
+			// checking if object is empty
+			if (Object.keys(query).length !== 0) {
 				const queryPayload = {
 					status: query.filter,
 					search: query.search,
@@ -105,6 +105,7 @@ export default {
 				}
 				await store.dispatch('queryFilter', queryPayload)
 			}
+
 			await store.commit('setListings', store.state.listing)
 			await store.commit('setfilterListing', store.state.filterList)
 		}
