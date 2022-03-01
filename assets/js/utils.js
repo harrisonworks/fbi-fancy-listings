@@ -1,3 +1,5 @@
+import numeral from 'numeral'
+
 function getStatusTitle(subjectList, status) {
   const search = subjectList.find((item) =>
     item.subjects.includes(status[0])
@@ -42,6 +44,36 @@ function crimeSorter(string) {
   return string.split(';').join(',').split(':').join(',').split(',')
 }
 
+function findReward(rewardText) {
+  if (rewardText) {
+    const regex =
+      /\$[\d,]*(\.\d{2})?(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?|([\d]+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)?(\sdollar\w*|\scent\w*)(\sand\s[\d]*\scent\w*)?)|(one|two|three|four|five|six|seven|eight|nine|ten|twenty|thirty|fifty|sixty|seventy|eighty|ninety)+(\shundred\w*|\sthousand\w*|\smillion\w*|\sbillion\w*|\strillion\w*)*(\sdollars)/g
+    const found = rewardText.match(regex)
+
+    if (found) {
+      // turn million into value
+      if (found[0].includes('million')) {
+        const editedFound = found[0]
+          .substring(0, found[0].indexOf('million') - 1)
+          .concat(',000,000')
+
+        return numeral(editedFound)._value
+      }
+      // edge case
+      if (found[0].includes('one')) {
+        // console.log(found[0])
+        return numeral('1,000,000')._value
+      }
+
+      return numeral(found[0])._value
+    }
+
+    return false
+  }
+
+  return false
+}
+
 function calculateReward(data) {
   if (data) {
     const regex =
@@ -76,6 +108,7 @@ export {
   victimCheck,
   crimeSorter,
   calculateReward,
+  findReward,
   debounce,
   getStatusTitle,
   getStatusCategories,

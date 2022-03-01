@@ -6,7 +6,7 @@ export const state = () => ({
   listing: [],
   filterList: [],
   filter: {
-    pageLimit: 10,
+    pageLimit: 25,
     search: '',
     status: ['all'],
     order: 'recently_published',
@@ -133,7 +133,12 @@ export const state = () => ({
 
 export const mutations = {
   setListings(state, payload) {
-    state.listing = payload
+    // remove any duplicates in dataset
+    const list = payload.reduce((p, c) => {
+      p[c.uid] = c
+      return p
+    }, {})
+    state.listing = Object.values(list)
   },
   setfilterListing(state, listings) {
     state.filterList = listings

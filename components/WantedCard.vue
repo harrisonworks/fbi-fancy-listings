@@ -1,11 +1,11 @@
 <template>
-	<div class="card my-3">
-		<div class="d-flex flex-column">
+	<div>
+		<div class="d-flex flex-column card">
 			<div class="row">
-				<div class="col-lg-2">
-					<img class="m-lg-3" :src="featuredImage" />
+				<div class="col-lg-12">
+					<img :src="featuredImage" />
 				</div>
-				<div class="col">
+				<div class="col-lg-12">
 					<div class="d-flex flex-column m-3">
 						<h6 class="listingDate">{{ niceDate }}</h6>
 
@@ -13,25 +13,33 @@
 							><h3>{{ data.title }}</h3></a
 						>
 
-						<div v-show="crimeList" class="d-flex flex-wrap">
-							<crime-chip v-for="(crime, index) in crimeList" :key="index">
-								{{ crime }}
-							</crime-chip>
-						</div>
+						<div class="d-flex flex-column">
+							<div v-show="crimeList" class="d-flex flex-wrap">
+								<crime-chip
+									style="white-space: normal"
+									v-for="(crime, index) in crimeList"
+									:key="index"
+								>
+									{{ crime }}
+								</crime-chip>
+							</div>
 
-						<div class="d-flex flex-wrap">
-							<crime-chip
-								v-for="(subject, index) in data.subjects"
-								:key="index"
-								color="black"
-							>
-								{{ subject }}
-							</crime-chip>
+							<div class="d-flex flex-wrap">
+								<crime-chip
+									style="white-space: normal"
+									v-for="(subject, index) in data.subjects"
+									:key="index"
+									color="black"
+								>
+									{{ subject }}
+								</crime-chip>
+							</div>
+							<button class="m-3" @click="pressed">Read More</button>
 						</div>
-						<button class="mt-3" @click="pressed">Read More</button>
 					</div>
 				</div>
 			</div>
+
 			<div class="d-flex justify-content-evenly status">
 				<div v-show="data.warning_message" class="flex-grow-1 warning">
 					{{ data.warning_message }}
@@ -97,7 +105,7 @@ export default {
 
 		crimeList() {
 			if (this.data.description) {
-				const arrayCutoff = 3
+				const arrayCutoff = 2
 				// this hack splits out the desciption into bullet points
 				// I dont like regex 🤮
 				const descriptionList = this.data.description
@@ -202,8 +210,9 @@ button {
 }
 
 img {
-	height: 15rem;
-	width: 10rem;
+	max-height: 25rem;
+	width: 100%;
+	/* width: 10rem; */
 
 	object-fit: cover;
 	border: solid black 2px;

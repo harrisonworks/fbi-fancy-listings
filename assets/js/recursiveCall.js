@@ -34,6 +34,7 @@ async function fetchAllListings() {
   return await Promise.all(requestList).then((results) => {
     // flattens all results
     const flattenedArray = [].concat.apply([], results)
+
     console.log('promises complete', 'results:', flattenedArray.length)
     return flattenedArray
   })

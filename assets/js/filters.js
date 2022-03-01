@@ -41,13 +41,7 @@ export function filterList(filter, items) {
     filteredList = searchList
   }
 
-  const list = filteredList.reduce((p, c) => {
-    p[c.uid] = c
-    return p
-  }, {})
-  return Object.values(list)
-
-  // return filteredList
+  return filteredList
 }
 
 export function orderList(order, items) {
