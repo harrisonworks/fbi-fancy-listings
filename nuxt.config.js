@@ -37,6 +37,7 @@ export default {
     '~/plugins/directives.js',
     '~/plugins/dynamicMarquee.js',
     '~/plugins/vueSanitize.js',
+    '~/plugins/masonryWall.js',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

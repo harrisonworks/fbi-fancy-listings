@@ -127,18 +127,7 @@ export default {
 			}
 		},
 	},
-	mounted() {
-		if (this.$route.query.filter) {
-			const payload = {
-				status: this.$route.query.filter,
-				search: this.$route.query.search,
-				order: this.$route.query.orderBy,
-				victim: this.victim,
-			}
-			// console.log('payload', payload)
-			this.$store.dispatch('queryFilter', payload)
-		}
-	},
+	mounted() {},
 	methods: {
 		checked(e) {
 			this.$store.dispatch('filterVictim', e.target.checked)
@@ -162,7 +151,7 @@ export default {
 		},
 		handleStatusFilter(status) {
 			this.$store.dispatch('filterStatus', status)
-			this.$store.commit('setPage', 1)
+			// this.$store.commit('setPage', 1)
 			// find the object which matches the filters in the store
 			this.$router.push({
 				query: {

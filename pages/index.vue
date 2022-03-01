@@ -2,7 +2,7 @@
 	<main>
 		<section class="container my-5">
 			<div class="row align-items-center">
-				<div class="col-lg-8">
+				<div class="col-lg-6">
 					<h1>FBI most wanted</h1>
 					<p>
 						A Brutalist redesign of the infamous
@@ -19,19 +19,31 @@
 							><strong>Open source project, this is not the FBI!</strong></code
 						>
 					</p>
-					<button class="p-2" @click="toGithub">To Github</button>
-				</div>
-				<div class="col-md-4">
-					<div class="d-flex justify-content-end">
-						<div style="text-align: right" class="mx-3">
-							<h2 style="color: blue">{{ totalListings }}</h2>
+
+					<div class="d-flex">
+						<div class="">
+							<h2 style="color: blue">{{ totalListings.length }}</h2>
 							<p>Total Files</p>
 						</div>
 
-						<div style="text-align: right" class="mx-3">
+						<div class="mx-5">
 							<h2 style="color: blue">{{ totalBounty }}</h2>
 							<p>Total Bounty</p>
 						</div>
+					</div>
+
+					<button class="p-2" @click="toGithub">To Github</button>
+				</div>
+
+				<div class="col-lg-6 mb-2">
+					<div class="d-flex flex-wrap justify-content-center">
+						<img
+							v-for="(image, index) in randomImages.images"
+							:key="index"
+							class="box extraImage"
+							:src="image"
+							alt=""
+						/>
 					</div>
 				</div>
 			</div>
@@ -46,19 +58,17 @@
 			</div>
 		</section>
 		<section class="container">
-			<vue-masonry-wall :items="paginated" :options="options">
-				<template v-slot:default="{ item }">
+			<masonry-wall
+				:items="paginated"
+				:ssr-columns="3"
+				:column-width="400"
+				:gap="16"
+			>
+				<template #default="{ item }">
 					<wanted-card :key="item.uid" :data="item" />
 				</template>
-				<!-- <wanted-card v-slot="{ people }" :key="people.uid" :data="people" /> -->
-			</vue-masonry-wall>
-			<!-- <div class="row g-3">
-				<wanted-card
-					v-for="people in paginated"
-					:key="people.uid"
-					:data="people"
-				/>
-			</div> -->
+			</masonry-wall>
+
 			<div v-show="paginated.length === 0">
 				<h4>No Results</h4>
 				<p>
@@ -76,40 +86,33 @@
 
 <script>
 import numeral from 'numeral'
-import VueMasonryWall from 'vue-masonry-wall'
-
 import { findReward } from '~/assets/js/utils.js'
 export default {
 	name: 'IndexPage',
-	components: { VueMasonryWall },
-	data() {
-		return {
-			options: {
-				width: 400,
-				padding: {
-					2: 8,
-					default: 12,
-				},
-			},
-		}
-	},
-	async asyncData({ payload, store }) {
+	async asyncData({ payload, store, query }) {
 		if (payload) {
 			await store.commit('setListings', payload)
 			await store.dispatch('filterList')
 			await store.commit('setfilterListing', payload)
 		} else {
 			// recommiting what the server knows to the front
+			if (query) {
+				const queryPayload = {
+					status: query.filter,
+					search: query.search,
+					order: query.orderBy,
+					victim: store.state.showVictim,
+				}
+				await store.dispatch('queryFilter', queryPayload)
+			}
 			await store.commit('setListings', store.state.listing)
-			await store.dispatch('filterList')
 			await store.commit('setfilterListing', store.state.filterList)
 		}
-
-		return { list: store.state.listing, query: store.state.filterList }
 	},
+
 	computed: {
 		totalListings() {
-			return this.$store.state.listing.length
+			return this.$store.state.listing
 		},
 		totalBounty() {
 			const list = this.$store.state.listing
@@ -133,7 +136,24 @@ export default {
 			return this.indexStart + this.pageLimit
 		},
 		paginated() {
-			return this.peopleList.slice(this.indexStart, this.indexEnd)
+			const shortened = this.peopleList.slice(this.indexStart, this.indexEnd)
+			return shortened
+		},
+		randomImages() {
+			if (process.browser) {
+				const imageList = []
+				const urlList = []
+				for (let index = 0; index < 6; index++) {
+					const randomIndex = Math.floor(
+						Math.random() * this.totalListings.length
+					)
+
+					imageList.push(this.totalListings[randomIndex].images[0].original)
+					urlList.push(this.totalListings[randomIndex].url)
+				}
+				return { images: imageList, url: urlList }
+			}
+			return false
 		},
 		resultsMessage() {
 			return {
@@ -164,21 +184,8 @@ export default {
 	border: 2px solid black;
 	background: var(--color-bg);
 }
-
-.card {
-	transition: opacity 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
-.card-enter-active {
-	transition: opacity 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.card-leave-active {
-	transition: opacity 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.card-enter, .card-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-	/* transform: translateX(10px); */
-	opacity: 0;
+.extraImage {
+	max-width: 30%;
+	height: auto;
 }
 </style>

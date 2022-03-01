@@ -181,11 +181,14 @@ export const mutations = {
   setVictimFilter(state, payload) {
     state.filter.showVictim = payload
   },
-
   filterList(state) {
     const listing = [...state.listing]
     state.filterList = listing
-    state.filterList = Filters.filterList(state.filter, listing)
+    state.filterList = Filters.filterList(
+      state.filter,
+      state.filter.order,
+      listing
+    )
   },
   orderList(state) {
     // order those that have been filtered
@@ -217,7 +220,7 @@ export const actions = {
   },
   async filterList({ commit }) {
     await commit('filterList')
-    await commit('orderList')
+    // await commit('orderList')
   },
   async defaultHeader({ commit }) {
     await commit('updateHeaderInfo', {

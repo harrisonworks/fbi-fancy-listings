@@ -34,12 +34,6 @@
 					Official FBI Listing
 				</button>
 			</div>
-
-			<div v-show="!notHome" class="box">
-				<button class="" style="white-space: nowrap" @click="goToAbout">
-					What is this?
-				</button>
-			</div>
 		</div>
 	</nav>
 </template>
@@ -78,12 +72,6 @@ export default {
 		},
 		goToFbi() {
 			window.open(this.$store.state.headerInfo.url, '_blank').focus()
-		},
-		goToAbout() {
-			this.$router.push({
-				path: '/what-is-this',
-				name: 'what-is-this',
-			})
 		},
 	},
 }
