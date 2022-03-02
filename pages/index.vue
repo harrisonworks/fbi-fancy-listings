@@ -10,7 +10,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="container">
+		<section class="container-fluid">
 			<masonry-wall
 				:items="paginated"
 				:ssr-columns="3"
@@ -35,7 +35,7 @@
 				<button class="p-3"><a href="#top"> Back to Top</a></button>
 			</div>
 			<intersection-observer
-				sentinal-name="sentinal-name"
+				sentinal-name="bottomPage"
 				@on-intersection-element="onIntersectionElement"
 			></intersection-observer>
 		</section>
@@ -70,6 +70,7 @@ export default {
 	data() {
 		return {
 			noResults: false,
+			intersectLock: false,
 		}
 	},
 
@@ -102,23 +103,23 @@ export default {
 		peopleList() {
 			// reset state if people list change detected
 			this.noResults = false
-			this.$store.commit('setPageLimit', 25)
+			this.$store.commit('setPageLimit', 10)
 		},
+		pageLimit() {},
 	},
 	mounted() {},
 	methods: {
 		onIntersectionElement: debounce(function (e) {
-			if (
-				this.$store.state.filter.pageLimit < this.$store.state.filterList.length
-			) {
+			if (this.pageLimit < this.peopleList.length) {
 				this.$store.commit(
 					'setPageLimit',
-					this.$store.state.filter.pageLimit + 25
+					this.$store.state.filter.pageLimit + 10
 				)
 			} else {
 				this.noResults = true
 			}
-		}, 250),
+			this.intersectLock = false
+		}, 500),
 	},
 }
 </script>

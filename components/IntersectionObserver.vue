@@ -17,7 +17,9 @@ export default {
 	},
 	watch: {
 		isIntersectingElement(value) {
-			this.$emit('on-intersection-element', value)
+			if (value) {
+				this.$emit('on-intersection-element', value)
+			}
 		},
 	},
 	mounted() {
