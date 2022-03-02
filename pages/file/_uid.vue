@@ -21,6 +21,7 @@
 						<crime-chip v-show="isVictim" color="yellow" text="black"
 							>VICTIM</crime-chip
 						>
+						<crime-chip v-show="isCaptured" color="green">CAPTURED</crime-chip>
 					</div>
 				</div>
 				<div v-show="crimeList" class="box">
@@ -232,9 +233,13 @@ export default {
 				? victimCheck([...this.crimeList, ...this.subjectList])
 				: null
 		},
+		isCaptured() {
+			if (this.data.status !== 'na') {
+				return 'CAPTURED'
+			}
+			return false
+		},
 	},
-	mounted() {},
-	methods: {},
 }
 </script>
 

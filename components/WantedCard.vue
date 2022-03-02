@@ -10,15 +10,15 @@
 						<h6 class="listingDate">{{ niceDate }}</h6>
 
 						<a class="cardHeader" @click="pressed"
-							><h3>{{ data.title }}</h3></a
+							><h4>{{ data.title }}</h4></a
 						>
 
 						<div class="d-flex flex-column">
 							<div v-show="crimeList" class="d-flex flex-wrap">
 								<crime-chip
-									style="white-space: normal"
 									v-for="(crime, index) in crimeList"
 									:key="index"
+									style="white-space: normal"
 								>
 									{{ crime }}
 								</crime-chip>
@@ -26,9 +26,9 @@
 
 							<div class="d-flex flex-wrap">
 								<crime-chip
-									style="white-space: normal"
 									v-for="(subject, index) in data.subjects"
 									:key="index"
+									style="white-space: normal"
 									color="black"
 								>
 									{{ subject }}
@@ -40,7 +40,14 @@
 				</div>
 			</div>
 
-			<div class="d-flex justify-content-evenly status">
+			<div
+				class="
+					d-flex
+					align-items-stretch align-items-center
+					justify-content-evenly
+					status
+				"
+			>
 				<div v-show="data.warning_message" class="flex-grow-1 warning">
 					{{ data.warning_message }}
 				</div>
@@ -53,7 +60,7 @@
 					VICTIM
 				</div>
 
-				<div v-show="captured" class="flex-grow-1 captured">{{ captured }}</div>
+				<div v-show="isCaptured" class="flex-grow-1 captured">CAPTURED</div>
 			</div>
 		</div>
 	</div>
@@ -96,13 +103,12 @@ export default {
 				})
 			)
 		},
-		captured() {
+		isCaptured() {
 			if (this.data.status !== 'na') {
 				return 'CAPTURED'
 			}
 			return false
 		},
-
 		crimeList() {
 			if (this.data.description) {
 				const arrayCutoff = 2
@@ -187,6 +193,7 @@ export default {
 	padding: 0.5rem 0.8rem;
 	text-align: center;
 	font-weight: 500;
+	/* height: 100%; */
 	/* border: 2px solid black; */
 	box-sizing: border-box;
 	color: white;
@@ -210,7 +217,7 @@ button {
 }
 
 img {
-	max-height: 25rem;
+	max-height: 20rem;
 	width: 100%;
 	/* width: 10rem; */
 

@@ -1,75 +1,77 @@
 <template>
-	<div class="row align-items-center">
-		<div class="col-lg-1">
-			<div class="mx-2">
-				<h3>{{ resultNumber }}</h3>
-				<h5>Results</h5>
+	<div class="box">
+		<div class="row align-items-center">
+			<div class="col-lg-1">
+				<div class="mx-2">
+					<h3>{{ resultNumber }}</h3>
+					<h5>Results</h5>
+				</div>
 			</div>
-		</div>
-		<div class="col-lg-11">
-			<div class="mb-2 d-flex">
-				<input
-					ref="searchField"
-					class="mx-2 p-3 flex-fill"
-					:value="search"
-					type="search"
-					placeholder="Search the most wanted"
-					aria-label="Search the most wanted"
-					@input="handleSearch"
-				/>
-			</div>
-			<div class="d-flex flex-wrap">
-				<div class="dropdown m-2">
-					<button v-click-outside="closeCat" class="p-3" @click="openCat">
-						Category: {{ catergoryText }}
-					</button>
-					<div ref="dropdownCat" class="dropdown-content box">
-						<div class="d-flex flex-wrap">
+			<div class="col-lg-11">
+				<div class="mb-2 d-flex">
+					<input
+						ref="searchField"
+						class="mx-2 p-3 flex-fill"
+						:value="search"
+						type="search"
+						placeholder="Search the most wanted"
+						aria-label="Search the most wanted"
+						@input="handleSearch"
+					/>
+				</div>
+				<div class="d-flex flex-wrap">
+					<div class="dropdown m-2">
+						<button v-click-outside="closeCat" class="p-3" @click="openCat">
+							Category: {{ catergoryText }}
+						</button>
+						<div ref="dropdownCat" class="dropdown-content box">
+							<div class="d-flex flex-wrap">
+								<button
+									v-for="(category, index) in subjectList"
+									:key="index"
+									class="px-2 m-1"
+									:class="{
+										pressed: status === `${category.subjects[0]}`,
+									}"
+									@click="handleStatusFilter(category.subjects)"
+								>
+									{{ category.title }}
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="dropdown m-2">
+						<button v-click-outside="closeOrder" class="p-3" @click="openOrder">
+							Order By: {{ orderText }}
+						</button>
+						<div ref="dropdownOrder" class="dropdown-content box">
 							<button
-								v-for="(category, index) in subjectList"
+								v-for="(orderItem, index) in orderList"
 								:key="index"
 								class="px-2 m-1"
 								:class="{
-									pressed: status === `${category.subjects[0]}`,
+									pressed: order === `${orderItem}`,
 								}"
-								@click="handleStatusFilter(category.subjects)"
+								@click="handleFilterOrder(orderItem)"
 							>
-								{{ category.title }}
+								{{ orderItem }}
 							</button>
 						</div>
 					</div>
-				</div>
-
-				<div class="dropdown m-2">
-					<button v-click-outside="closeOrder" class="p-3" @click="openOrder">
-						Order By: {{ orderText }}
-					</button>
-					<div ref="dropdownOrder" class="dropdown-content box">
-						<button
-							v-for="(orderItem, index) in orderList"
-							:key="index"
-							class="px-2 m-1"
-							:class="{
-								pressed: order === `${orderItem}`,
-							}"
-							@click="handleFilterOrder(orderItem)"
-						>
-							{{ orderItem }}
+					<div class="m-2 toggle">
+						<input
+							ref="toggle"
+							type="checkbox"
+							:checked="victim"
+							@change="checked"
+						/>
+					</div>
+					<div class="m-2 ms-auto">
+						<button id="resetFilter" class="p-3" @click="filterReset">
+							Clear Filters
 						</button>
 					</div>
-				</div>
-				<div class="m-2 toggle">
-					<input
-						ref="toggle"
-						type="checkbox"
-						:checked="victim"
-						@change="checked"
-					/>
-				</div>
-				<div class="m-2 ms-auto">
-					<button id="resetFilter" class="p-3" @click="filterReset">
-						Clear Filters
-					</button>
 				</div>
 			</div>
 		</div>
@@ -130,7 +132,7 @@ export default {
 	mounted() {},
 	methods: {
 		checked(e) {
-			this.$store.dispatch('filterVictim', e.target.checked)
+			this.$store.dispatch('filterVictim')
 		},
 		openCat() {
 			this.$refs.dropdownCat.classList.toggle('show')
@@ -202,15 +204,6 @@ export default {
 		},
 		filterReset() {
 			this.$store.dispatch('resetFilter')
-
-			this.$router.push({
-				query: {
-					page: 1,
-					filter: 'All',
-					orderBy: 'recently_published',
-					search: '',
-				},
-			})
 		},
 	},
 }
@@ -274,9 +267,9 @@ export default {
 	min-width: 8rem;
 }
 
-.toggle:focus-within {
-	/* outline: 1px dotted; */
-}
+/* .toggle:focus-within {
+	outline: 1px dotted;
+} */
 
 .toggle input {
 	color: currentColor;

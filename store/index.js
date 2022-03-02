@@ -169,6 +169,9 @@ export const mutations = {
       state.filter.page = value
     }
   },
+  setPageLimit(state, payload) {
+    state.filter.pageLimit = Number(payload)
+  },
   setFilterStatus(state, status) {
     state.filter.status = status
   },
@@ -184,11 +187,7 @@ export const mutations = {
   filterList(state) {
     const listing = [...state.listing]
     state.filterList = listing
-    state.filterList = Filters.filterList(
-      state.filter,
-      state.filter.order,
-      listing
-    )
+    state.filterList = Filters.filterList(state.filter, listing)
   },
   orderList(state) {
     // order those that have been filtered
@@ -214,8 +213,8 @@ export const actions = {
     await commit('setFilterSearch', search)
     dispatch('filterList')
   },
-  async filterVictim({ commit, dispatch }, value) {
-    await commit('setVictimFilter', value)
+  async filterVictim({ commit, dispatch, state }) {
+    await commit('setVictimFilter', !state.filter.showVictim)
     dispatch('filterList')
   },
   async filterList({ commit }) {

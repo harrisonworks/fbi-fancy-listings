@@ -2,7 +2,7 @@ import numeral from 'numeral'
 import { getUnixTime } from 'date-fns'
 import { calculateReward, victimCheck, crimeSorter } from './utils.js'
 
-export function filterList(filter, order, items) {
+export function filterList(filter, items) {
   let filteredList = [...items]
 
   if (!filter.showVictim) {
@@ -47,7 +47,7 @@ export function filterList(filter, order, items) {
   }, {})
   const reducedList = Object.values(list)
   // final step is to order the filtered list
-  return orderList(order, reducedList)
+  return orderList(filter.order, reducedList)
   // return filteredList
 }
 
