@@ -57,9 +57,11 @@ export default {
 		if (payload) {
 			await store.commit('setListings', payload)
 			await store.dispatch('filterList')
+
 			await store.commit('setfilterListing', payload)
 		} else {
 			// checking if object is empty
+
 			if (Object.keys(query).length !== 0) {
 				const queryPayload = {
 					status: query.filter,
@@ -70,32 +72,40 @@ export default {
 				await store.dispatch('queryFilter', queryPayload)
 			}
 
+			// filter the list
+			// await store.dispatch('filterList')
 			await store.commit('setListings', store.state.listing)
+			// console.log(store.state.filterList.length)
+
 			await store.commit('setfilterListing', store.state.filterList)
 		}
 	},
 	data() {
 		return {
 			noResults: false,
-			intersectLock: false,
 		}
 	},
-
 	computed: {
+		queryState() {
+			return {
+				page: this.$store.state.filter.page,
+				filter: getStatusTitle(
+					this.$store.state.subjectList,
+					this.$store.state.filter.status
+				),
+				orderBy: this.$store.state.filter.order,
+				groupBy: this.$store.state.filter.group,
+				search: this.$store.state.filter.search,
+			}
+		},
 		pageLimit() {
 			return this.$store.state.filter.pageLimit
 		},
 		peopleList() {
 			return this.$store.state.filterList
 		},
-		indexStart() {
-			return (this.$store.state.filter.page - 1) * this.pageLimit
-		},
-		indexEnd() {
-			return this.indexStart + this.pageLimit
-		},
 		paginated() {
-			const shortened = this.peopleList.slice(this.indexStart, this.indexEnd)
+			const shortened = this.peopleList.slice(0, this.pageLimit)
 			return shortened
 		},
 		resultsMessage() {
@@ -113,7 +123,12 @@ export default {
 			this.$store.commit('setPageLimit', 10)
 		},
 	},
-	mounted() {},
+	async mounted() {
+		// await this.$router.push({
+		// 	query: this.queryState,
+		// })
+		await this.$store.dispatch('filterList')
+	},
 	methods: {
 		async filterReset() {
 			await this.$store.dispatch('resetFilter')
@@ -140,7 +155,6 @@ export default {
 			} else {
 				this.noResults = true
 			}
-			this.intersectLock = false
 		}, 500),
 	},
 }

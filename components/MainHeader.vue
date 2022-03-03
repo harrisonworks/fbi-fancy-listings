@@ -63,15 +63,14 @@ export default {
 				),
 				orderBy: this.$store.state.filter.order,
 				groupBy: this.$store.state.filter.group,
-
 				search: this.$store.state.filter.search,
 			}
 		},
 	},
 	methods: {
-		pressed() {
-			this.$store.dispatch('defaultHeader')
-			this.$router.push({
+		async pressed() {
+			await this.$store.dispatch('defaultHeader')
+			await this.$router.push({
 				path: '/',
 				query: this.queryState,
 			})

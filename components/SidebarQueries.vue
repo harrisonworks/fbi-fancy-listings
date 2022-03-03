@@ -10,7 +10,7 @@
 						:key="index"
 						class="py-2 m-1"
 						:class="{
-							pressed: status === `${category.subjects[0]}`,
+							pressed: status[0] === `${category.subjects[0]}`,
 						}"
 						@click="handleStatusFilter(category.subjects)"
 					>
@@ -44,15 +44,13 @@ export default {
 		subjectList() {
 			return this.$store.state.subjectList
 		},
-
+		status() {
+			return this.$store.state.filter.status
+		},
 		search() {
 			return this.$store.state.filter.search
 		},
-		status() {
-			if (this.$store.state.filter.status[0])
-				return this.$store.state.filter.status[0]
-			else return ['all']
-		},
+
 		catergoryText() {
 			return getStatusTitle(this.subjectList, this.$store.state.filter.status)
 		},

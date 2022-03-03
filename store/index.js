@@ -261,6 +261,7 @@ export const actions = {
     // only set cache if on homepage
     // else this will run for every page when generated
     // 3.2GB static if this test isn't in place
+
     if (context.route.path === '/') {
       commit('setcache', context.ssrContext.$cache)
       dispatch('filterList')
