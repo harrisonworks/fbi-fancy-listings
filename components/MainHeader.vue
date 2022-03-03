@@ -29,6 +29,10 @@
 				</div>
 			</dynamic-marquee>
 
+			<div v-show="!notHome" class="box">
+				<search-bar class="mt-2" />
+			</div>
+
 			<div v-show="notHome" class="box">
 				<button class="" style="white-space: nowrap" @click="goToFbi">
 					Official FBI Listing
@@ -58,6 +62,8 @@ export default {
 					this.$store.state.filter.status
 				),
 				orderBy: this.$store.state.filter.order,
+				groupBy: this.$store.state.filter.group,
+
 				search: this.$store.state.filter.search,
 			}
 		},

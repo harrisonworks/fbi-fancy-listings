@@ -10,6 +10,7 @@ export const state = () => ({
     search: '',
     status: ['all'],
     order: 'recently_published',
+    group: 'fugitives_only',
     page: 1,
     showVictim: false,
   },
@@ -26,6 +27,7 @@ export const state = () => ({
     'oldest_published',
     'largest_reward',
   ],
+  groupList: ['all', 'fugitives_only', 'victims_only'],
   subjectList: [
     {
       title: 'All',
@@ -35,12 +37,15 @@ export const state = () => ({
       title: 'Minors',
       subjects: [
         'Crimes Against Children',
-        'Kidnappings and Missing Persons',
         'Parental Kidnapping',
         'ECAP',
         'Endangered Child Alert Program',
         'Parental Kidnapping Victim',
       ],
+    },
+    {
+      title: 'Kidnappings and Missing Persons',
+      subjects: ['Kidnappings and Missing Persons'],
     },
     {
       title: 'ViCAP',
@@ -178,11 +183,11 @@ export const mutations = {
   setFilterSearch(state, search) {
     state.filter.search = search
   },
-  setOrder(state, order) {
-    state.filter.order = order
+  setFilterGroup(state, group) {
+    state.filter.group = group
   },
-  setVictimFilter(state, payload) {
-    state.filter.showVictim = payload
+  setFilterOrder(state, order) {
+    state.filter.order = order
   },
   filterList(state) {
     const listing = [...state.listing]
@@ -202,7 +207,7 @@ export const actions = {
     await commit('setListings', results)
   },
   async filterOrder({ commit }, order) {
-    await commit('setOrder', order)
+    await commit('setFilterOrder', order)
     await commit('orderList')
   },
   async filterStatus({ commit, dispatch }, status) {
@@ -213,8 +218,8 @@ export const actions = {
     await commit('setFilterSearch', search)
     dispatch('filterList')
   },
-  async filterVictim({ commit, dispatch, state }) {
-    await commit('setVictimFilter', !state.filter.showVictim)
+  async filterGroup({ commit, dispatch }, group) {
+    await commit('setFilterGroup', group)
     dispatch('filterList')
   },
   async filterList({ commit }) {
@@ -234,8 +239,8 @@ export const actions = {
     await commit('setPage', 1)
     await commit('setFilterStatus', ['all'])
     await commit('setFilterSearch', '')
-    await commit('setOrder', 'recently_published')
-    await commit('setVictimFilter', true)
+    await commit('setFilterOrder', 'recently_published')
+    await commit('setFilterGroup', 'all')
 
     dispatch('filterList')
   },
@@ -247,17 +252,18 @@ export const actions = {
 
     await commit('setFilterStatus', statusFilter)
     await commit('setFilterSearch', query.search)
-    await commit('setOrder', query.order)
-    await commit('setVictimFilter', query.victim)
+    await commit('setFilterOrder', query.orderBy)
+    await commit('setFilterGroup', query.groupBy)
 
     dispatch('filterList')
   },
-  nuxtServerInit({ commit }, context) {
+  nuxtServerInit({ commit, dispatch }, context) {
     // only set cache if on homepage
     // else this will run for every page when generated
     // 3.2GB static if this test isn't in place
     if (context.route.path === '/') {
       commit('setcache', context.ssrContext.$cache)
+      dispatch('filterList')
     }
   },
 }

@@ -10,6 +10,10 @@
   --toggle-width: 5rem;
 }
 
+.container-fluid {
+  max-width: 1600px;
+}
+
 html {
   /* setting rem */
   font-size: 14px;
@@ -88,4 +92,20 @@ input[type='search'] {
   border-image-repeat: stretch;
   border-radius: 0em;
   -webkit-appearance: none;
+}
+
+.box {
+  height: auto;
+  flex-grow: 1;
+  padding: 1rem;
+  background: var(--color-bg);
+  border: 2px solid black;
+}
+
+/* dropdown */
+
+.pressed {
+  /* background: var(--bs-blue); */
+  background: blue;
+  color: white;
 }

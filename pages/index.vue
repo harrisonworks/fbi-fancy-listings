@@ -5,45 +5,52 @@
 		</section>
 		<section class="container my-5">
 			<div class="row">
-				<div class="col-lg-12">
-					<search-queries />
-				</div>
+				<div class="col-lg-12"></div>
 			</div>
 		</section>
 		<section class="container-fluid">
-			<masonry-wall
-				:items="paginated"
-				:ssr-columns="3"
-				:column-width="350"
-				:gap="16"
-			>
-				<template #default="{ item }">
-					<wanted-card :key="item.uid" :data="item" />
-				</template>
-			</masonry-wall>
-		</section>
-		<section class="container my-5">
-			<div v-show="noResults">
-				<h4>No results to show</h4>
-				<p>Total Results {{ peopleList.length }}</p>
-				<p>
-					Filtering with these tags:
-					<em> {{ resultsMessage.tags }}</em> <br />
-					Searching for: <em> {{ resultsMessage.search }}</em> <br />
-					Showing Victims: <em> {{ resultsMessage.victim }} </em>
-				</p>
-				<button class="p-3"><a href="#top"> Back to Top</a></button>
+			<div class="row">
+				<div class="col-lg-2">
+					<sidebar-queries />
+				</div>
+				<div class="col">
+					<div class="mb-5">
+						<status-bar />
+					</div>
+					<masonry-wall
+						:items="paginated"
+						:ssr-columns="3"
+						:column-width="350"
+						:gap="16"
+					>
+						<template #default="{ item }">
+							<wanted-card :key="item.uid" :data="item" />
+						</template>
+					</masonry-wall>
+
+					<div v-show="noResults" class="ms-3 my-5">
+						<h4>No results to show</h4>
+						<p>
+							Filtering with these tags:
+							<em> {{ resultsMessage.tags }}</em> <br />
+							Searching for: <em> {{ resultsMessage.search }}</em> <br />
+							Group By: <em> {{ resultsMessage.group }} </em>
+						</p>
+						<button class="p-2" @click="filterReset">Clear Filters</button>
+					</div>
+					<intersection-observer
+						sentinal-name="bottomPage"
+						@on-intersection-element="onIntersectionElement"
+					></intersection-observer>
+				</div>
 			</div>
-			<intersection-observer
-				sentinal-name="bottomPage"
-				@on-intersection-element="onIntersectionElement"
-			></intersection-observer>
 		</section>
+		<section class="container my-5"></section>
 	</main>
 </template>
 
 <script>
-import { debounce } from '~/assets/js/utils.js'
+import { debounce, getStatusTitle } from '~/assets/js/utils.js'
 export default {
 	name: 'IndexPage',
 	async asyncData({ payload, store, query }) {
@@ -56,9 +63,9 @@ export default {
 			if (Object.keys(query).length !== 0) {
 				const queryPayload = {
 					status: query.filter,
+					orderBy: query.orderBy,
+					groupBy: query.groupBy,
 					search: query.search,
-					order: query.orderBy,
-					victim: store.state.showVictim,
 				}
 				await store.dispatch('queryFilter', queryPayload)
 			}
@@ -95,7 +102,7 @@ export default {
 			return {
 				tags: `${this.$store.state.filter.status} `,
 				search: `${this.$store.state.filter.search}`,
-				victim: `${this.$store.state.filter.showVictim}`,
+				group: `${this.$store.state.filter.group}`,
 			}
 		},
 	},
@@ -105,10 +112,25 @@ export default {
 			this.noResults = false
 			this.$store.commit('setPageLimit', 10)
 		},
-		pageLimit() {},
 	},
 	mounted() {},
 	methods: {
+		async filterReset() {
+			await this.$store.dispatch('resetFilter')
+
+			await this.$router.push({
+				query: {
+					page: this.$store.state.filter.page,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					orderBy: this.$store.state.filter.order,
+					groupBy: this.$store.state.filter.group,
+					search: this.$store.state.filter.search,
+				},
+			})
+		},
 		onIntersectionElement: debounce(function (e) {
 			if (this.pageLimit < this.peopleList.length) {
 				this.$store.commit(

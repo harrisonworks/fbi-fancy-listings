@@ -5,16 +5,24 @@ import { calculateReward, victimCheck, crimeSorter } from './utils.js'
 export function filterList(filter, items) {
   let filteredList = [...items]
 
-  if (!filter.showVictim) {
+  // filter groups
+  if (filter.group === 'fugitives_only') {
     const matches = filteredList.filter((item) => {
       const description = crimeSorter(item.description)
       return !victimCheck([...item.subjects, ...description])
     })
 
     filteredList = matches
+  } else if (filter.group === 'victims_only') {
+    const matches = filteredList.filter((item) => {
+      const description = crimeSorter(item.description)
+      return victimCheck([...item.subjects, ...description])
+    })
+
+    filteredList = matches
   }
 
-  // Filter status
+  // filter status
   if (!filter.status.includes('all')) {
     const matches = filteredList.filter((item) => {
       return filter.status.some((str) => {

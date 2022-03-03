@@ -12,22 +12,21 @@
 				>
 				The listing here are all real people wanted by the FBI.
 			</p>
-			<p>
-				<code><strong>Open source project, this is not the FBI!</strong></code>
-			</p>
 
 			<div class="d-flex">
-				<div class="">
-					<h2 style="color: blue">{{ totalListings.length }}</h2>
-					<p>Wanted</p>
-				</div>
+				<crime-chip color="blue"
+					><h2>{{ totalListings.length }} Wanted</h2></crime-chip
+				>
 
-				<div class="mx-5">
-					<h2 style="color: blue">{{ totalBounty }}</h2>
-					<p>Total Bounty</p>
+				<div class="mx-3">
+					<crime-chip color="blue"
+						><h2>{{ totalBounty }} Total Bounty</h2></crime-chip
+					>
 				</div>
 			</div>
-
+			<p class="mt-3">
+				<code><strong>Open source project, this is not the FBI!</strong></code>
+			</p>
 			<button class="p-2" @click="toGithub">To Github</button>
 		</div>
 

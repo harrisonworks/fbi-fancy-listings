@@ -8,17 +8,7 @@
 				</div>
 			</div>
 			<div class="col-lg-11">
-				<div class="mb-2 d-flex">
-					<input
-						ref="searchField"
-						class="mx-2 p-3 flex-fill"
-						:value="search"
-						type="search"
-						placeholder="Search the most wanted"
-						aria-label="Search the most wanted"
-						@input="handleSearch"
-					/>
-				</div>
+				<search-bar />
 				<div class="d-flex flex-wrap">
 					<div class="dropdown m-2">
 						<button v-click-outside="closeCat" class="p-3" @click="openCat">
@@ -60,17 +50,10 @@
 						</div>
 					</div>
 					<div class="m-2 toggle">
-						<input
-							ref="toggle"
-							type="checkbox"
-							:checked="victim"
-							@change="checked"
-						/>
+						<input ref="toggle" type="checkbox" />
 					</div>
 					<div class="m-2 ms-auto">
-						<button id="resetFilter" class="p-3" @click="filterReset">
-							Clear Filters
-						</button>
+						<button class="p-3" @click="filterReset">Clear Filters</button>
 					</div>
 				</div>
 			</div>
@@ -81,7 +64,6 @@
 
 <script>
 import {
-	debounce,
 	getStatusTitle,
 	// getStatusCategories,
 } from '~/assets/js/utils.js'
@@ -131,9 +113,6 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		checked(e) {
-			this.$store.dispatch('filterVictim')
-		},
 		openCat() {
 			this.$refs.dropdownCat.classList.toggle('show')
 		},
@@ -163,29 +142,12 @@ export default {
 						this.$store.state.filter.status
 					),
 					orderBy: this.$store.state.filter.order,
-
+					groupBy: this.$store.state.filter.group,
 					search: this.$store.state.filter.search,
 				},
 			})
 		},
-		handleSearch: debounce(function (e) {
-			this.$store.dispatch('filterSearch', this.$refs.searchField.value)
-			this.$store.commit('setPage', 1)
 
-			this.$router.push({
-				path: '/',
-				query: {
-					page: this.$store.state.filter.page,
-					filter: getStatusTitle(
-						this.$store.state.subjectList,
-						this.$store.state.filter.status
-					),
-					orderBy: this.$store.state.filter.order,
-
-					search: this.$refs.searchField.value,
-				},
-			})
-		}, 500),
 		handleFilterOrder(orderBy) {
 			this.$store.dispatch('filterOrder', orderBy)
 
@@ -198,12 +160,26 @@ export default {
 						this.$store.state.filter.status
 					),
 					orderBy,
+					groupBy: this.$store.state.filter.group,
 					search: this.$store.state.filter.search,
 				},
 			})
 		},
-		filterReset() {
-			this.$store.dispatch('resetFilter')
+		async filterReset() {
+			await this.$store.dispatch('resetFilter')
+
+			await this.$router.push({
+				query: {
+					page: this.$store.state.filter.page,
+					filter: getStatusTitle(
+						this.$store.state.subjectList,
+						this.$store.state.filter.status
+					),
+					orderBy: this.$store.state.filter.order,
+					groupBy: this.$store.state.filter.group,
+					search: this.$store.state.filter.search,
+				},
+			})
 		},
 	},
 }
