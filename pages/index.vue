@@ -62,22 +62,23 @@ export default {
 		} else {
 			// checking if object is empty
 
-			if (Object.keys(query).length !== 0) {
-				const queryPayload = {
-					status: query.filter,
-					orderBy: query.orderBy,
-					groupBy: query.groupBy,
-					search: query.search,
-				}
-				await store.dispatch('queryFilter', queryPayload)
-			}
+			// if (Object.keys(query).length !== 0) {
+			// 	const queryPayload = {
+			// 		status: query.filter,
+			// 		orderBy: query.orderBy,
+			// 		groupBy: query.groupBy,
+			// 		search: query.search,
+			// 	}
+			// 	await store.dispatch('queryFilter', queryPayload)
+			// }
 
 			// filter the list
-			// await store.dispatch('filterList')
 			await store.commit('setListings', store.state.listing)
-			// console.log(store.state.filterList.length)
+			await store.dispatch('filterList')
 
 			await store.commit('setfilterListing', store.state.filterList)
+
+			return { subjectList: store.state.subjectList }
 		}
 	},
 	data() {
@@ -87,15 +88,13 @@ export default {
 	},
 	computed: {
 		queryState() {
+			console.log(this.subjectList, this.$route.query.filter)
 			return {
-				page: this.$store.state.filter.page,
-				filter: getStatusTitle(
-					this.$store.state.subjectList,
-					this.$store.state.filter.status
-				),
-				orderBy: this.$store.state.filter.order,
-				groupBy: this.$store.state.filter.group,
-				search: this.$store.state.filter.search,
+				page: this.$route.query.page,
+				filter: this.$route.query.filter,
+				orderBy: this.$route.query.orderBy,
+				groupBy: this.$route.query.groupBy,
+				search: this.$route.query.search,
 			}
 		},
 		pageLimit() {
@@ -127,7 +126,8 @@ export default {
 		// await this.$router.push({
 		// 	query: this.queryState,
 		// })
-		await this.$store.dispatch('filterList')
+		console.log(this.queryState)
+		await this.$store.dispatch('queryFilter', this.queryState)
 	},
 	methods: {
 		async filterReset() {

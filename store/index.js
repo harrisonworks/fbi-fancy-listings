@@ -248,14 +248,14 @@ export const actions = {
     // return all to defaults
     await commit('setPage', 1)
 
-    const statusFilter = getStatusCategories(state.subjectList, query.status)
+    const statusFilter = getStatusCategories(state.subjectList, query.filter)
 
     await commit('setFilterStatus', statusFilter)
     await commit('setFilterSearch', query.search)
     await commit('setFilterOrder', query.orderBy)
     await commit('setFilterGroup', query.groupBy)
 
-    dispatch('filterList')
+    await dispatch('filterList')
   },
   nuxtServerInit({ commit, dispatch }, context) {
     // only set cache if on homepage
