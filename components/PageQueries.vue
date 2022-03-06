@@ -46,7 +46,6 @@ export default {
 		},
 		queryState() {
 			return {
-				page: this.$store.state.filter.page,
 				filter: getStatusTitle(
 					this.$store.state.subjectList,
 					this.$store.state.filter.status

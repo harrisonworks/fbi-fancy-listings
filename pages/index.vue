@@ -88,7 +88,7 @@ export default {
 	},
 	computed: {
 		queryState() {
-			console.log(this.subjectList, this.$route.query.filter)
+			// console.log(this.subjectList, this.$route.query.filter)
 			return {
 				page: this.$route.query.page,
 				filter: this.$route.query.filter,
@@ -123,11 +123,10 @@ export default {
 		},
 	},
 	async mounted() {
-		// await this.$router.push({
-		// 	query: this.queryState,
-		// })
-		console.log(this.queryState)
-		await this.$store.dispatch('queryFilter', this.queryState)
+		// if there is a query make sure it applies to the filter
+		if (Object.keys(this.$route.query).length !== 0) {
+			await this.$store.dispatch('queryFilter', this.queryState)
+		}
 	},
 	methods: {
 		async filterReset() {
@@ -135,7 +134,6 @@ export default {
 
 			await this.$router.push({
 				query: {
-					page: this.$store.state.filter.page,
 					filter: getStatusTitle(
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
@@ -155,7 +153,7 @@ export default {
 			} else {
 				this.noResults = true
 			}
-		}, 500),
+		}, 50),
 	},
 }
 </script>

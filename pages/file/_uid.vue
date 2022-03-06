@@ -109,7 +109,7 @@ import { calculateReward, crimeSorter, victimCheck } from '~/assets/js/utils.js'
 
 export default {
 	name: 'FilePage',
-	async asyncData({ payload, route, store }) {
+	async asyncData({ payload, store }) {
 		// for generation
 		if (payload) {
 			await store.commit('updateHeaderInfo', {

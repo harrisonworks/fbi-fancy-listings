@@ -63,7 +63,6 @@ export default {
 			// find the object which matches the filters in the store
 			this.$router.push({
 				query: {
-					page: this.$store.state.filter.page,
 					filter: getStatusTitle(
 						this.$store.state.subjectList,
 						this.$store.state.filter.status

@@ -132,7 +132,6 @@ export default {
 
 			await this.$router.push({
 				query: {
-					page: this.$store.state.filter.page,
 					filter: getStatusTitle(
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
@@ -157,7 +156,6 @@ export default {
 
 			this.$router.push({
 				query: {
-					page: this.$store.state.filter.page,
 					filter: getStatusTitle(
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
@@ -182,7 +180,6 @@ export default {
 
 			this.$router.push({
 				query: {
-					page: this.$store.state.filter.page,
 					filter: getStatusTitle(
 						this.$store.state.subjectList,
 						this.$store.state.filter.status

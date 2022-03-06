@@ -28,7 +28,6 @@ export default {
 			this.$router.push({
 				path: '/',
 				query: {
-					page: this.$store.state.filter.page,
 					filter: getStatusTitle(
 						this.$store.state.subjectList,
 						this.$store.state.filter.status
