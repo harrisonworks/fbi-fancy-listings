@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex flex-wrap align-items-center top-line-status">
-			<h5 v-show="isFiltered" class="mb-0 me-3">Filter</h5>
+			<h5 v-show="isFiltered" class="mb-0 me-2">Filter</h5>
 			<crime-chip v-show="isFiltered" style="white-space: normal" color="blue">
 				{{ filterApplied }}
 			</crime-chip>

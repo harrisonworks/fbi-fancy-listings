@@ -29,7 +29,10 @@
 					</masonry-wall>
 
 					<div v-show="noResults" class="ms-3 my-5">
-						<h4>No results to show</h4>
+						<h4 v-show="peopleList.length !== 0">No More Results</h4>
+
+						<h4 v-show="peopleList.length === 0">No Results</h4>
+
 						<p>
 							Filtering with these tags:
 							<em> {{ resultsMessage.tags }}</em> <br />
@@ -60,18 +63,6 @@ export default {
 
 			await store.commit('setfilterListing', payload)
 		} else {
-			// checking if object is empty
-
-			// if (Object.keys(query).length !== 0) {
-			// 	const queryPayload = {
-			// 		status: query.filter,
-			// 		orderBy: query.orderBy,
-			// 		groupBy: query.groupBy,
-			// 		search: query.search,
-			// 	}
-			// 	await store.dispatch('queryFilter', queryPayload)
-			// }
-
 			// filter the list
 			await store.commit('setListings', store.state.listing)
 			await store.dispatch('filterList')

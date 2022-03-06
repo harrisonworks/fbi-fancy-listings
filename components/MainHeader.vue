@@ -10,8 +10,8 @@
 				<h1 class="micro">most wanted</h1>
 			</div>
 
-			<div class="box">
-				<button class="" @click="toggleCatergories">
+			<div class="box d-block d-md-none">
+				<button v-show="!notHome" class="" @click="toggleCatergories">
 					<div class="line"></div>
 					<div class="line"></div>
 					<div class="line"></div>

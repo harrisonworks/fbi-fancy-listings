@@ -1,17 +1,17 @@
 <template>
 	<div
-		class="box"
+		class="box d-md-block"
 		:style="
 			showCatergories
-				? 'position: fixed; top: 100px; z-index:10; '
-				: 'border: 2px solid black;'
+				? 'position: fixed; display: block; top: 100px; left: 0px; width: 100%; z-index:10; '
+				: 'display: none;'
 		"
 	>
 		<div class="row align-items-center">
 			<div class="col-lg-12">
 				<h4 class="my-3">Catergories</h4>
 
-				<div class="d-flex flex-column">
+				<div class="d-flex flex-wrap flex-md-column">
 					<button
 						v-for="(category, index) in subjectList"
 						:key="index"
@@ -24,16 +24,6 @@
 						{{ category.title }}
 					</button>
 				</div>
-				<!-- <div class="d-flex flex-wrap">
-					<div class="m-2 toggle">
-						<input
-							ref="toggle"
-							type="checkbox"
-							:checked="victim"
-							@change="checked"
-						/>
-					</div>
-				</div> -->
 			</div>
 		</div>
 	</div>
@@ -41,14 +31,15 @@
 
 
 <script>
-import {
-	getStatusTitle,
-	// getStatusCategories,
-} from '~/assets/js/utils.js'
+import { getStatusTitle } from '~/assets/js/utils.js'
 
 export default {
 	computed: {
 		showCatergories() {
+			if (process.browser) {
+				return this.$store.state.showCatergories && window.innerWidth < 768
+			}
+
 			return this.$store.state.showCatergories
 		},
 		subjectList() {
@@ -67,6 +58,9 @@ export default {
 	mounted() {},
 	methods: {
 		handleStatusFilter(status) {
+			if (this.showCatergories) {
+				this.$store.commit('toggleCatergories')
+			}
 			this.$store.dispatch('filterStatus', status)
 			// this.$store.commit('setPage', 1)
 			// find the object which matches the filters in the store
@@ -111,9 +105,6 @@ export default {
 }
 
 @media only screen and (max-width: 768px) {
-	.dropdown-content {
-		min-width: 23rem;
-	}
 }
 
 .dropdown-content a {
@@ -129,86 +120,5 @@ export default {
 
 .show {
 	display: block;
-}
-
-.toggle {
-	box-sizing: border-box;
-	position: relative;
-	display: block;
-	min-width: 8rem;
-}
-
-/* .toggle:focus-within {
-	outline: 1px dotted;
-} */
-
-.toggle input {
-	color: currentColor;
-	position: absolute;
-	width: auto;
-	height: 100%;
-
-	cursor: pointer;
-
-	/* optional vertical centering */
-	/* top: 50%; */
-	/* transform: translateY(10%); */
-
-	outline: 0; /* add the outline 1 level up instead */
-	appearance: none; /* hide default checkbox */
-
-	/* hide the checkbox in iOS (and others?) */
-	background: transparent;
-	border-radius: 0;
-	border: 0;
-}
-
-.toggle input:before {
-	box-sizing: border-box;
-	content: 'No Victims';
-	padding: 1rem;
-	white-space: nowrap;
-	text-align: center;
-	width: auto;
-	height: auto;
-	background-color: rgb(239, 239, 239);
-	border: 2px solid rgb(118, 118, 118);
-	border-bottom-style: outset;
-	border-image-outset: 0;
-	border-image-repeat: stretch;
-	border-radius: 0em;
-	position: absolute;
-
-	transition-property: background;
-}
-
-.toggle input:after {
-	box-sizing: border-box;
-	content: 'All';
-	width: auto;
-	height: auto;
-	padding: 1rem;
-	white-space: nowrap;
-
-	opacity: 0;
-
-	background-color: rgb(239, 239, 239);
-	border: 2px solid rgb(118, 118, 118);
-	border-bottom-style: outset;
-	border-image-outset: 0;
-	border-image-repeat: stretch;
-	border-radius: 0em;
-	position: absolute;
-
-	/* transition: all 0.2s ease; */
-}
-
-.toggle input:checked:before {
-	/* background-color: rgb(189, 189, 189); */
-	opacity: 0;
-}
-
-.toggle input:checked:after {
-	opacity: 1;
 }
 </style>
