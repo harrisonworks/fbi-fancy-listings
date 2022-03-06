@@ -217,7 +217,8 @@ button {
 }
 
 img {
-	max-height: 20rem;
+	background: blue;
+	height: 20rem;
 	width: 100%;
 	/* width: 10rem; */
 
@@ -228,7 +229,7 @@ img {
 /* mobile  */
 @media only screen and (max-width: 768px) {
 	img {
-		height: 20rem;
+		height: 15rem;
 		width: 100%;
 
 		object-fit: cover;
