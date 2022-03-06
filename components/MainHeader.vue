@@ -5,9 +5,17 @@
 				<button class="" @click="pressed">back</button>
 			</div>
 
-			<div v-show="!notHome" class="box">
+			<div v-show="!notHome" class="box d-none d-md-block">
 				<h1 class="micro">FBI</h1>
 				<h1 class="micro">most wanted</h1>
+			</div>
+
+			<div class="box">
+				<button class="" @click="toggleCatergories">
+					<div class="line"></div>
+					<div class="line"></div>
+					<div class="line"></div>
+				</button>
 			</div>
 
 			<dynamic-marquee
@@ -77,6 +85,9 @@ export default {
 		goToFbi() {
 			window.open(this.$store.state.headerInfo.url, '_blank').focus()
 		},
+		toggleCatergories() {
+			this.$store.commit('toggleCatergories')
+		},
 	},
 }
 </script>
@@ -116,5 +127,12 @@ button {
 	display: block;
 	width: 100%;
 	height: 100%;
+}
+
+.line {
+	width: 35px;
+	height: 4px;
+	background-color: black;
+	margin: 7px auto;
 }
 </style>

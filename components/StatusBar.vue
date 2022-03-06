@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="height: 50px" class="d-flex align-items-center">
+		<div class="d-flex flex-wrap align-items-center top-line-status">
 			<h5 v-show="isFiltered" class="mb-0 me-3">Filter</h5>
 			<crime-chip v-show="isFiltered" style="white-space: normal" color="blue">
 				{{ filterApplied }}
@@ -28,7 +28,7 @@
 			</div>
 
 			<div>
-				<div class="d-flex">
+				<div class="d-flex flex-wrap">
 					<div class="dropdown ms-auto m-2">
 						<button v-click-outside="closeGroup" class="p-3" @click="openGroup">
 							File Type: {{ groupText }}
@@ -210,10 +210,17 @@ export default {
 	z-index: 1;
 }
 
+.top-line-status {
+	height: 50px;
+}
+
 @media only screen and (max-width: 768px) {
-	.dropdown-content {
-		min-width: 23rem;
+	.top-line-status {
+		height: auto;
 	}
+	/* .dropdown-content {
+		min-width: 23rem;
+	} */
 }
 
 .dropdown-content a {

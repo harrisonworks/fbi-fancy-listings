@@ -94,12 +94,8 @@
 				alt=""
 			/>
 		</div>
-
-		<!-- <div class="d-flex flex-wrap">
-			<div v-for="(node, index) in AllNodes" :key="index" class="box">
-				{{ node }}
-			</div>
-		</div> -->
+		<!-- checkout all the nodes -->
+		<!-- <all-nodes :data="data" /> -->
 	</main>
 </template>
 
@@ -122,7 +118,7 @@ export default {
 			await store.commit('setCurrentFile', payload)
 			return { data: payload, uid: payload.uid }
 		}
-
+		console.log(store.state.currentFile)
 		return { data: store.state.currentFile, uid: store.state.currentFile.uid }
 	},
 	head() {
@@ -197,21 +193,6 @@ export default {
 						`https://source.unsplash.com/1000x400/?${this.data.subjects[0]}`,
 				  ]
 				: this.data.images.map((image) => image.original)
-		},
-		AllNodes() {
-			const data = this.data
-			const keys = Object.keys(this.data)
-			const nodeList = []
-			keys.forEach((key) => {
-				if (key !== 'uid') {
-					if (data[key]) {
-						nodeList.push(key)
-
-						nodeList.push(data[key])
-					}
-				}
-			})
-			return nodeList
 		},
 		subjectList() {
 			// subjects are 'catergories' for law enforcement

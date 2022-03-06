@@ -5,6 +5,7 @@ import { getStatusCategories } from '~/assets/js/utils'
 export const state = () => ({
   listing: [],
   filterList: [],
+  showCatergories: false,
   filter: {
     pageLimit: 25,
     search: '',
@@ -163,6 +164,7 @@ export const mutations = {
     state.listing = payload
     state.filterList = payload
 
+    // for debugging purposes
     const subjects = payload.map((item) => item.subjects[0])
     const subjectList = new Set([].concat.apply([], subjects))
     state.rawSubjectList = subjectList
@@ -198,6 +200,9 @@ export const mutations = {
     // order those that have been filtered
     const filteredList = [...state.filterList]
     state.filterList = Filters.orderList(state.filter.order, filteredList)
+  },
+  toggleCatergories(state) {
+    state.showCatergories = !state.showCatergories
   },
 }
 

@@ -1,5 +1,12 @@
 <template>
-	<div class="box">
+	<div
+		class="box"
+		:style="
+			showCatergories
+				? 'position: fixed; top: 100px; z-index:10; '
+				: 'border: 2px solid black;'
+		"
+	>
 		<div class="row align-items-center">
 			<div class="col-lg-12">
 				<h4 class="my-3">Catergories</h4>
@@ -41,6 +48,9 @@ import {
 
 export default {
 	computed: {
+		showCatergories() {
+			return this.$store.state.showCatergories
+		},
 		subjectList() {
 			return this.$store.state.subjectList
 		},
@@ -50,7 +60,6 @@ export default {
 		search() {
 			return this.$store.state.filter.search
 		},
-
 		catergoryText() {
 			return getStatusTitle(this.subjectList, this.$store.state.filter.status)
 		},
