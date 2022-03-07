@@ -12,7 +12,7 @@
 
 |                 Home                 |                 File                 |
 | :----------------------------------: | :----------------------------------: |
-| ![Home Page](./static/home-page.jpg) | ![File Page](./static/file-page.jpg) |
+| ![Home Page](./static/home-page.png) | ![File Page](./static/file-page.png) |
 
 ## Brief 📖
 
