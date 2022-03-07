@@ -17,9 +17,9 @@ export const state = () => ({
   },
   currentFile: {},
   headerInfo: {
-    title: 'FBI Fancy Listing',
-    caution: 'FBI Fancy Listing',
-    reward: 'FBI Fancy Listing',
+    title: 'FBI Most Wanted',
+    caution: 'FBI Most Wanted',
+    reward: 'FBI Most Wanted',
     url: 'https://www.fbi.gov/wanted',
   },
   orderList: [
@@ -233,9 +233,9 @@ export const actions = {
   },
   async defaultHeader({ commit }) {
     await commit('updateHeaderInfo', {
-      title: 'FBI Fancy Listing',
-      caution: 'FBI Fancy Listing',
-      reward: 'FBI Fancy Listing',
+      title: 'FBI Most Wanted',
+      caution: 'FBI Most Wanted',
+      reward: 'FBI Most Wanted',
       url: 'https://www.fbi.gov/wanted',
     })
   },
