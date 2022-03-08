@@ -118,7 +118,9 @@ export default {
 			await store.commit('setCurrentFile', payload)
 			return { data: payload, uid: payload.uid }
 		}
-		// console.log(store.state.currentFile)
+
+		await store.commit('setCurrentFile', store.state.currentFile)
+
 		return { data: store.state.currentFile, uid: store.state.currentFile.uid }
 	},
 	head() {
@@ -157,6 +159,9 @@ export default {
 				},
 			],
 		}
+	},
+	mounted() {
+		console.log(this.data)
 	},
 
 	computed: {
