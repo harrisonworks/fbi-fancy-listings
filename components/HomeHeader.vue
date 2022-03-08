@@ -27,7 +27,7 @@
 			<p class="mt-3">
 				<code><strong>Open source project, this is not the FBI!</strong></code>
 			</p>
-			<button class="p-2" @click="toGithub">To Github</button>
+			<button class="p-3 p-lg-2" @click="toGithub">To Github</button>
 		</div>
 
 		<div class="col-lg-4 mb-2">

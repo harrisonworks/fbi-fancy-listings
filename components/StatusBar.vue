@@ -22,7 +22,7 @@
 				box
 			"
 		>
-			<div class="d-flex flex-row align-items-center">
+			<div class="d-flex flex-wrap align-items-center">
 				<h3 class="mb-0 me-3">{{ resultNumber }}</h3>
 				<p class="m-0">Files Found</p>
 			</div>

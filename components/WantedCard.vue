@@ -34,7 +34,7 @@
 									{{ subject }}
 								</crime-chip>
 							</div>
-							<button class="m-3" @click="pressed">Read More</button>
+							<button class="m-3 p-2 p-lg-0" @click="pressed">Read More</button>
 						</div>
 					</div>
 				</div>
