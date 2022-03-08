@@ -271,5 +271,10 @@ export const actions = {
       commit('setcache', context.ssrContext.$cache)
       dispatch('filterList')
     }
+
+    // if there is no payload run this
+    if (typeof context.payload === 'undefined') {
+      commit('setcache', context.ssrContext.$cache)
+    }
   },
 }

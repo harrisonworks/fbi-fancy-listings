@@ -105,7 +105,7 @@ import { calculateReward, crimeSorter, victimCheck } from '~/assets/js/utils.js'
 
 export default {
 	name: 'FilePage',
-	async asyncData({ payload, store }) {
+	async asyncData({ payload, store, params }) {
 		// for generation
 		if (payload) {
 			await store.commit('updateHeaderInfo', {
@@ -119,7 +119,12 @@ export default {
 			return { data: payload, uid: payload.uid }
 		}
 
-		await store.commit('setCurrentFile', store.state.currentFile)
+		console.log('current route', store.state.listing.length, params.uid)
+
+		const currentFile = store.state.listing.find(
+			(item) => item.uid === params.uid
+		)
+		await store.commit('setCurrentFile', currentFile)
 
 		return { data: store.state.currentFile, uid: store.state.currentFile.uid }
 	},
