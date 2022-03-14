@@ -119,7 +119,12 @@ export default {
 			return { data: payload, uid: payload.uid }
 		}
 
-		console.log('current route', store.state.listing.length, params.uid)
+		console.log(
+			'current route',
+			store.state.listing.length,
+			params.uid,
+			payload
+		)
 
 		const currentFile = store.state.listing.find(
 			(item) => item.uid === params.uid

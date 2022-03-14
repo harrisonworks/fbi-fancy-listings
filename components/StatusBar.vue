@@ -32,6 +32,10 @@
 					<div class="dropdown ms-auto m-2">
 						<button v-click-outside="closeGroup" class="p-3" @click="openGroup">
 							File Type: {{ groupText }}
+							<span
+								style="padding-left: 0.2rem; font-size: 0.8rem"
+								v-html="groupArrow"
+							></span>
 						</button>
 						<div ref="dropdownGroup" class="dropdown-content box">
 							<button
@@ -51,6 +55,10 @@
 					<div class="dropdown ms-auto m-2">
 						<button v-click-outside="closeOrder" class="p-3" @click="openOrder">
 							Order By: {{ orderText }}
+							<span
+								style="padding-left: 0.2rem; font-size: 0.8rem"
+								v-html="orderArrow"
+							></span>
 						</button>
 						<div ref="dropdownOrder" class="dropdown-content box">
 							<button
@@ -75,6 +83,12 @@
 <script>
 import { getStatusTitle } from '~/assets/js/utils.js'
 export default {
+	data() {
+		return {
+			groupArrow: '&#9660;',
+			orderArrow: '&#9660;',
+		}
+	},
 	computed: {
 		resultNumber() {
 			return this.$store.state.filterList.length
@@ -143,13 +157,14 @@ export default {
 			})
 		},
 		openOrder() {
+			if (this.orderArrow === '&#9650;') this.orderArrow = '&#9660;'
+			else this.orderArrow = '&#9650;'
+
 			this.$refs.dropdownOrder.classList.toggle('show')
 		},
 		closeOrder(e) {
-			// const value = 'dropdownOrder'
-			if (e.target !== this.$refs.dropdownOrder) {
-				this.$refs.dropdownOrder.classList.remove('show')
-			}
+			this.orderArrow = '&#9660;'
+			this.$refs.dropdownOrder.classList.remove('show')
 		},
 		handleFilterOrder(orderBy) {
 			this.$store.dispatch('filterOrder', orderBy)
@@ -167,13 +182,14 @@ export default {
 			})
 		},
 		openGroup() {
+			if (this.groupArrow === '&#9650;') this.groupArrow = '&#9660;'
+			else this.groupArrow = '&#9650;'
+
 			this.$refs.dropdownGroup.classList.toggle('show')
 		},
 		closeGroup(e) {
-			// const value = 'dropdownGroup'
-			if (e.target !== this.$refs.dropdownGroup) {
-				this.$refs.dropdownGroup.classList.remove('show')
-			}
+			this.groupArrow = '&#9660;'
+			this.$refs.dropdownGroup.classList.remove('show')
 		},
 		handleGroupFilter(groupBy) {
 			this.$store.dispatch('filterGroup', groupBy)
