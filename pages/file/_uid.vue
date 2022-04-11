@@ -3,7 +3,7 @@
 		<section class="row g-0 align-items-center">
 			<div class="details col-lg-8 order-1 order-lg-0">
 				<div class="box">
-					<h1>{{ data.title }}</h1>
+					<h1>{{ currentFile.title }}</h1>
 
 					<h5>
 						Published: {{ formatedDates.published }} | Modified:
@@ -38,22 +38,25 @@
 						<h5>Known Aliases: {{ aliasList }}</h5>
 					</div>
 					<div class="box">
-						<p>Hair: {{ identity.hair }}</p>
+						<h5>Hair: {{ identity.hair }}</h5>
 					</div>
 					<div class="box">
-						<p>Eyes: {{ identity.eyes }}</p>
+						<h5>Eyes: {{ identity.eyes }}</h5>
 					</div>
 					<div class="box">
-						<p>Sex: {{ identity.sex }}</p>
+						<h5>Sex: {{ identity.sex }}</h5>
 					</div>
 					<div class="box">
-						<p>Nationality: {{ identity.nationality }}</p>
+						<h5>Nationality: {{ identity.nationality }}</h5>
 					</div>
 					<div class="box">
-						<p>Race: {{ identity.race }}</p>
+						<h5>Race: {{ identity.race }}</h5>
 					</div>
-					<div v-show="data.scars_and_marks" class="box">
-						<p>Scars and Marks: {{ data.scars_and_marks }}</p>
+					<div v-show="currentFile.scars_and_marks" class="box">
+						<h5>
+							Scars and Marks:
+							{{ currentFile.scars_and_marks }}
+						</h5>
 					</div>
 				</div>
 			</div>
@@ -62,24 +65,24 @@
 			</div>
 		</section>
 
-		<div v-show="data.caution" class="box">
+		<div v-show="currentFile.caution" class="box">
 			<h3>Caution</h3>
-			<div v-sanitize="data.caution"></div>
-			<div v-sanitize="data.warning_message" style="color: red"></div>
+			<div v-sanitize="currentFile.caution"></div>
+			<div v-sanitize="currentFile.warning_message" style="color: red"></div>
 		</div>
 
 		<div class="d-flex flex-wrap">
-			<div v-show="data.details" class="box col-lg col-sm-12">
+			<div v-show="currentFile.details" class="box col-lg col-sm-12">
 				<h3>Details</h3>
-				<div v-sanitize="data.details"></div>
+				<div v-sanitize="currentFile.details"></div>
 			</div>
-			<div v-show="data.remarks" class="box col-lg col-sm-12">
+			<div v-show="currentFile.remarks" class="box col-lg col-sm-12">
 				<h3>Remarks</h3>
-				<div v-sanitize="data.remarks"></div>
+				<div v-sanitize="currentFile.remarks"></div>
 			</div>
-			<div v-show="data.reward_text" class="box col-lg col-sm-12">
+			<div v-show="currentFile.reward_text" class="box col-lg col-sm-12">
 				<h3>Reward</h3>
-				<div v-sanitize="data.reward_text"></div>
+				<div v-sanitize="currentFile.reward_text"></div>
 			</div>
 		</div>
 
@@ -118,39 +121,25 @@ export default {
 			await store.commit('setCurrentFile', payload)
 			return { data: payload, uid: payload.uid }
 		}
-
-		console.log(
-			'current route',
-			store.state.listing.length,
-			params.uid,
-			payload
-		)
-
-		const currentFile = store.state.listing.find(
-			(item) => item.uid === params.uid
-		)
-		await store.commit('setCurrentFile', currentFile)
-
-		return { data: store.state.currentFile, uid: store.state.currentFile.uid }
 	},
 	head() {
 		return {
-			title: `FBI Most Wanted | ${this.data.title}`,
+			title: `FBI Most Wanted | ${this.currentFile.title}`,
 			meta: [
 				{
 					hid: 'og:title',
 					property: 'og:title',
-					content: `FBI Most Wanted | ${this.data.title}`,
+					content: `FBI Most Wanted | ${this.currentFile.title}`,
 				},
 				{
 					hid: 'apple-mobile-web-app-title',
 					property: 'apple-mobile-web-app-title',
-					content: `FBI Most Wanted | ${this.data.title}`,
+					content: `FBI Most Wanted | ${this.currentFile.title}`,
 				},
 				{
 					hid: 'og:image',
 					property: 'og:image',
-					content: `${this.data.images[0].original}`,
+					content: `${this.currentFile.images[0].original}`,
 				},
 				{
 					hid: 'og:url',
@@ -160,77 +149,86 @@ export default {
 				{
 					hid: 'twitter:card',
 					property: 'twitter:card',
-					content: `${this.data.images[0].original}`,
+					content: `${this.currentFile.images[0].original}`,
 				},
 				{
 					hid: 'twitter:image',
 					property: 'twitter:image',
-					content: `${this.data.images[0].original}`,
+					content: `${this.currentFile.images[0].original}`,
 				},
 			],
 		}
 	},
-	mounted() {
-		console.log(this.data)
-	},
-
 	computed: {
+		currentFile() {
+			return this.$store.state.currentFile
+		},
 		identity() {
 			return {
-				hair: this.data.hair ? this.data.hair : 'Unlisted',
-				eyes: this.data.eyes ? this.data.eyes : 'Unlisted',
-				sex: this.data.sex ? this.data.sex : 'Unlisted',
-				nationality: this.data.nationality ? this.data.nationality : 'Unlisted',
-				race: this.data.race ? this.data.race : 'Unlisted',
+				hair: this.currentFile.hair ? this.currentFile.hair : 'Unlisted',
+				eyes: this.currentFile.eyes ? this.currentFile.eyes : 'Unlisted',
+				sex: this.currentFile.sex ? this.currentFile.sex : 'Unlisted',
+				nationality: this.currentFile.nationality
+					? this.currentFile.nationality
+					: 'Unlisted',
+				race: this.currentFile.race ? this.currentFile.race : 'Unlisted',
 			}
+		},
+		caution() {
+			// return this.$sanitize(this.currentFile.caution)
+			return null
 		},
 		formatedDates() {
 			return {
-				published: this.data.publication
-					? format(new Date(this.data.publication), 'PPP')
+				published: this.currentFile.publication
+					? format(new Date(this.currentFile.publication), 'PPP')
 					: 'Undefined',
-				modified: this.data.publication
-					? format(new Date(this.data.modified), 'PPP')
+				modified: this.currentFile.publication
+					? format(new Date(this.currentFile.modified), 'PPP')
 					: 'Undefined',
 			}
 		},
 		featuredImage() {
 			return this.$nuxt.context.isDev
-				? `https://source.unsplash.com/500x800/?${this.data.subjects[0]}`
-				: this.data.images[0].original
+				? `https://source.unsplash.com/500x800/?${this.currentFile.subjects[0]}`
+				: this.currentFile.images[0].original
 		},
 		imageList() {
 			return this.$nuxt.context.isDev
 				? [
-						`https://source.unsplash.com/500x600/?${this.data.subjects[0]}`,
-						`https://source.unsplash.com/300x600/?${this.data.subjects[0]}`,
-						`https://source.unsplash.com/200x500/?${this.data.subjects[0]}`,
-						`https://source.unsplash.com/1000x400/?${this.data.subjects[0]}`,
+						`https://source.unsplash.com/500x600/?${this.currentFile.subjects[0]}`,
+						`https://source.unsplash.com/300x600/?${this.currentFile.subjects[0]}`,
+						`https://source.unsplash.com/200x500/?${this.currentFile.subjects[0]}`,
+						`https://source.unsplash.com/1000x400/?${this.currentFile.subjects[0]}`,
 				  ]
-				: this.data.images.map((image) => image.original)
+				: this.currentFile.images.map((image) => image.original)
 		},
 		subjectList() {
 			// subjects are 'catergories' for law enforcement
-			return this.data.subjects
+			return this.currentFile.subjects
 		},
 		crimeList() {
-			return this.data.description ? crimeSorter(this.data.description) : null
+			return this.currentFile.description
+				? crimeSorter(this.currentFile.description)
+				: null
 		},
 		aliasList() {
-			return this.data.aliases ? this.data.aliases.join(', ') : 'NA'
+			return this.currentFile.aliases
+				? this.currentFile.aliases.join(', ')
+				: 'NA'
 		},
 		reward() {
-			return this.data.reward_text
-				? calculateReward(this.data.reward_text)
+			return this.currentFile.reward_text
+				? calculateReward(this.currentFile.reward_text)
 				: null
 		},
 		isVictim() {
-			return this.data.description
+			return this.currentFile.description
 				? victimCheck([...this.crimeList, ...this.subjectList])
 				: null
 		},
 		isCaptured() {
-			if (this.data.status !== 'na') {
+			if (this.currentFile.status !== 'na') {
 				return 'CAPTURED'
 			}
 			return false
