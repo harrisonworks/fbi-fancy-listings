@@ -57,7 +57,7 @@ export default {
         locale: 'en_US',
         twitter: '@user',
         twitter_card: '/meta.jpg',
-        theme_color: '#d5d7ce',
+        theme_color: '#ffffff',
       },
     ],
     '~/modules/apiDataModule.js',
