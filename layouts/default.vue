@@ -3,7 +3,7 @@
 <template>
 	<div>
 		<main-header />
-		<nuxt class="homeStyle" style="" />
+		<nuxt class="homeStyle" />
 		<main-footer />
 	</div>
 </template>
